@@ -22,8 +22,8 @@ IDs de registros são UUID gerados pelo cliente na criação; códigos editoriai
 | StudyPlan | id, exam_version_id, starts_on, ends_on | Plano corrente; 09/10–11/12/2026 |
 | CycleTemplate | id, study_plan_id, effective_from, weekly_minutes, origin | `origin`: `initial|rebalance|manual`; `effective_from` segunda-feira, único por plano |
 | CycleSlot | id, cycle_template_id, code, weekday, window, minutes, purpose, activity, candidate_topic_ids, selection_mode | 15 por template |
-| Occurrence | id, cycle_slot_id, week_start, planned_on, window, status, skip_reason? | Único por (slot, week_start); `planned_on`/`window` mudam no remanejamento |
-| StudySession | id, occurrence_id?, studied_on, duration_minutes, activity, notes, essay_practice_id?, deleted_at? | Uma ou várias por ocorrência |
+| Occurrence | id, cycle_slot_id, week_start, planned_on, window, status, skip_reason? | Único por (slot, week_start); `planned_on`/`window` mudam no remanejamento. Data de conclusão derivada = maior `studied_on` das sessões ativas vinculadas |
+| StudySession | id, occurrence_id?, studied_on, duration_minutes, activity, essay_kind?, notes, essay_practice_id?, deleted_at? | Uma ou várias por ocorrência; `essay_kind` obrigatório se activity=essay; `studied_on ≤ hoje` |
 | SessionTopic | session_id, topic_id | Minutos contam uma vez por sessão |
 | DailyMission | id, mission_date, kind, checkout_note?, created_at | Única por data; `kind`: `weekday|free` |
 | MissionItem | id, mission_id, position, kind, ref_id?, target?, required, na_reason? | `kind`: `block|review|questions|checkout`; `na_reason` não nulo = `not_applicable` |

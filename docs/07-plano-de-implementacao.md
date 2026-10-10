@@ -56,6 +56,8 @@ Formatos: `XpEntry{date, source, ref_id, xp}`; `LevelInfo{level, title, xp_total
 
 ## F0 — Fundação
 
+> Plano executável, com código validado em protótipo: [superpowers/plans/2026-10-09-f0-f1-rotina-diaria.md](superpowers/plans/2026-10-09-f0-f1-rotina-diaria.md). Em caso de divergência de detalhe, vale o plano executável.
+
 **Arquivos:** `docker-compose.yml`, `Dockerfile`, `.env.example`, `.gitignore`, `apps/api/{pyproject.toml,alembic.ini,migrations/,app/{main,config,db,errors,clock}.py}`, `apps/web/{package.json,vite.config.ts,tailwind.config.ts,index.html,src/main.tsx,src/app/}`, `scripts/{backup.sh,restore.sh}`, `README.md`.
 
 - [ ] Inicializar `apps/api` com uv (FastAPI, SQLAlchemy 2, psycopg 3, Alembic, Pydantic v2, pytest) e `apps/web` com Vite React-TS (React Router, TanStack Query, Tailwind, Vitest, `@fontsource/{chakra-petch,inter,jetbrains-mono}`); fixar versões e gerar lockfiles.

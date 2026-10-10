@@ -14,9 +14,9 @@ Gerar 15 ocorrências de blocos de 60 min para cada semana, com data civil e jan
 
 ## R03 — Sessão registrada
 
-Duração manual inteira de 1 a 720 minutos; teto aceita treino completo de 5 h ou 3 h 30. Data efetiva e tópicos obrigatórios, exceto discursiva, que usa tipo e permite tópicos associados. Tempo real pode divergir do planejado. Minutos reais somam uma única vez por sessão; conclusão do bloco não depende de alcançar 60 min. É possível registrar estudo extra sem ocorrência.
+Duração manual inteira de 1 a 720 minutos; teto aceita treino completo de 5 h ou 3 h 30. `studied_on` não pode ser posterior a hoje (422). Data efetiva e tópicos obrigatórios, exceto discursiva, que exige `essay_kind` (`complementary|technical_case`) e permite tópicos associados. Tempo real pode divergir do planejado. Minutos reais somam uma única vez por sessão; conclusão do bloco não depende de alcançar 60 min. É possível registrar estudo extra sem ocorrência.
 
-Sessões com activity=essay são criadas pela rota de treino discursivo e possuem essay_practice_id; a rota genérica de sessões não cria esse tipo isoladamente. Editar uma sessão exige versão atual. Excluir logicamente remove seu efeito nas métricas e revisões pendentes derivadas; histórico de revisões já concluídas permanece sinalizado como origem excluída. Bloco sem sessões ativas volta a pendente.
+Até a fatia F4 existir, a rota genérica cria sessões `activity=essay` sem `essay_practice_id`, para que os blocos S14/S15 possam ser concluídos. A partir da F4, a rota de treino discursivo cria a sessão junto com o treino e pode vincular um treino a uma sessão discursiva já existente; XP de rubrica só existe com EssayPractice. Editar uma sessão exige versão atual. Excluir logicamente remove seu efeito nas métricas e revisões pendentes derivadas; histórico de revisões já concluídas permanece sinalizado como origem excluída. Bloco sem sessões ativas volta a pendente.
 
 ## R04 — Lote de questões
 

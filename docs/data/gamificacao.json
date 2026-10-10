@@ -281,5 +281,19 @@
       "name": "Edital mapeado",
       "condition": "coverage_ratio>=1.0"
     }
+  ],
+  "holiday_suggestions": [
+    {
+      "date": "2026-10-12",
+      "label": "Nossa Senhora Aparecida"
+    },
+    {
+      "date": "2026-11-02",
+      "label": "Finados"
+    },
+    {
+      "date": "2026-11-20",
+      "label": "Dia Nacional de Zumbi e da Consciência Negra"
+    }
   ]
 }

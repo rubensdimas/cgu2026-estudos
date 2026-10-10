@@ -28,8 +28,9 @@ flowchart LR
 | `backup` | Mesma imagem do Postgres | Laço diário de `pg_dump -Fc` para `./backups`, mantém 14 arquivos |
 
 - Acesso pelo celular: `tailscale serve --bg 8080` no Mac publica `https://<mac>.<tailnet>.ts.net` só dentro da tailnet, com certificado válido (necessário para instalar o PWA). Nunca usar `tailscale funnel`.
-- Segredos (senha do Postgres) em `.env` fora do Git; `.env.example` versionado.
-- Banco de testes: database `cgu_test` criado no mesmo serviço `db` por script de init; testes de integração rodam com `docker compose run --rm app pytest` ou localmente apontando para ele.
+- Segredos (senha do Postgres) em `.env` fora do Git; `.env.example` versionado. `ALLOWED_HOSTS` lista `127.0.0.1`, `localhost` e o nome `*.ts.net` do Mac. `BACKUP_DIR` permite apontar os backups para uma pasta sincronizada (ex.: iCloud Drive) e ter cópia fora do disco.
+- Pré-requisito ainda não instalado em 09/10/2026: **Tailscale** no Mac e no celular. Sem ele, a v1 funciona só no Mac.
+- Banco de testes: database `cgu_test` criado no mesmo serviço `db` por script de init (`ops/db-init/`). O `Dockerfile` tem os alvos `dev` (com dependências de teste) e `runtime`; o serviço `test` (perfil `test`) usa `dev`, monta `apps/api` e roda `docker compose --profile test run --rm test`. O Postgres continua sem porta publicada.
 - Limitação aceita: o Mac precisa estar ligado e o compose ativo para uso no celular.
 
 ## 3. Módulos
@@ -63,13 +64,14 @@ apps/api/
   app/
     main.py                 # monta /api/v1 e serve /static com fallback SPA
     config.py · db.py · errors.py · clock.py
-    domain/                 # funções puras: cycle, scoring, reviews, mission, xp, streak, goals, stages, achievements, rebalance
+    models.py               # todos os modelos ORM (um arquivo enquanto couber; dividir por módulo se passar de ~400 linhas)
+    domain/                 # funções puras: cycle, weeks, scoring, reviews, mission, xp, streak, goals, stages, achievements, rebalance
     catalog/ planning/ study/ practice/ essays/ reviews/ game/ reporting/ portability/
-      (models.py · schemas.py · service.py · router.py)
+      (schemas.py · service.py · router.py)
     seed.py                 # carrega docs/data/*.json
   tests/unit/ · tests/integration/
 apps/web/
-  package.json · vite.config.ts · tailwind.config.ts
+  package.json · vite.config.ts   # Tailwind v4 via @tailwindcss/vite; tokens em src/index.css (@theme)
   public/manifest.webmanifest · icons/
   src/
     app/ (rotas, layout, HUD)
@@ -92,8 +94,9 @@ Prefixo `/api/v1`, JSON snake_case, datas YYYY-MM-DD, instantes ISO UTC, IDs UUI
 | Método e rota | Função | Fatia |
 |---|---|---|
 | GET /health | Liveness | F0 |
-| GET /settings · PATCH /settings | Fuso, metas, preferências | F1 |
-| GET /exam-versions/current · GET /subjects · GET /topics | Regras e catálogo | F1 |
+| GET /settings | Fuso, metas, preferências (leitura) | F1 |
+| PATCH /settings | Editar metas e preferências | F2 |
+| GET /exam-versions/current · GET /subjects (com tópicos e progresso) | Regras e catálogo | F1 |
 | PUT /topics/{id}/progress | Estado declarado | F1 |
 | GET /plans/current | Plano e template vigente | F1 |
 | POST /plans/current/weeks | Gerar ocorrências da `week_start` (parcial se for a semana inicial) | F1 |
@@ -103,7 +106,8 @@ Prefixo `/api/v1`, JSON snake_case, datas YYYY-MM-DD, instantes ISO UTC, IDs UUI
 | POST /days/{date}/mission | Abrir o dia (idempotente por data) | F1 |
 | PATCH /missions/{id}/items/{item_id} | Marcar/desmarcar “não se aplica” | F1 |
 | PUT /missions/{id}/checkout | Check-out do dia | F1 |
-| GET /game/summary | XP total, nível, título, sequência, recorde, congelamentos, D-n | F1 |
+| GET /game/summary | XP total, nível, título, sequência, recorde, congelamentos, D-n, sugestão de feriado | F1 |
+| GET /game/config | Feriados sugeridos e marcos do concurso | F1 |
 | GET /game/xp?from=&to= | Extrato do `xp_ledger` | F1 |
 | PUT /day-offs/{date} · DELETE /day-offs/{date} · GET /day-offs | Folgas | F1 |
 | POST /question-batches · PATCH /question-batches/{id} · GET /question-batches | Lotes | F2 |
@@ -157,7 +161,7 @@ Desempenho: o volume é pequeno (centenas de registros); calcular XP/sequência 
 
 ## 7. Segurança operacional
 
-Sem login, portanto a segurança depende do perímetro: porta presa a `127.0.0.1`, acesso remoto só pela tailnet privada via `tailscale serve`, Postgres sem porta publicada. Logs sem texto integral de discursivas. Sem uploads. Importação limitada a 10 MiB e validada antes de gravar. Backup diário + ensaio de restauração documentado no README.
+Sem login, portanto a segurança depende do perímetro: porta presa a `127.0.0.1`, acesso remoto só pela tailnet privada via `tailscale serve`, Postgres sem porta publicada. Contra **DNS rebinding** e páginas maliciosas abertas no próprio Mac: `TrustedHostMiddleware` com `ALLOWED_HOSTS` (Host fora da lista → 400) e, nas mutações, header `Origin`, quando presente, deve ter host da lista (403 caso contrário). O requisito de `Content-Type: application/json` força preflight CORS, que a API nunca aprova. Logs sem texto integral de discursivas. Sem uploads. Importação limitada a 10 MiB e validada antes de gravar. Backup diário + ensaio de restauração documentado no README.
 
 ## 8. Fontes técnicas
 

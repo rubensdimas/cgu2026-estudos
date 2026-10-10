@@ -14,13 +14,13 @@ Versão 2.0 · 09/10/2026. Configuração carregável em [data/gamificacao.json]
 
 ### Geração
 
-A missão de uma data civil é criada por ação explícita “Abrir o dia” (`POST /days/{date}/mission`). Consultar o dia nunca grava. Repetir a ação devolve a missão existente. Depois de gerada, a lista de itens fica **congelada**; mudanças no ciclo não acrescentam itens, apenas alteram o estado dos itens existentes.
+A missão de uma data civil é criada por ação explícita “Abrir o dia” (`POST /days/{date}/mission`). Se a semana daquela data ainda não foi gerada, a mesma ação a gera na mesma transação (um botão só). Consultar o dia nunca grava. Repetir a ação devolve a missão existente. Datas futuras são recusadas. Depois de gerada, a lista de itens fica **congelada**; mudanças no ciclo não acrescentam itens, apenas alteram o estado dos itens existentes.
 
 ### Itens (dias úteis)
 
 | Ordem | Item | Origem | Obrigatório | Concluído quando |
 |---|---|---|---|---|
-| 1 | Blocos do dia (até 3) | Ocorrências `pending` planejadas para a data | Sim | Ocorrência `completed` |
+| 1 | Blocos do dia (até 3) | **Todas** as ocorrências planejadas para a data, inclusive já concluídas (registrar antes de abrir o dia não pode sumir com o bloco); dispensadas entram como `not_applicable` | Sim | Ocorrência `completed` com data de conclusão ≤ data da missão |
 | 2 | Revisões vencidas (até 3) | `ReviewTask` pendentes com `due_on ≤ data`, mais antigas primeiro | Sim | Revisão `completed` |
 | 3 | Meta de questões | Padrão 20 itens; tópico sugerido = tópico estudado no dia ou tópico com menor taxa de acerto e amostra ≥ 20 | Não (bônus) | Soma de `total` dos lotes da data ≥ meta |
 | 4 | Check-out do dia | Uma linha: “O que ficou difícil hoje?” | Não (bônus) | Texto salvo |
@@ -60,6 +60,8 @@ Todo XP é atribuído à **data civil do evento** (`studied_on`, `practiced_on`,
 
 Os valores são uma proposta inicial do produto e ficam em `gamificacao.json`. Registros excluídos logicamente não geram XP. O XP de sessões de discursiva conta como minutos normais; a discursiva soma o bônus de rubrica só uma vez.
 
+**Data do XP de bloco:** data de conclusão derivada = maior `studied_on` entre as sessões ativas vinculadas.
+
 **Semana completa:** todas as ocorrências da semana estão `completed` (dispensadas não contam como concluídas) **ou** os minutos reais da semana alcançam a meta semanal de minutos.
 
 ## 4. Nível e títulos
@@ -80,7 +82,7 @@ Referência: executar o ciclo completo por 9 semanas, com missões e questões, 
 
 - Conta **dias úteis** (segunda a sexta). Um dia útil é **ativo** se a soma de minutos de sessões ativas com aquela `studied_on` for ≥ 30.
 - Sábado e domingo nunca quebram a sequência e nunca a aumentam; estudar neles rende o bônus da tabela de XP.
-- **Folga declarada** (`DayOff`: feriado, doença, compromisso) é neutra: não quebra nem conta. Marcar e desmarcar é livre; o cálculo é refeito.
+- **Folga declarada** (`DayOff`: feriado, doença, compromisso) é neutra: não quebra nem conta. Marcar e desmarcar é livre; o cálculo é refeito. Os feriados nacionais em dias úteis do período (12/10, 02/11 e 20/11/2026, em `gamificacao.json`) aparecem como **sugestão** de folga na véspera; nada é marcado automaticamente, porque o usuário pode preferir estudar.
 - **Congelamento:** cada semana completa concede 1 congelamento, com estoque máximo de 2. Um dia útil passado não ativo e não declarado como folga consome automaticamente um congelamento, se houver; sem congelamento, a sequência é zerada.
 - O dia de hoje só é avaliado depois de encerrado: enquanto ele não terminar, a sequência exibe “em jogo hoje”.
 - Cálculo determinístico: percorrer os dias úteis em ordem desde o início do plano, aplicando ganhos de congelamento no fim de cada semana completa e consumos na ordem dos dias perdidos. Exibir sequência atual, recorde e congelamentos disponíveis.
@@ -99,7 +101,9 @@ Padrões (editáveis em Configurações, sem alterar regras oficiais):
 | Discursivas com rubrica | 1 complementar + 1 situação-problema |
 | Missões completas | 5 |
 
-Cada meta mostra planejado × realizado e nunca preenche ausência de dados com zero de conhecimento (R09).
+Cada meta mostra planejado × realizado e nunca preenche ausência de dados com zero de conhecimento (R09). Blocos contam na semana da ocorrência (`week_start`), mesmo se remanejados; minutos, questões e discursivas contam na semana da data efetiva do registro.
+
+Se o bloco intermediário ficar indisponível de forma recorrente, a semana só fica completa pelos minutos. Nesse caso, ajustar a meta semanal de minutos em Configurações ou remanejar os blocos para outra janela, em vez de acumular dispensas.
 
 **Semana inicial parcial** (09–11/10/2026): metas proporcionais às ocorrências geradas: 180 min, 3 blocos, 1 missão, 2 discursivas (S14/S15 de sexta) e questões P1/P2/P3 = 8/8/18 (1/5 da meta, arredondado).
 

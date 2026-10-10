@@ -4,7 +4,7 @@ Versão 2.0 · 09/10/2026 · pt-BR · America/Sao_Paulo.
 
 App pessoal e local de preparação para **Auditor Federal de Finanças e Controle — TI — Desenvolvimento de Sistemas (Cargo 4)**, prova em 13/12/2026. Responde todo dia: **o que estudar agora, o que foi feito, o que revisar e se a rotina está em dia**, com missão diária, XP, nível, sequência, metas e etapas com chefões.
 
-Estado atual: especificação v2.0 pronta; código ainda não iniciado (F0/F1 do plano).
+Estado atual: especificação v2.0 pronta; plano executável de F0+F1 em [docs/superpowers/plans/2026-10-09-f0-f1-rotina-diaria.md](docs/superpowers/plans/2026-10-09-f0-f1-rotina-diaria.md); código ainda não iniciado.
 
 ## Documentos
 
