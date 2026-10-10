@@ -44,4 +44,20 @@ describe('LateBlocks', () => {
     expect(await screen.findAllByRole('button', { name: /atrasado/ })).toHaveLength(1)
     expect(fetchMock.mock.calls.some(([url]) => String(url).includes('to=2026-10-08'))).toBe(false)
   })
+  it('após falha parcial, desmarca só o que já foi trazido', async () => {
+    stubFetch([plan,
+      { match: '/occurrences?from=2026-10-09&to=2026-10-11',
+        body: { items: [occ('x', 'Bloco X'), occ('z', 'Bloco Z')], total: 2 } },
+      { method: 'PATCH', match: '/occurrences/x', body: { game_delta: null } },
+      { method: 'PATCH', match: '/occurrences/z', body: { error: { code: 'version_conflict', message: 'Este registro foi alterado.' } }, status: 409 }])
+    renderWithProviders(<LateBlocks today="2026-10-12" />)
+    const user = userEvent.setup()
+    await user.click(await screen.findByRole('button', { name: /2 blocos atrasados/ }))
+    await user.click(screen.getByLabelText(/Bloco X/))
+    await user.click(screen.getByLabelText(/Bloco Z/))
+    await user.click(screen.getByRole('button', { name: 'Trazer para hoje' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Este registro foi alterado.')
+    expect(screen.getByLabelText(/Bloco X/)).not.toBeChecked()
+    expect(screen.getByLabelText(/Bloco Z/)).toBeChecked()
+  })
 })

@@ -17,15 +17,19 @@ export function LateBlocks({ today }: { today: string }) {
   if (!enabled || late.length === 0) return null
 
   const toggle = (id: string) => setChosen((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id]))
+  const selected = late.filter((o) => chosen.includes(o.id))
   async function bring() {
+    const moved: string[] = []
     try {
-      for (const o of late.filter((o) => chosen.includes(o.id))) {
+      for (const o of selected) {
         await patch.mutateAsync({ id: o.id, body: { version: o.version, planned_on: today } })
+        moved.push(o.id)
       }
       setChosen([])
       setOpen(false)
     } catch {
-      // A mensagem aparece via patch.error.
+      // Os que já vieram para hoje saem da seleção; a mensagem aparece via patch.error.
+      setChosen((c) => c.filter((id) => !moved.includes(id)))
     }
   }
 
@@ -44,7 +48,7 @@ export function LateBlocks({ today }: { today: string }) {
               {formatDay(o.planned_on)} · {o.slot.title}
             </label>
           ))}
-          <button onClick={bring} disabled={chosen.length === 0 || patch.isPending}
+          <button onClick={bring} disabled={selected.length === 0 || patch.isPending}
             className="mt-2 rounded-md bg-primary px-3 py-1 text-primary-foreground disabled:opacity-50">
             Trazer para hoje
           </button>
