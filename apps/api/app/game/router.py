@@ -32,10 +32,19 @@ def get_xp(from_: date = Query(alias="from"), to: date = Query(), db: Session = 
     return {"items": items, "total": len(items)}
 
 
+@router.get("/game/calendar")
+def get_calendar(from_: date = Query(alias="from"), to: date = Query(), db: Session = Depends(get_db),
+                 today: date = Depends(get_today)):
+    if to < from_ or (to - from_).days > 400:
+        raise ApiError(422, "invalid_range", "Intervalo inválido (máximo de 400 dias).")
+    return snapshot.calendar(db, today, from_, to)
+
+
 @router.get("/game/config")
 def get_config():
     cfg = game_config.game_config()
-    return {"holiday_suggestions": cfg.get("holiday_suggestions", []), "milestones": cfg["milestones"]}
+    return {"holiday_suggestions": cfg.get("holiday_suggestions", []), "milestones": cfg["milestones"],
+            "levels": cfg["levels"]["titles"]}
 
 
 @router.get("/day-offs")

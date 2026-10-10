@@ -137,6 +137,7 @@ def game_delta(before: Snapshot, after: Snapshot) -> dict:
         "xp_gained": after.total - before.total,
         "entries": entries,
         "level_up": after.level.level if after.level.level > before.level.level else None,
+        "level_title": after.level.title if after.level.level > before.level.level else None,
         "mission_complete": sorted(
             d for d, c in after.mission_complete.items() if c and not before.mission_complete.get(d)
         ),
@@ -152,6 +153,24 @@ def tracked(db: Session, today: date, action: Callable[[], T]) -> tuple[T, dict]
     after = build_snapshot(db, today)
     db.commit()
     return result, game_delta(before, after)
+
+
+def calendar(db: Session, today: date, start: date, end: date) -> dict:
+    """Dias ativos (≥ mínimo), congelados e neutros (fim de semana ou folga) no intervalo."""
+    settings = db.get(AppSettings, 1)
+    plan = current_plan(db)
+    world = load_world(db)
+    day_offs = set(db.scalars(select(DayOff.day)))
+    streak = streak_state(world.minutes_by_date, day_offs, set(complete_weeks(db, world)), plan.starts_on, today,
+                          settings.streak_min_minutes, settings.max_freezes)
+    days = [start + timedelta(days=i) for i in range((end - start).days + 1)]
+    active = [d for d in days if world.minutes_by_date.get(d, 0) >= settings.streak_min_minutes]
+    neutral = [d for d in days if d not in active and (d.weekday() >= 5 or d in day_offs)]
+    return {
+        "active_days": active,
+        "frozen_days": [d for d in streak.frozen_days if start <= d <= end],
+        "neutral_days": neutral,
+    }
 
 
 def summary(db: Session, today: date) -> dict:
