@@ -69,3 +69,10 @@ def test_completion_rules():
     assert not is_complete([(True, done), (True, pending)])
     assert not is_complete([(False, done)])
     assert optional_done([(True, done), (False, done), (False, pending)]) == 1
+
+
+def test_completed_block_counts_even_if_marked_not_applicable():
+    item = MissionItemInput(0, "block", True, ref_id="o1", na_reason="Não se aplica hoje")
+    facts = DayFacts(FRI, occurrence_status={"o1": "completed"}, occurrence_planned_on={"o1": FRI},
+                     occurrence_completed_on={"o1": FRI})
+    assert item_state(item, facts).state == "done"

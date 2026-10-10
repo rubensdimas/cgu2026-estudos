@@ -88,3 +88,29 @@ def test_skipped_block_rejects_session_and_completed_block_cannot_move(client):
     current = friday_occurrence(client, done["id"])
     move = client.patch(f"/api/v1/occurrences/{done['id']}", json={"version": current["version"], "planned_on": "2026-10-12"})
     assert (move.status_code, move.json()["error"]["code"]) == (422, "not_pending")
+
+
+def test_same_id_created_concurrently_returns_original(client, monkeypatch):
+    from datetime import date
+
+    from app.db import SessionLocal
+    from app.study import service
+
+    body = payload()
+    real_check = service._check_topics
+    state = {"raced": False}
+
+    def racing(db, topic_ids):
+        real_check(db, topic_ids)
+        if not state["raced"]:
+            state["raced"] = True
+            with SessionLocal() as other:  # outro aparelho grava o mesmo id antes deste insert
+                service.create_session(other, service.SessionIn(**body), date(2026, 10, 9))
+                other.commit()
+
+    monkeypatch.setattr(service, "_check_topics", racing)
+    r = client.post("/api/v1/sessions", json=body)
+    assert r.status_code == 200
+    assert r.json()["id"] == body["id"]
+    listed = client.get("/api/v1/sessions", params={"from": "2026-10-09", "to": "2026-10-09"}).json()
+    assert listed["total"] == 1

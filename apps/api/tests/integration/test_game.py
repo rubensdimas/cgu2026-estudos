@@ -67,3 +67,13 @@ def test_deleting_session_removes_its_xp(client):
     assert client.get("/api/v1/game/summary").json()["xp_total"] == 40
     assert client.delete(f"/api/v1/sessions/{body['id']}").status_code == 204
     assert client.get("/api/v1/game/summary").json()["xp_total"] == 0
+
+
+def test_week_completed_by_minutes_without_generated_occurrences(client, clock):
+    clock.today = date(2026, 10, 20)
+    for i in range(5):
+        study(client, date(2026, 10, 12) + timedelta(days=i), 180)
+    s = client.get("/api/v1/game/summary").json()["streak"]
+    assert (s["current"], s["frozen_days"]) == (5, ["2026-10-19"])
+    ledger = client.get("/api/v1/game/xp", params={"from": "2026-10-18", "to": "2026-10-18"}).json()["items"]
+    assert [(e["source"], e["xp"]) for e in ledger] == [("week_complete", 150)]

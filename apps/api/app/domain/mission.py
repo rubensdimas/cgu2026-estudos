@@ -55,12 +55,14 @@ def build_mission(day: date, occurrences: list[OccRef], question_goal: int = 0) 
 
 
 def item_state(item: MissionItemInput, facts: DayFacts) -> ItemState:
-    if item.na_reason:
-        return ItemState("not_applicable", item.na_reason)
     if item.kind == "block":
+        # Estudo real vence a marcação manual de "não se aplica".
         completed_on = facts.occurrence_completed_on.get(item.ref_id)
         if completed_on is not None and completed_on <= facts.mission_date:
             return ItemState("done")
+    if item.na_reason:
+        return ItemState("not_applicable", item.na_reason)
+    if item.kind == "block":
         if facts.occurrence_status.get(item.ref_id) == "skipped":
             return ItemState("not_applicable", "skipped")
         if facts.occurrence_planned_on.get(item.ref_id) != facts.mission_date:

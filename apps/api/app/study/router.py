@@ -2,6 +2,7 @@ import uuid
 from datetime import date
 
 from fastapi import APIRouter, Depends, Query, Response
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.clock import get_today
@@ -15,7 +16,15 @@ router = APIRouter(tags=["sessions"])
 @router.post("/sessions")
 def create_session(body: service.SessionIn, response: Response, db: Session = Depends(get_db),
                    today: date = Depends(get_today)):
-    (session, created), delta = tracked(db, today, lambda: service.create_session(db, body, today))
+    def action():
+        return service.create_session(db, body, today)
+
+    try:
+        (session, created), delta = tracked(db, today, action)
+    except IntegrityError:
+        # Mesmo id gravado por outra requisição em paralelo: a segunda tentativa aplica a regra de idempotência.
+        db.rollback()
+        (session, created), delta = tracked(db, today, action)
     response.status_code = 201 if created else 200
     return {**service.session_out(session), "game_delta": delta}
 

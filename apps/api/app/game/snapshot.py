@@ -11,6 +11,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.domain import mission as mission_domain
+from app.domain.cycle import week_start_of
 from app.domain.streak import StreakState, streak_state
 from app.domain.weeks import is_week_complete, minutes_goal_for_week
 from app.domain.xp import BlockFact, GameFacts, LevelInfo, MissionFact, SessionFact, XpEntry, level_for_xp, xp_ledger
@@ -84,6 +85,10 @@ def complete_weeks(db: Session, world: World) -> frozenset[date]:
     by_week: dict[date, list[Occurrence]] = defaultdict(list)
     for occ in world.occurrences.values():
         by_week[occ.week_start].append(occ)
+    # Semanas sem ocorrências geradas também completam pelos minutos (docs/10 §3).
+    for day in world.minutes_by_date:
+        if plan.starts_on <= day <= plan.ends_on:
+            by_week.setdefault(week_start_of(day), [])
     done = set()
     for ws, occs in by_week.items():
         minutes = sum(world.minutes_by_date.get(ws + timedelta(days=i), 0) for i in range(7))
