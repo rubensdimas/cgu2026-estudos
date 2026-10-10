@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { useGenerateWeek, useOccurrences, usePatchOccurrence, useSummary } from '../../shared/api/hooks'
+import { GuidancePanel } from '../guidance/GuidancePanel'
 import type { Occurrence, Window } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, PURPOSE_LABEL, WINDOW_LABEL } from '../../shared/format'
 
@@ -78,6 +79,7 @@ export function OccurrenceRow({ occ }: { occ: Occurrence }) {
             className="px-2 py-1 text-sm text-muted-foreground">Reabrir</button>
         )}
       </div>
+      <div className="mt-2"><GuidancePanel occ={occ} /></div>
       {moving && (
         <div className="mt-2 flex flex-wrap items-end gap-2">
           <label className="text-sm">Data

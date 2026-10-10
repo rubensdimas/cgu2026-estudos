@@ -5,13 +5,20 @@ import type { CalendarDays, XpEntry } from '@/shared/game/adapters'
 import { useGameToast } from '../ui/GameToast'
 import { api } from './client'
 import type {
-  DayOff, DayView, GameConfig, ListResponse, Mission, Occurrence, Plan, Session, SessionInput, Subject, Summary, WithDelta,
+  DayOff, DayView, GameConfig, Guidance, ListResponse, Mission, Occurrence, Plan, Session, SessionInput, Subject, Summary, WithDelta,
 } from './types'
 
 export const useSummary = () => useQuery({ queryKey: ['summary'], queryFn: () => api<Summary>('/game/summary') })
 
 export const useDay = (day: string | undefined) =>
   useQuery({ queryKey: ['day', day], queryFn: () => api<DayView>(`/days/${day}`), enabled: !!day })
+
+export const useGuidance = (occurrenceId: string, enabled: boolean) =>
+  useQuery({
+    queryKey: ['guidance', occurrenceId],
+    queryFn: () => api<Guidance>(`/occurrences/${occurrenceId}/guidance`),
+    enabled,
+  })
 
 export const usePlan = () =>
   useQuery({ queryKey: ['plan'], queryFn: () => api<Plan>('/plans/current'), staleTime: Infinity })
@@ -51,7 +58,7 @@ function useGameMutation<V, R extends Partial<WithDelta> | void>(fn: (v: V) => P
     mutationFn: fn,
     onSuccess: (result) => {
       if (result && result.game_delta) toast(result.game_delta)
-      for (const key of ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp']) qc.invalidateQueries({ queryKey: [key] })
+      for (const key of ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance']) qc.invalidateQueries({ queryKey: [key] })
     },
   })
 }

@@ -1,3 +1,4 @@
+import { GuidancePanel } from '../guidance/GuidancePanel'
 import type { DayView, Occurrence } from '../../shared/api/types'
 import { WINDOW_LABEL } from '../../shared/format'
 import { MoveTomorrowButton } from './MoveTomorrow'
@@ -27,6 +28,7 @@ export function OtherBlocks({ view, onRegister }: { view: DayView; onRegister: (
                 <MoveTomorrowButton occ={o} today={view.date} />
               </>
             )}
+            <GuidancePanel occ={o} />
           </li>
         ))}
       </ul>

@@ -7,6 +7,7 @@ import {
 } from '../../shared/api/hooks'
 import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, WINDOW_LABEL } from '../../shared/format'
+import { GuidancePanel } from '../guidance/GuidancePanel'
 import { LateBlocks } from './LateBlocks'
 import { MissionRing } from './MissionRing'
 import { MoveTomorrowButton } from './MoveTomorrow'
@@ -177,6 +178,7 @@ function MissionRow({ item, missionId, view, onRegister }: {
           <Link to="/ciclo" className="px-3 py-1 text-sm text-primary">Remanejar</Link>
         </>
       )}
+      {occ && <GuidancePanel occ={occ} />}
       {item.na_reason && item.na_reason !== 'rescheduled' && item.na_reason !== 'skipped' && (
         <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: null })}
           className="px-3 py-1 text-sm text-muted-foreground">Desfazer</button>
