@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "exam_version_id": "edital-2026-10-08-v1",
+  "roteiros_por_atividade": {
+    "theory": [
+      {"ate": null, "titulo": "Teoria em 60 min", "passos": [
+        {"minutos": 5, "texto": "Leia os subitens do edital abaixo e escolha o recorte de hoje."},
+        {"minutos": 30, "texto": "Leitura dirigida no material indicado, anotando conceitos e exceções."},
+        {"minutos": 15, "texto": "Questões do tópico para testar o que acabou de ler."},
+        {"minutos": 10, "texto": "Anote erros e pontos fracos: é isso que volta na revisão de sexta."}
+      ]}
+    ],
+    "questions": [
+      {"ate": null, "titulo": "Bloco de questões", "passos": [
+        {"minutos": 5, "texto": "Escolha o recorte (subitens abaixo) e separe as questões."},
+        {"minutos": 40, "texto": "Resolva cronometrado, no estilo certo/errado: deixe em branco quando não souber."},
+        {"minutos": 15, "texto": "Corrija e anote o porquê de cada erro (conceito, pegadinha ou chute)."}
+      ]}
+    ],
+    "essay": [
+      {"ate": null, "titulo": "Treino discursivo", "passos": [
+        {"minutos": 10, "texto": "Leia o enunciado e monte um esquema por aspecto."},
+        {"minutos": 40, "texto": "Escreva respeitando o limite de linhas."},
+        {"minutos": 10, "texto": "Revise o português e compare com os pontos esperados."}
+      ]}
+    ]
+  },
+  "roteiros_por_bloco": {
+    "S13": [
+      {"ate": null, "titulo": "Complementares + revisão da semana", "passos": [
+        {"minutos": 5, "texto": "Leia os subitens do edital abaixo e escolha o recorte de hoje."},
+        {"minutos": 30, "texto": "Leitura dirigida no material indicado."},
+        {"minutos": 10, "texto": "Questões do tópico de hoje."},
+        {"minutos": 15, "texto": "Revisão da semana: releia as anotações dos blocos de segunda a quinta e marque o que precisa voltar."}
+      ]}
+    ],
+    "S14": [
+      {"ate": null, "titulo": "Discursiva de complementares (Q1)", "passos": [
+        {"minutos": 10, "texto": "Leia o texto motivador e monte um esquema com um parágrafo por aspecto."},
+        {"minutos": 35, "texto": "Escreva a resposta completa, até 30 linhas."},
+        {"minutos": 10, "texto": "Revise o português e confira se cada aspecto foi respondido."},
+        {"minutos": 5, "texto": "Abra os pontos esperados e anote o que faltou."}
+      ]}
+    ],
+    "S15": [
+      {"ate": "2026-11-22", "titulo": "Situação-problema (Q2) — formato reduzido", "passos": [
+        {"minutos": 15, "texto": "Esquema completo: o que responder em cada aspecto, com a norma ou boa prática que sustenta."},
+        {"minutos": 40, "texto": "Escreva 2 aspectos por extenso (~30 linhas), como na prova."},
+        {"minutos": 5, "texto": "Revise e compare o esquema com os pontos esperados."}
+      ]},
+      {"ate": null, "titulo": "Situação-problema (Q2) — ritmo de prova", "passos": [
+        {"minutos": 10, "texto": "Esquema de todos os aspectos."},
+        {"minutos": 45, "texto": "Escreva em ritmo de prova (meta: 40 linhas ou mais). A resposta completa de 60 linhas fica para o simulado."},
+        {"minutos": 5, "texto": "Compare com os pontos esperados."}
+      ]}
+    ]
+  },
+  "primeira_semana": {
+    "S13": "Semana parcial: ainda não há anotações da semana para revisar. Use os 15 min finais em mais questões do tópico."
+  },
+  "subitens": {},
+  "materiais": {},
+  "lembretes": {
+    "complementary": [
+      "Até 30 linhas: o que passar do limite não é corrigido.",
+      "Fuga ao tema ou texto em branco zera a questão.",
+      "NQ1 = NC − 6 × NE ÷ TL: cada erro de português pesa mais em texto curto.",
+      "Um parágrafo por aspecto, na ordem do comando.",
+      "Apresentação e estrutura textual entram na nota de conteúdo."
+    ],
+    "technical_case": [
+      "Até 60 linhas: o que passar do limite não é corrigido.",
+      "Fuga ao tema ou texto em branco zera a questão.",
+      "NQ2 = NC − 14 × NE ÷ TL.",
+      "Responda com base nos dados do caso, citando norma ou boa prática quando couber.",
+      "Na prova, NQ1 + NQ2 precisa chegar a 50."
+    ]
+  },
+  "temas": {"complementary": [], "technical_case": []}
+}
