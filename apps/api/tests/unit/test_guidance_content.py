@@ -40,3 +40,17 @@ def test_validator_catches_unknown_topic_and_bad_url():
     problems = content.validate(data, catalog_topic_ids())
     assert any("Z99.99" in p for p in problems)
     assert any("https" in p for p in problems)
+
+
+NEXT_TWO_WEEKS = {"B01.01", "B02.01", "B03.01", "B04.01", "C01.01", "C02.01", "C03.01", "C04.01", "C05.01",
+                  "E01.01", "E01.02", "E01.04", "E02.01", "E03.01", "E04.01"}
+
+
+def test_every_topic_has_subitems():
+    data = content.guidance()
+    assert set(data["subitens"]) == catalog_topic_ids()
+    assert all(data["subitens"][t] for t in data["subitens"])
+
+
+def test_next_two_weeks_have_materials():
+    assert NEXT_TWO_WEEKS <= set(content.guidance()["materiais"])
