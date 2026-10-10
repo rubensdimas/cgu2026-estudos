@@ -3,6 +3,8 @@ from fastapi.responses import FileResponse
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app import config, errors
+from app.catalog.router import router as catalog_router
+from app.planning.router import router as planning_router
 
 
 def mount_spa(app: FastAPI) -> None:
@@ -30,7 +32,7 @@ def create_app() -> FastAPI:
     def health():
         return {"status": "ok"}
 
-    for router in ():  # cada tarefa seguinte registra seu roteador aqui
+    for router in (catalog_router, planning_router):
         api.include_router(router)
     app.include_router(api)
     mount_spa(app)
