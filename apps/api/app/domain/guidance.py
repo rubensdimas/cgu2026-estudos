@@ -29,6 +29,10 @@ def resolve_themes(theme_ids: list[str], refs: list[ThemeRef]) -> dict[str, str 
     done: set[str] = set()
     result: dict[str, str | None] = {}
     for r in sorted(refs, key=lambda r: (r.week_index, r.occurrence_id)):
+        if r.has_session and r.stored_theme_id is None:
+            # Sessão gravada quando ainda não havia temas: o bloco foi feito sem tema e não gasta o rodízio.
+            result[r.occurrence_id] = None
+            continue
         if r.stored_theme_id in theme_ids:
             theme = r.stored_theme_id
         else:

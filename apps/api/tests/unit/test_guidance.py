@@ -53,3 +53,9 @@ def test_pick_variant_by_date():
                 {"ate": None, "titulo": "Completo", "passos": []}]
     assert pick_variant(variants, date(2026, 11, 22))["titulo"] == "Reduzido"
     assert pick_variant(variants, date(2026, 11, 23))["titulo"] == "Completo"
+
+
+def test_session_without_theme_does_not_consume_rotation():
+    # Sessão gravada antes de existirem temas: fica sem tema e não gasta o tema da semana.
+    got = resolve_themes(IDS, [ref("a", 0, session=True), ref("b", 3)])
+    assert got == {"a": None, "b": "D1"}
