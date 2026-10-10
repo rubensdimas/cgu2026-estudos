@@ -5,6 +5,7 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 from app import config, errors
 from app.catalog.router import router as catalog_router
 from app.planning.router import router as planning_router
+from app.study.router import router as study_router
 
 
 def mount_spa(app: FastAPI) -> None:
@@ -32,7 +33,7 @@ def create_app() -> FastAPI:
     def health():
         return {"status": "ok"}
 
-    for router in (catalog_router, planning_router):
+    for router in (catalog_router, planning_router, study_router):
         api.include_router(router)
     app.include_router(api)
     mount_spa(app)
