@@ -4,7 +4,7 @@ Versão 2.0 · 09/10/2026 · pt-BR · America/Sao_Paulo.
 
 App pessoal e local de preparação para **Auditor Federal de Finanças e Controle — TI — Desenvolvimento de Sistemas (Cargo 4)**, prova em 13/12/2026. Responde todo dia: **o que estudar agora, o que foi feito, o que revisar e se a rotina está em dia**, com missão diária, XP, nível, sequência, metas e etapas com chefões.
 
-Estado atual: especificação v2.0 pronta; plano executável de F0+F1 em [docs/superpowers/plans/2026-10-09-f0-f1-rotina-diaria.md](docs/superpowers/plans/2026-10-09-f0-f1-rotina-diaria.md); código ainda não iniciado.
+Estado atual: especificação v2.0 pronta; plano executável de F0+F1 em [docs/superpowers/plans/2026-10-09-f0-f1-rotina-diaria.md](docs/superpowers/plans/2026-10-09-f0-f1-rotina-diaria.md); v1 (F0+F1) implementada na branch `feat/v1-rotina-diaria`.
 
 ## Documentos
 
@@ -33,15 +33,24 @@ Estado atual: especificação v2.0 pronta; plano executável de F0+F1 em [docs/s
 
 Carga horária, ciclo, metas, XP e etapas são **propostas de produto**, não determinações da banca.
 
-## Como rodar (após F0)
+## Como rodar
 
 ```bash
-cp .env.example .env          # definir POSTGRES_PASSWORD
-docker compose up -d --build  # app em http://127.0.0.1:8080
-tailscale serve --bg 8080     # opcional: acesso pelo celular dentro da tailnet
+cp .env.example .env                          # trocar POSTGRES_PASSWORD
+docker compose up -d --build                  # app em http://127.0.0.1:8080
 ```
 
-Backups diários em `./backups` (14 cópias). Restaurar: `scripts/restore.sh <arquivo>`.
+Testes:
+
+```bash
+docker compose --profile test run --rm test   # API: unitários + integração (banco cgu_test)
+cd apps/api && uv run pytest tests/unit       # só unitários, sem banco
+cd apps/web && npm test                       # frontend
+```
+
+Backups: um `pg_dump` ao subir e a cada 24 h em `./backups` (ou `BACKUP_DIR`), mantendo 14 arquivos. Ensaiar a restauração sem tocar no banco principal: `scripts/restore-check.sh backups/<arquivo>.dump`.
+
+Celular: instalar o Tailscale no Mac e no celular (mesma conta), rodar `tailscale serve --bg 8080`, acrescentar o nome `*.ts.net` mostrado por `tailscale serve status` em `ALLOWED_HOSTS` no `.env` e executar `docker compose up -d app`. Abrir o endereço no celular e usar “Adicionar à tela de início”. Nunca usar `tailscale funnel`: o app não tem login. O Mac precisa estar ligado para o celular acessar.
 
 ## Changelog
 
