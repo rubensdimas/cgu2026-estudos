@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useGameToast } from '../ui/GameToast'
 import { api } from './client'
 import type {
-  DayOff, DayView, ListResponse, Mission, Occurrence, SessionInput, Subject, Summary, WithDelta,
+  DayOff, DayView, ListResponse, Mission, Occurrence, Session, SessionInput, Subject, Summary, WithDelta,
 } from './types'
 
 export const useSummary = () => useQuery({ queryKey: ['summary'], queryFn: () => api<Summary>('/game/summary') })
@@ -20,6 +20,12 @@ export const useOccurrences = (from: string, to: string) =>
 export const useSubjects = () =>
   useQuery({ queryKey: ['subjects'], queryFn: () => api<ListResponse<Subject>>('/subjects'), staleTime: Infinity })
 
+export const useSessions = (day: string) =>
+  useQuery({
+    queryKey: ['sessions', day],
+    queryFn: () => api<ListResponse<Session>>(`/sessions?from=${day}&to=${day}`),
+  })
+
 export const useDayOffs = () => useQuery({ queryKey: ['day-offs'], queryFn: () => api<ListResponse<DayOff>>('/day-offs') })
 
 /** Mutação que mostra o efeito no jogo e atualiza HUD, dia e ciclo. */
@@ -30,13 +36,15 @@ function useGameMutation<V, R extends Partial<WithDelta> | void>(fn: (v: V) => P
     mutationFn: fn,
     onSuccess: (result) => {
       if (result && result.game_delta) toast(result.game_delta)
-      for (const key of ['summary', 'day', 'occurrences', 'day-offs']) qc.invalidateQueries({ queryKey: [key] })
+      for (const key of ['summary', 'day', 'occurrences', 'day-offs', 'sessions']) qc.invalidateQueries({ queryKey: [key] })
     },
   })
 }
 
 export const useCreateSession = () =>
   useGameMutation((s: SessionInput) => api<WithDelta>('/sessions', 'POST', s))
+
+export const useDeleteSession = () => useGameMutation((id: string) => api<void>(`/sessions/${id}`, 'DELETE'))
 
 export const useOpenDay = () =>
   useGameMutation((v: { day: string; occurrence_ids?: string[] }) =>

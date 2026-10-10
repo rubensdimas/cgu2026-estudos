@@ -109,6 +109,18 @@ export interface SessionInput {
   complete_occurrence: boolean
 }
 
+export interface Session {
+  id: string
+  version: number
+  occurrence_id: string | null
+  studied_on: string
+  duration_minutes: number
+  activity: Activity
+  essay_kind: EssayKind | null
+  topic_ids: string[]
+  notes: string
+}
+
 export interface WithDelta { game_delta: GameDelta }
 
 export interface ListResponse<T> { items: T[]; total: number }

@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { useCheckout, useDay, useOpenDay, usePutDayOff, useSetItemNa, useSubjects, useSummary } from '../../shared/api/hooks'
+import {
+  useCheckout, useDay, useDeleteSession, useOccurrences, useOpenDay, usePutDayOff, useSessions, useSetItemNa, useSubjects,
+  useSummary,
+} from '../../shared/api/hooks'
 import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
-import { WINDOW_LABEL } from '../../shared/format'
+import { addDays, formatDay, mondayOf, WINDOW_LABEL } from '../../shared/format'
 import { MissionRing } from './MissionRing'
 import { SessionForm } from './SessionForm'
 
@@ -37,14 +40,16 @@ export function TodayPage() {
             className="w-full rounded-md border border-border px-4 py-2 text-sm text-muted hover:text-text">
             + Sessão avulsa
           </button>
+          <TodaySessions day={today} />
         </>
       )}
     </div>
   )
 }
 
-function OpenDayCard({ view }: { view: DayView }) {
+export function OpenDayCard({ view }: { view: DayView }) {
   const open = useOpenDay()
+  const [chosen, setChosen] = useState<string[]>([])
   if (!view.in_plan) return <p className="text-muted">Fora do período do plano.</p>
   const free = view.kind === 'free'
   return (
@@ -52,16 +57,68 @@ function OpenDayCard({ view }: { view: DayView }) {
       <h2 className="font-display text-xl font-bold">{free ? 'Fim de semana' : 'Missão de hoje'}</h2>
       <p className="mt-1 text-sm text-muted">
         {free
-          ? 'Sem ciclo planejado. Abra uma missão livre se quiser estudar; nada é cobrado.'
+          ? 'Sem ciclo planejado. Escolha até 2 blocos pendentes da semana para uma missão livre; nada é cobrado.'
           : view.week_generated
             ? `${view.occurrences.length} blocos planejados para hoje.`
             : 'A semana ainda não foi gerada; abrir o dia também gera a semana.'}
       </p>
-      <button onClick={() => open.mutate({ day: view.date })} disabled={open.isPending}
-        className="mt-3 rounded-md bg-primary px-4 py-2 font-display font-semibold text-white">
+      {free && <FreeBlockPicker day={view.date} chosen={chosen} onChange={setChosen} />}
+      <button onClick={() => open.mutate({ day: view.date, occurrence_ids: chosen })}
+        disabled={open.isPending || (free && chosen.length === 0)}
+        className="mt-3 rounded-md bg-primary px-4 py-2 font-display font-semibold text-white disabled:opacity-50">
         {free ? 'Abrir missão livre' : 'Abrir o dia'}
       </button>
       {open.error && <p role="alert" className="mt-2 text-sm text-danger">{open.error.message}</p>}
+    </section>
+  )
+}
+
+function FreeBlockPicker({ day, chosen, onChange }: {
+  day: string; chosen: string[]; onChange: (ids: string[]) => void
+}) {
+  const monday = mondayOf(day)
+  const { data } = useOccurrences(monday, addDays(monday, 6))
+  const pending = (data?.items ?? []).filter((o) => o.status === 'pending')
+  if (data && pending.length === 0) {
+    return <p className="mt-2 text-sm text-muted">Nenhum bloco pendente nesta semana. Use “Sessão avulsa”.</p>
+  }
+  const toggle = (id: string) =>
+    onChange(chosen.includes(id) ? chosen.filter((c) => c !== id) : [...chosen, id])
+  return (
+    <fieldset className="mt-3 space-y-1">
+      <legend className="text-sm font-semibold">Blocos pendentes (máx. 2)</legend>
+      {pending.map((o) => (
+        <label key={o.id} className="flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={chosen.includes(o.id)} onChange={() => toggle(o.id)}
+            disabled={!chosen.includes(o.id) && chosen.length >= 2} />
+          {formatDay(o.planned_on)} · {o.slot.title}
+        </label>
+      ))}
+    </fieldset>
+  )
+}
+
+export function TodaySessions({ day }: { day: string }) {
+  const { data } = useSessions(day)
+  const remove = useDeleteSession()
+  if (!data || data.items.length === 0) return null
+  return (
+    <section className="rounded-lg border border-border bg-surface p-4">
+      <h2 className="font-display font-semibold">Sessões de hoje</h2>
+      <ul className="mt-2 space-y-1">
+        {data.items.map((s) => (
+          <li key={s.id} className="flex items-center gap-2 text-sm">
+            <span className="num">{s.duration_minutes} min</span>
+            <span className="min-w-0 flex-1 text-muted">{s.topic_ids.join(', ') || 'Discursiva'}</span>
+            <button aria-label={`Excluir sessão de ${s.duration_minutes} min`} className="px-2 py-1 text-danger"
+              onClick={() => confirm('Excluir esta sessão? Os minutos, o XP e a conclusão do bloco serão recalculados.')
+                && remove.mutate(s.id)}>
+              Excluir
+            </button>
+          </li>
+        ))}
+      </ul>
+      {remove.error && <p role="alert" className="mt-2 text-sm text-danger">{remove.error.message}</p>}
     </section>
   )
 }

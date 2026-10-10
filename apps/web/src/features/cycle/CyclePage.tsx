@@ -44,7 +44,7 @@ function Week({ weekStart, onMove }: { weekStart: string; onMove: (delta: number
   )
 }
 
-function OccurrenceRow({ occ }: { occ: Occurrence }) {
+export function OccurrenceRow({ occ }: { occ: Occurrence }) {
   const patch = usePatchOccurrence()
   const [moving, setMoving] = useState(false)
   const [date, setDate] = useState(occ.planned_on)
@@ -63,7 +63,10 @@ function OccurrenceRow({ occ }: { occ: Occurrence }) {
         {occ.status === 'pending' && (
           <>
             <button onClick={() => setMoving((m) => !m)} className="px-2 py-1 text-sm text-primary">Remanejar bloco</button>
-            <button onClick={() => send({ status: 'skipped', skip_reason: prompt('Motivo (opcional)') ?? '' })}
+            <button onClick={() => {
+              const reason = prompt('Motivo (opcional)')
+              if (reason !== null) send({ status: 'skipped', skip_reason: reason })
+            }}
               className="px-2 py-1 text-sm text-muted">Dispensar</button>
             {occ.actual_minutes > 0 && (
               <button onClick={() => send({ status: 'completed' })} className="px-2 py-1 text-sm text-success">Concluir</button>
