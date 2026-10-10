@@ -90,6 +90,10 @@ flowchart TD
 
 O formulário de sessão vem com o bloco, a data e o tópico sugerido preenchidos e “concluir bloco” marcado: o caminho feliz são 2 toques + minutos. Bloco indisponível → “Não se aplica hoje” ou “Remanejar”.
 
+Com a missão aberta, blocos que entram no dia depois aparecem em “Outros blocos de hoje”. Cada bloco pendente tem o atalho “Mover para amanhã” (mesma janela; some no último dia do plano). No topo, o aviso “N blocos atrasados” abre uma lista com checkbox para trazer blocos de dias passados para hoje.
+
+Toda linha de bloco (Hoje e Ciclo) tem o painel “Como fazer este bloco”: roteiro com minutos, tópico com os subitens do edital e materiais. Em S14/S15, o tema ou caso no formato Cebraspe, os lembretes do edital, “Ver pontos esperados” (espelho escondido até o clique) e “Trocar tema” (some depois da primeira sessão). Conteúdo em `docs/data/orientacoes.json`; detalhes na [spec de 10/10](superpowers/specs/2026-10-10-blocos-e-orientacoes.md).
+
 Sábado/domingo: “Abrir o dia” mostra a **missão livre**: escolher até 2 blocos pendentes da semana (remanejados para hoje), revisões pendentes e, opcionalmente, a meta de questões e o check-out. Estudo fora disso entra como sessão avulsa. Se não abrir, nada é cobrado.
 
 ## Fluxo C — Praticar questões (F2)

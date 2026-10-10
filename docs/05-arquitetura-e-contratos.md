@@ -100,7 +100,8 @@ Prefixo `/api/v1`, JSON snake_case, datas YYYY-MM-DD, instantes ISO UTC, IDs UUI
 | PUT /topics/{id}/progress | Estado declarado | F1 |
 | GET /plans/current | Plano e template vigente | F1 |
 | POST /plans/current/weeks | Gerar ocorrências da `week_start` (parcial se for a semana inicial) | F1 |
-| GET /occurrences?from=&to= · PATCH /occurrences/{id} | Agenda, remanejamento, conclusão, dispensa | F1 |
+| GET /occurrences?from=&to= · PATCH /occurrences/{id} | Agenda, remanejamento, conclusão, dispensa; `theme_id` troca o tema de S14/S15 (422 `unknown_theme`, `theme_locked` após sessão) | F1 |
+| GET /occurrences/{id}/guidance | Orientação do bloco: roteiro vigente, tópico com subitens, materiais, tema/caso com espelho, `next_theme_id`, lembretes (de `docs/data/orientacoes.json`) | F1+ |
 | POST /sessions · PATCH /sessions/{id} · DELETE /sessions/{id} · GET /sessions?from=&to= | Sessões | F1 |
 | GET /days/{date} | Estado do dia: missão (se houver), ocorrências, XP do dia | F1 |
 | POST /days/{date}/mission | Abrir o dia (idempotente por data) | F1 |

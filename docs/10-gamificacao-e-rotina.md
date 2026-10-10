@@ -33,6 +33,10 @@ Enquanto a fatia de revisões (F3) e a de questões (F2) não existirem, a miss�
 
 Missão **completa** = todos os itens obrigatórios estão `done` ou `not_applicable` **e** ao menos um item obrigatório está `done`. Uma missão em que tudo foi marcado “não se aplica” não conta como completa.
 
+### Blocos fora da missão e atrasados
+
+A missão é uma foto tirada ao abrir o dia e não muda depois. Bloco que entra no dia depois disso (remanejado ou trazido de dia passado) aparece em **Outros blocos de hoje**: dá XP e conclui o bloco, mas não conta para a missão. Blocos pendentes de dias anteriores aparecem num aviso de **atrasados**, e o usuário escolhe quais trazer para hoje. Detalhes: [spec de 10/10](superpowers/specs/2026-10-10-blocos-e-orientacoes.md).
+
 ### Fim de semana: missão livre
 
 Sábado e domingo não têm ciclo. “Abrir o dia” num fim de semana cria uma **missão livre**: o usuário escolhe itens entre revisões pendentes e até 2 blocos pendentes da semana (que são remanejados para a data); meta de questões e check-out entram como opcionais. Estudo fora da missão é registrado como sessão avulsa. A conclusão segue a mesma regra e rende o XP normal, mas não é exigida pela sequência.
