@@ -7,6 +7,7 @@ import {
 } from '../../shared/api/hooks'
 import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, WINDOW_LABEL } from '../../shared/format'
+import { LateBlocks } from './LateBlocks'
 import { MissionRing } from './MissionRing'
 import { MoveTomorrowButton } from './MoveTomorrow'
 import { OtherBlocks } from './OtherBlocks'
@@ -28,6 +29,7 @@ export function TodayPage() {
     <div className="space-y-4">
       <HolidayBanner />
       <StreakHint />
+      {view.in_plan && <LateBlocks today={today} />}
       {form ? (
         <SessionForm occurrence={form.occurrence} today={today} subjects={subjects.data?.items ?? []}
           onSaved={() => setForm(null)} onCancel={() => setForm(null)} />

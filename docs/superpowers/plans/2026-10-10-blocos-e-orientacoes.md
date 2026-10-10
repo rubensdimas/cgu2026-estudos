@@ -1066,11 +1066,12 @@ describe('LateBlocks', () => {
   })
 
   it('não consulta no primeiro dia do plano', async () => {
-    const fetchMock = stubFetch([plan])
-    renderWithProviders(<LateBlocks today="2026-10-09" />)
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith('/api/v1/plans/current', expect.anything()))
-    expect(fetchMock.mock.calls.some(([url]) => String(url).includes('/occurrences'))).toBe(false)
-    expect(screen.queryByRole('button', { name: /atrasado/ })).not.toBeInTheDocument()
+    const fetchMock = stubFetch([plan, { match: '/occurrences?from=2026-10-09&to=2026-10-11',
+      body: { items: [occ('x', 'Controle')], total: 1 } }])
+    renderWithProviders(<><LateBlocks today="2026-10-09" /><LateBlocks today="2026-10-12" /></>)
+    // O aviso do dia 12 (controle) prova que o plano já carregou.
+    expect(await screen.findAllByRole('button', { name: /atrasado/ })).toHaveLength(1)
+    expect(fetchMock.mock.calls.some(([url]) => String(url).includes('to=2026-10-08'))).toBe(false)
   })
 })
 ```
