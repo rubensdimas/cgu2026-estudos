@@ -134,6 +134,7 @@ class Occurrence(Versioned, Base):
     window: Mapped[str] = mapped_column(String(8))
     status: Mapped[str] = mapped_column(String(16), default="pending")
     skip_reason: Mapped[str | None] = mapped_column(Text)
+    theme_id: Mapped[str | None] = mapped_column(String(16))
     slot: Mapped[CycleSlot] = relationship(lazy="joined")
     __table_args__ = (
         UniqueConstraint("cycle_slot_id", "week_start", name="uq_occurrence_slot_week"),

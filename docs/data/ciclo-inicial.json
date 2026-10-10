@@ -292,7 +292,7 @@
         "C02.01",
         "C04.01"
       ],
-      "title": "Complementares e revisão",
+      "title": "Complementares + revisão da semana",
       "selection_mode": "alternate_subjects",
       "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
     },

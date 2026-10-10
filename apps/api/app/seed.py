@@ -98,6 +98,11 @@ def seed(db: Session) -> None:
             for i, s in enumerate(cycle["slots"])
         ]
         db.add(template)
+    else:
+        # Títulos são texto do plano, não dado pessoal: o JSON é a fonte.
+        titles = {s["code"]: s["title"] for s in cycle["slots"]}
+        for slot in template.slots:
+            slot.title = titles.get(slot.code, slot.title)
 
     if db.get(AppSettings, 1) is None:
         d = game["settings_defaults"]

@@ -55,7 +55,7 @@ Português não aparece como disciplina autônoma no programa do PDF. Escrita e 
 | Terça | C01/C02 | Questões E02 | E02 |
 | Quarta | B03/B04 | Questões E03 | E03 |
 | Quinta | C03/C05 | Questões de P1 | E04 ou Vue.js/IA |
-| Sexta | C02/C04 e revisão | Discursiva complementar | Situação-problema de TI |
+| Sexta | C02/C04 + revisão da semana | Discursiva complementar | Situação-problema de TI |
 
 **Início em 09/10/2026 (sexta):** a primeira semana é parcial e contém apenas os blocos de sexta (S13, S14, S15 = 180 min). A partir de 12/10 a semana segue o ciclo completo.
 
