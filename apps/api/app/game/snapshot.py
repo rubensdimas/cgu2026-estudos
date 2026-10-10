@@ -164,8 +164,12 @@ def calendar(db: Session, today: date, start: date, end: date) -> dict:
     streak = streak_state(world.minutes_by_date, day_offs, set(complete_weeks(db, world)), plan.starts_on, today,
                           settings.streak_min_minutes, settings.max_freezes)
     days = [start + timedelta(days=i) for i in range((end - start).days + 1)]
-    active = [d for d in days if world.minutes_by_date.get(d, 0) >= settings.streak_min_minutes]
-    neutral = [d for d in days if d not in active and (d.weekday() >= 5 or d in day_offs)]
+
+    def counts(d: date) -> bool:  # dia que entra na sequência (docs/10 §5)
+        return plan.starts_on <= d <= plan.ends_on and d.weekday() < 5 and d not in day_offs
+
+    active = [d for d in days if counts(d) and world.minutes_by_date.get(d, 0) >= settings.streak_min_minutes]
+    neutral = [d for d in days if not counts(d)]
     return {
         "active_days": active,
         "frozen_days": [d for d in streak.frozen_days if start <= d <= end],

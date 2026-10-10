@@ -9,4 +9,9 @@ describe('StreakCard', () => {
     expect(screen.getByText('dia útil')).toBeInTheDocument()
     expect(screen.getByText('dias úteis')).toBeInTheDocument()
   })
+
+  it('não cria botão sem nome quando não há ação', () => {
+    render(<StreakCard streak={[]} currentStreak={0} longestStreak={0} total={0} />)
+    expect(screen.getAllByRole('button').map((b) => b.textContent)).toEqual(['Como funciona a sequência?'])
+  })
 })

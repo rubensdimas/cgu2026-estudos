@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { CalendarDays, Share2, X } from "lucide-react"
+import { Dialog as DialogPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 import {
@@ -54,6 +55,7 @@ const AchievementUnlocked = React.forwardRef<
     ref
   ) => {
     const handleSecondaryActionClick = onSecondaryActionClick ?? onShare
+    const continueRef = React.useRef<HTMLButtonElement>(null)
     const unlockedDateLabel = React.useMemo(() => {
       const input = achievement.unlockedAt ?? new Date().toISOString()
       const date = new Date(input)
@@ -74,109 +76,70 @@ const AchievementUnlocked = React.forwardRef<
       }
     }, [achievement])
 
-    // Handle escape key
-    React.useEffect(() => {
-      if (!open) return
-
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-          onOpenChange(false)
-        }
-      }
-
-      document.addEventListener("keydown", handleEscape)
-      return () => document.removeEventListener("keydown", handleEscape)
-    }, [open, onOpenChange])
-
-    // Prevent body scroll when open
-    React.useEffect(() => {
-      if (open) {
-        document.body.style.overflow = "hidden"
-      } else {
-        document.body.style.overflow = ""
-      }
-      return () => {
-        document.body.style.overflow = ""
-      }
-    }, [open])
-
-    if (!open) return null
-
+    // Radix Dialog cuida de foco preso, foco inicial, restauração do foco, Esc e trava de rolagem.
     return (
-      <>
-        {/* Backdrop */}
-        <div
-          className="bg-black/70 fixed inset-0 z-50"
-          onClick={() => onOpenChange(false)}
-          aria-hidden="true"
-        />
-
-        {/* Dialog */}
-        <div
-          ref={ref}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="achievement-title"
-          className={cn(
-            "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
-            "bg-card w-full max-w-md rounded-xl p-6 shadow-2xl",
-            className
-          )}
-        >
-          {/* Close button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onOpenChange(false)}
-            aria-label="Fechar"
-            className="absolute top-4 right-4"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-
-          {/* Content */}
-          <div className="flex flex-col items-center text-center">
-            <AchievementBadge
-              achievement={badgeAchievement}
-              badgeSize="xl"
-              className="mt-8 mb-12 border-0 bg-transparent p-0 shadow-none hover:shadow-none [&>span:last-child]:hidden"
-            />
-
-            <span className="text-muted-foreground mb-4 inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm">
-              <CalendarDays className="h-4 w-4" />
-              {unlockedDateLabel}
-            </span>
-
-            <h2
-              id="achievement-title"
-              className="mb-2 text-4xl font-bold tracking-tight"
-            >
-              {achievement.name}
-            </h2>
-
-            {achievement.description && (
-              <p className="text-muted-foreground mb-3 text-lg">
-                {achievement.description}
-              </p>
+      <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/70" />
+          <DialogPrimitive.Content
+            ref={ref}
+            onOpenAutoFocus={(e) => {
+              e.preventDefault()
+              continueRef.current?.focus()
+            }}
+            className={cn(
+              "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
+              "bg-card max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md overflow-y-auto rounded-xl border p-6 shadow-2xl",
+              className
             )}
+          >
+            <DialogPrimitive.Close asChild>
+              <Button variant="ghost" size="icon" aria-label="Fechar" className="absolute top-4 right-4">
+                <X className="h-4 w-4" aria-hidden="true" />
+              </Button>
+            </DialogPrimitive.Close>
 
-            <div className="mt-8 flex gap-3">
-              {handleSecondaryActionClick && (
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={handleSecondaryActionClick}
-                >
-                  <Share2 className="h-4 w-4" />
-                  {secondaryActionLabel}
-                </Button>
+            <div className="flex flex-col items-center text-center">
+              <div aria-hidden="true">
+                <AchievementBadge
+                  achievement={badgeAchievement}
+                  badgeSize="xl"
+                  className="mt-8 mb-12 border-0 bg-transparent p-0 shadow-none hover:shadow-none [&>span:last-child]:hidden"
+                />
+              </div>
+
+              <span className="text-muted-foreground mb-4 inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm">
+                <CalendarDays className="h-4 w-4" aria-hidden="true" />
+                {unlockedDateLabel}
+              </span>
+
+              <DialogPrimitive.Title className="mb-2 text-4xl font-bold tracking-tight">
+                {achievement.name}
+              </DialogPrimitive.Title>
+
+              {achievement.description ? (
+                <DialogPrimitive.Description className="text-muted-foreground mb-3 text-lg">
+                  {achievement.description}
+                </DialogPrimitive.Description>
+              ) : (
+                <DialogPrimitive.Description className="sr-only">{achievement.name}</DialogPrimitive.Description>
               )}
 
-              <Button onClick={() => onOpenChange(false)}>Continuar</Button>
+              <div className="mt-8 flex gap-3">
+                {handleSecondaryActionClick && (
+                  <Button variant="outline" size="lg" onClick={handleSecondaryActionClick}>
+                    <Share2 className="h-4 w-4" aria-hidden="true" />
+                    {secondaryActionLabel}
+                  </Button>
+                )}
+                <Button ref={continueRef} onClick={() => onOpenChange(false)}>
+                  Continuar
+                </Button>
+              </div>
             </div>
-          </div>
-        </div>
-      </>
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>
     )
   }
 )

@@ -323,8 +323,7 @@ const StreakCalendar = React.forwardRef<HTMLDivElement, StreakCalendarProps>(
                     className={cn(
                       "relative flex aspect-square items-center justify-center rounded-lg text-sm transition-colors",
                       "hover:bg-muted focus-visible:ring-ring p-1 focus-visible:ring-2 focus-visible:outline-none",
-                      isToday &&
-                        "ring-primary !bg-primary-foreground !text-primary ring-2 ring-inset",
+                      isToday && "ring-primary ring-2 ring-inset",
                       isFuture && "text-muted-foreground/50 cursor-not-allowed",
                       isActive &&
                         !usedFreeze &&
@@ -364,14 +363,14 @@ const StreakCalendar = React.forwardRef<HTMLDivElement, StreakCalendarProps>(
                       weekday: "long",
                       month: "long",
                       day: "numeric",
-                    })}, ${statusLabelFor({ usedFreeze, isActive, isNeutral, isFuture })}`}
+                    })}${isToday ? ", hoje" : ""}, ${statusLabelFor({ usedFreeze, isActive, isNeutral, isFuture })}`}
                     onClick={() => onDayClick?.(date, isActive)}
                     disabled={isFuture}
                     className={cn(
-                      "relative flex h-12 w-12 items-center justify-center rounded-full border border-2 transition-colors",
+                      "relative flex size-9 items-center justify-center rounded-full border border-2 transition-colors sm:size-12",
                       "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
                       !isFuture && "hover:opacity-90",
-                      isToday && "!bg-primary-foreground !text-primary",
+                      isToday && "ring-primary ring-2 ring-offset-2 ring-offset-card",
                       isFuture &&
                         "border-border/40 bg-muted/20 text-muted-foreground/40 cursor-not-allowed",
                       isActive &&
@@ -389,20 +388,10 @@ const StreakCalendar = React.forwardRef<HTMLDivElement, StreakCalendarProps>(
                     style={usedFreeze ? freezeColorStyles : undefined}
                   >
                     {usedFreeze ? (
-                      <Snowflake
-                        className={cn(
-                          "h-5 w-5",
-                          isToday && "!text-muted-foreground/20"
-                        )}
-                      />
+                      <Snowflake className="size-4 sm:size-5" aria-hidden="true" />
                     ) : (
                       isActive && (
-                        <Check
-                          className={cn(
-                            "h-5 w-5",
-                            isToday && "!text-muted-foreground/20"
-                          )}
-                        />
+                        <Check className="size-4 sm:size-5" aria-hidden="true" />
                       )
                     )}
                   </button>

@@ -3,6 +3,7 @@ import { PointsLevelsTimeline } from '@/components/ui/points-levels-timeline'
 import { StreakCalendar } from '@/components/ui/streak-calendar'
 import { StreakCard } from '@/components/ui/streak-card'
 import { useCalendar, useGameConfig, useSummary, useXpLedger } from '@/shared/api/hooks'
+import { mondayOf } from '@/shared/format'
 import { levelLines, toLevelsTimeline, toStreakPeriods, toXpSeries } from '@/shared/game/adapters'
 
 const PLAN_START = '2026-10-09'
@@ -10,7 +11,10 @@ const PLAN_START = '2026-10-09'
 export function ProgressPage() {
   const summary = useSummary()
   const today = summary.data?.today ?? PLAN_START
-  const calendar = useCalendar(PLAN_START, today)
+  // O calendário mostra o mês e a semana inteiros: busca desde o que vier primeiro (dias fora do plano voltam neutros).
+  const monthStart = `${today.slice(0, 7)}-01`
+  const weekStart = mondayOf(today)
+  const calendar = useCalendar(monthStart < weekStart ? monthStart : weekStart, today)
   const ledger = useXpLedger(PLAN_START, today)
   const config = useGameConfig()
   if (!summary.data || !calendar.data || !ledger.data || !config.data) {
@@ -26,7 +30,7 @@ export function ProgressPage() {
       </p>
       <StreakCard streak={periods} neutralDates={calendar.data.neutral_days}
         currentStreak={s.streak.current} longestStreak={s.streak.best} total={s.streak.freezes_available}
-        actionLabel="" showHowItWorks />
+        showHowItWorks />
       <section className="rounded-2xl border bg-card p-6">
         <StreakCalendar view="month" month={new Date(`${today}T12:00:00`)} startOfWeek={1}
           streak={periods} neutralDates={calendar.data.neutral_days} className="mx-auto" />

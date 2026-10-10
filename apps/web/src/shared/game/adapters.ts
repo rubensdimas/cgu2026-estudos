@@ -22,7 +22,12 @@ export function cumulativeXp(level: number): number {
 
 export function toXpSeries(entries: XpEntry[], from: string, to: string): XpPoint[] {
   const byDay = new Map<string, number>()
-  for (const e of entries) byDay.set(e.date, (byDay.get(e.date) ?? 0) + e.xp)
+  for (const e of entries) {
+    // Lançamentos datados depois do fim (ex.: semana completa, datada no domingo) entram no último dia,
+    // para o gráfico terminar no mesmo XP total do HUD.
+    const day = e.date > to ? to : e.date
+    byDay.set(day, (byDay.get(day) ?? 0) + e.xp)
+  }
   const series: XpPoint[] = []
   let total = 0
   for (let day = from; day <= to; day = addDays(day, 1)) {

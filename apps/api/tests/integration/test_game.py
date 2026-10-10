@@ -101,3 +101,12 @@ def test_config_exposes_level_titles(client):
     levels = client.get("/api/v1/game/config").json()["levels"]
     assert [l["title"] for l in levels] == ["Estagiário", "Analista", "Auditor Júnior", "Auditor", "AFFC"]
     assert levels[-1] == {"from": 18, "to": None, "title": "AFFC"}
+
+
+def test_calendar_treats_pre_plan_days_and_weekend_study_as_neutral(client, clock):
+    clock.today = date(2026, 10, 12)
+    study(client, date(2026, 10, 9), 45)
+    study(client, date(2026, 10, 10), 60)
+    cal = client.get("/api/v1/game/calendar", params={"from": "2026-10-05", "to": "2026-10-12"}).json()
+    assert cal["active_days"] == ["2026-10-09"]
+    assert cal["neutral_days"] == ["2026-10-05", "2026-10-06", "2026-10-07", "2026-10-08", "2026-10-10", "2026-10-11"]

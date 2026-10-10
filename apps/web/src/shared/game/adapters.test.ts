@@ -22,9 +22,12 @@ describe('adaptadores do jogo', () => {
     ])
   })
 
-  it('toXpSeries ignora lançamentos fora do intervalo', () => {
+  it('soma ao último dia os lançamentos datados depois dele, para bater com o XP total', () => {
     const entries = [{ date: '2026-10-09', xp: 10 }, { date: '2026-10-18', xp: 150 }]
-    expect(toXpSeries(entries, '2026-10-09', '2026-10-10').map((p) => p.total)).toEqual([10, 10])
+    expect(toXpSeries(entries, '2026-10-09', '2026-10-10')).toEqual([
+      { date: '2026-10-09', total: 10, change: 10 },
+      { date: '2026-10-10', total: 160, change: 150 },
+    ])
   })
 
   it('calcula limiares de nível iguais aos do backend', () => {

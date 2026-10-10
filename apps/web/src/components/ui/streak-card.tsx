@@ -85,15 +85,16 @@ const StreakCard = React.forwardRef<HTMLDivElement, StreakCardProps>(
             <Flame className="text-primary h-6 w-6" aria-hidden="true" />
             <h3 className="text-2xl leading-none font-semibold">{title}</h3>
           </div>
-          <Button
-            variant="link"
-            size="sm"
-            onClick={onActionClick}
-            aria-label={actionLabel}
-            className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
-          >
-            {actionLabel}
-          </Button>
+          {actionLabel && onActionClick && (
+            <Button
+              variant="link"
+              size="sm"
+              onClick={onActionClick}
+              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+            >
+              {actionLabel}
+            </Button>
+          )}
         </header>
 
         <p className="mb-4 text-5xl leading-none font-semibold tracking-tight">

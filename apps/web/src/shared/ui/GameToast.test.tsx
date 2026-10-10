@@ -22,6 +22,7 @@ describe('diálogo de subida de nível', () => {
     await user.click(screen.getByText('disparar'))
     expect(screen.getByRole('dialog')).toHaveTextContent('Nível 2 · Estagiário')
     expect(screen.getByRole('dialog')).toHaveTextContent('XP mede constância, não preparo.')
+    expect(screen.getByRole('button', { name: 'Continuar' })).toHaveFocus()
     await user.click(screen.getByRole('button', { name: 'Continuar' }))
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
