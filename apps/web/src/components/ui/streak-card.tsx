@@ -42,6 +42,8 @@ interface StreakCardProps extends React.HTMLAttributes<HTMLDivElement> {
   neutralDates?: string[]
 }
 
+const workdays = (n: number) => (n === 1 ? "dia útil" : "dias úteis")
+
 const StreakCard = React.forwardRef<HTMLDivElement, StreakCardProps>(
   (
     {
@@ -97,7 +99,7 @@ const StreakCard = React.forwardRef<HTMLDivElement, StreakCardProps>(
         <p className="mb-4 text-5xl leading-none font-semibold tracking-tight">
           {currentStreak}
           <span className="text-muted-foreground ml-2 text-2xl font-medium">
-            dias úteis
+            {workdays(currentStreak)}
           </span>
         </p>
 
@@ -117,7 +119,7 @@ const StreakCard = React.forwardRef<HTMLDivElement, StreakCardProps>(
             <p className="text-muted-foreground text-sm">Recorde</p>
             <p className="text-3xl leading-tight font-semibold">
               {longestStreak}
-              <span className="ml-1 text-2xl font-medium">dias</span>
+              <span className="ml-1 text-2xl font-medium">{workdays(longestStreak)}</span>
             </p>
           </div>
           <div className="text-right">

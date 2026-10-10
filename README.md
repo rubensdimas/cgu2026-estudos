@@ -54,6 +54,13 @@ Celular: instalar o Tailscale no Mac e no celular (mesma conta), rodar `tailscal
 
 ## Changelog
 
+### 2.1 — 10/10/2026
+
+- Identidade visual BeroLab: grafite, roxo `#b78cf2`, dourado `#f2c94f`; Inter, Fira Mono e Departure Mono.
+- shadcn adotado (tokens semânticos) e componentes do Trophy UI em pt-BR.
+- Nova tela Progresso: sequência com calendário (dias neutros), XP acumulado e trilha de níveis; diálogo de subida de nível.
+- API: `GET /game/calendar`, níveis em `/game/config`, `level_title` no `game_delta`.
+
 ### 2.0 — 09/10/2026
 
 - **Gamificação** passa a integrar o produto como camada derivada centrada na rotina diária: missão do dia, XP, nível, sequência com congelamentos e folgas, metas semanais, etapas com chefões, conquistas e rebalanceamento após diagnóstico (novo `docs/10`, novo `gamificacao.json`, R13–R15).

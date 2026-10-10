@@ -4,40 +4,47 @@ Versão 2.0 · 09/10/2026.
 
 ## Direção visual
 
-**Painel de auditor em modo jogo**: tema escuro único, sóbrio, com elementos de HUD. Nada infantil; o jogo comunica ritmo, não diversão gratuita. O app abre direto em **Hoje**, sem hero de marketing. A página original continua disponível como leitura do plano.
+Versão 2.1 (10/10/2026): identidade inspirada na **BeroLab** (berolab.app; também referência do yurirdev.com). Grafite levemente tingido, roxo lavanda nas ações, dourado no XP, bordas finas translúcidas, tipografia Inter com detalhes monoespaçados e pixel no HUD. Tema escuro único. O app abre direto em **Hoje**.
 
-### Tokens de cor (tema escuro, contraste AA)
+Os tokens seguem os nomes semânticos do **shadcn** (`src/index.css`), base para os componentes do **Trophy UI** (ui.trophy.so, MIT), copiados para `src/components/ui/` e traduzidos para pt-BR.
+
+### Tokens de cor (contraste AA)
 
 | Token | Valor | Uso |
 |---|---|---|
-| `bg` | `#0B1220` | Fundo da página |
-| `surface` | `#121A2B` | Cartões |
-| `surface-2` | `#1A2438` | Cartões elevados, inputs |
-| `border` | `#26324A` | Divisórias |
-| `text` | `#E6EAF2` | Texto principal |
-| `text-muted` | `#9AA6BD` | Texto secundário |
-| `primary` | `#3B82F6` | Ações, links, foco |
-| `xp` | `#FACC15` | XP, nível, conquistas (amarelo herdado do site) |
-| `streak` | `#FB923C` | Chama da sequência |
-| `success` | `#22C55E` | Concluído |
-| `danger` | `#F87171` | Erros, atrasos |
-| P1 / P2 / P3 | `#60A5FA` / `#A78BFA` / `#34D399` | Identificação de prova, sempre com rótulo textual |
+| `background` | `#161718` | Fundo da página |
+| `card` / `popover` | `#1b1c1d` | Cartões, diálogos |
+| `muted` / `secondary` | `#232525` | Superfícies elevadas, inputs |
+| `accent` | `#363737` | Hover |
+| `border` / `input` | branco 10% / 16% | Divisórias, campos |
+| `foreground` | `#eeeeee` | Texto principal |
+| `muted-foreground` | `#919191` | Texto secundário |
+| `primary` / `ring` | `#b78cf2` (texto `#161718`) | Ações, item ativo, foco |
+| `xp` | `#f2c94f` | XP, nível, D-n |
+| `streak` | `#fb923c` | Sequência |
+| `info` | `#54a2ff` | Congelamento |
+| `success` / `destructive` | `#22c55e` / `#f87171` | Concluído / erro |
+| P1 / P2 / P3 | `#54a2ff` / `#ffb96d` / `#00d294` | Identificação de prova, sempre com rótulo |
 
 Cor nunca é o único sinal: estados também usam ícone e texto.
 
-### Tipografia (auto-hospedada via `@fontsource`)
+### Tipografia
 
 | Família | Uso |
 |---|---|
-| **Chakra Petch** 500/600/700 | Títulos, HUD, nível, nomes de conquista e etapa |
-| **Inter** 400/500/600 | Texto corrido, formulários, rótulos |
-| **JetBrains Mono** 400/600 | Números (XP, minutos, contagens, D-n), códigos de tópico (E01.02) |
+| **Inter** 400–700 (`@fontsource/inter`) | Títulos, texto, formulários |
+| **Fira Mono** 400/500 (`@fontsource/fira-mono`) | Números, códigos de tópico, rótulos em caixa alta com `tracking-widest` |
+| **Departure Mono** (auto-hospedada em `public/fonts/`, licença junto) | Só HUD (nível, título, D-n) e a marca "CGU 2026" |
 
-Texto principal ≥ 16 px; rótulos ≥ 14 px; números do HUD com `font-variant-numeric: tabular-nums`.
+Texto principal ≥ 16 px; rótulos ≥ 14 px.
+
+### Componentes Trophy em uso
+
+`points-badge` (XP no HUD, a partir de 640 px), `streak-card` e `streak-calendar` (com estado **neutro** para fim de semana e folga), `points-chart` (XP acumulado com linhas do nível atual e do próximo), `points-levels-timeline` (faixas de título) e `achievement-unlocked` (diálogo de subida de nível). Conquistas (`achievement-*`) entram na F5; placares não se aplicam.
 
 ### Movimento
 
-Barra de XP e anel da missão animam ao mudar (≤ 400 ms). Subida de nível e conquista mostram cartão com brilho discreto. Com `prefers-reduced-motion`, sem animação: só troca de estado.
+Barra de XP e anel da missão animam ao mudar (≤ 400 ms). Subida de nível abre o diálogo `achievement-unlocked` (“Nível N · Título”, botão Continuar, fecha com Esc). Com `prefers-reduced-motion`, sem animação: só troca de estado.
 
 ## Estrutura
 
@@ -53,11 +60,11 @@ Barra de XP e anel da missão animam ao mudar (≤ 400 ms). Subida de nível e c
 | Revisões | Vencidas/hoje/futuras; concluir ou dispensar | F3 |
 | Discursivas | Tipos, limites, rubrica; registrar treino | F4 |
 | Jornada | Etapas, metas da etapa, chefões, marcos do concurso, rebalanceamento | F4 |
-| Progresso | Horas, cobertura, amostras, simulados | F5 |
+| Progresso | Sequência (card + calendário mensal), XP acumulado, trilha de níveis | F1 (v2.1) · F5 (horas, cobertura, simulados) |
 | Conquistas | Grade bloqueadas/desbloqueadas | F5 |
 | Configurações | Metas, folgas, versão do edital, exportar/restaurar | F1 (básico) · F5 (portabilidade) |
 
-Desktop: navegação lateral. Celular: barra inferior com Hoje, Ciclo, Prática, Revisões e “Mais”. Ciclo mobile em lista; não esmagar 15 colunas. Suportar ampliação de texto a 200%.
+Desktop: navegação lateral com ícones `lucide` e barra roxa no item ativo. Celular: barra inferior com ícone e rótulo (Hoje, Ciclo, Edital, Progresso, Config.; “Mais” quando entrarem Prática e Revisões). Ciclo mobile em lista; não esmagar 15 colunas. Suportar ampliação de texto a 200%.
 
 ## Fluxo A — Primeira utilização (09/10/2026)
 
