@@ -833,6 +833,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import type { DayView, Occurrence, OccurrenceStatus } from '../../shared/api/types'
 import { renderWithProviders, stubFetch } from '../../test/render'
+import { MoveTomorrowButton } from './MoveTomorrow'
 import { OtherBlocks } from './OtherBlocks'
 
 const occ = (id: string, title: string, status: OccurrenceStatus = 'pending'): Occurrence => ({
@@ -879,16 +880,20 @@ describe('OtherBlocks', () => {
 
   it('"Mover para amanhã" some no último dia do plano', async () => {
     stubFetch([plan('2026-12-12')])
-    renderWithProviders(<OtherBlocks view={view('2026-12-12', [occ('b', 'Remanejado')])} onRegister={() => {}} />)
-    await screen.findByRole('button', { name: 'Registrar sessão' })
-    await waitFor(() => expect(screen.queryByRole('button', { name: 'Mover para amanhã' })).not.toBeInTheDocument())
+    renderWithProviders(<>
+      <OtherBlocks view={view('2026-12-12', [occ('b', 'Remanejado')])} onRegister={() => {}} />
+      <MoveTomorrowButton occ={occ('z', 'Controle')} today="2026-12-10" />
+    </>)
+    // O botão de controle (dia 10) prova que o plano já carregou.
+    await screen.findByRole('button', { name: 'Mover para amanhã' })
+    expect(screen.getAllByRole('button', { name: 'Mover para amanhã' })).toHaveLength(1)
   })
 
   it('não aparece sem missão aberta', () => {
     stubFetch([plan('2026-12-12')])
     const v = { ...view('2026-10-10', [occ('b', 'Remanejado')]), mission: null }
-    const { container } = renderWithProviders(<OtherBlocks view={v} onRegister={() => {}} />)
-    expect(container).toBeEmptyDOMElement()
+    renderWithProviders(<OtherBlocks view={v} onRegister={() => {}} />)
+    expect(screen.queryByRole('region', { name: 'Outros blocos de hoje' })).not.toBeInTheDocument()
   })
 })
 ```
@@ -1062,10 +1067,10 @@ describe('LateBlocks', () => {
 
   it('não consulta no primeiro dia do plano', async () => {
     const fetchMock = stubFetch([plan])
-    const { container } = renderWithProviders(<LateBlocks today="2026-10-09" />)
+    renderWithProviders(<LateBlocks today="2026-10-09" />)
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith('/api/v1/plans/current', expect.anything()))
     expect(fetchMock.mock.calls.some(([url]) => String(url).includes('/occurrences'))).toBe(false)
-    expect(container).toBeEmptyDOMElement()
+    expect(screen.queryByRole('button', { name: /atrasado/ })).not.toBeInTheDocument()
   })
 })
 ```

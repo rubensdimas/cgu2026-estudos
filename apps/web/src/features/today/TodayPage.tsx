@@ -8,6 +8,8 @@ import {
 import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, WINDOW_LABEL } from '../../shared/format'
 import { MissionRing } from './MissionRing'
+import { MoveTomorrowButton } from './MoveTomorrow'
+import { OtherBlocks } from './OtherBlocks'
 import { SessionForm } from './SessionForm'
 
 const STATE_LABEL = { pending: 'Pendente', done: '✓ Feito', not_applicable: '— Não se aplica' } as const
@@ -32,7 +34,10 @@ export function TodayPage() {
       ) : (
         <>
           {view.mission ? (
-            <MissionCard view={view} onRegister={(o) => setForm({ occurrence: o })} />
+            <>
+              <MissionCard view={view} onRegister={(o) => setForm({ occurrence: o })} />
+              <OtherBlocks view={view} onRegister={(o) => setForm({ occurrence: o })} />
+            </>
           ) : (
             <OpenDayCard view={view} />
           )}
@@ -166,6 +171,7 @@ function MissionRow({ item, missionId, view, onRegister }: {
           </button>
           <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: 'Não se aplica hoje' })}
             className="rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
+          <MoveTomorrowButton occ={occ} today={view.date} />
           <Link to="/ciclo" className="px-3 py-1 text-sm text-primary">Remanejar</Link>
         </>
       )}

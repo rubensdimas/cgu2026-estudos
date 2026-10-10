@@ -37,6 +37,8 @@ export interface Summary {
   holiday_suggestion: { date: string; label: string } | null
 }
 
+export interface Plan { id: string; starts_on: string; ends_on: string; exam_date: string }
+
 export interface Slot {
   code: string
   title: string

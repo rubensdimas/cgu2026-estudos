@@ -5,7 +5,7 @@ import type { CalendarDays, XpEntry } from '@/shared/game/adapters'
 import { useGameToast } from '../ui/GameToast'
 import { api } from './client'
 import type {
-  DayOff, DayView, GameConfig, ListResponse, Mission, Occurrence, Session, SessionInput, Subject, Summary, WithDelta,
+  DayOff, DayView, GameConfig, ListResponse, Mission, Occurrence, Plan, Session, SessionInput, Subject, Summary, WithDelta,
 } from './types'
 
 export const useSummary = () => useQuery({ queryKey: ['summary'], queryFn: () => api<Summary>('/game/summary') })
@@ -13,10 +13,14 @@ export const useSummary = () => useQuery({ queryKey: ['summary'], queryFn: () =>
 export const useDay = (day: string | undefined) =>
   useQuery({ queryKey: ['day', day], queryFn: () => api<DayView>(`/days/${day}`), enabled: !!day })
 
-export const useOccurrences = (from: string, to: string) =>
+export const usePlan = () =>
+  useQuery({ queryKey: ['plan'], queryFn: () => api<Plan>('/plans/current'), staleTime: Infinity })
+
+export const useOccurrences = (from: string, to: string, enabled = true) =>
   useQuery({
     queryKey: ['occurrences', from, to],
     queryFn: () => api<ListResponse<Occurrence>>(`/occurrences?from=${from}&to=${to}`),
+    enabled,
   })
 
 export const useSubjects = () =>
