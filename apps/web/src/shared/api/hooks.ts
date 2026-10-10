@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import type { CalendarDays, XpEntry } from '@/shared/game/adapters'
+
 import { useGameToast } from '../ui/GameToast'
 import { api } from './client'
 import type {
-  DayOff, DayView, ListResponse, Mission, Occurrence, Session, SessionInput, Subject, Summary, WithDelta,
+  DayOff, DayView, GameConfig, ListResponse, Mission, Occurrence, Session, SessionInput, Subject, Summary, WithDelta,
 } from './types'
 
 export const useSummary = () => useQuery({ queryKey: ['summary'], queryFn: () => api<Summary>('/game/summary') })
@@ -26,6 +28,15 @@ export const useSessions = (day: string) =>
     queryFn: () => api<ListResponse<Session>>(`/sessions?from=${day}&to=${day}`),
   })
 
+export const useCalendar = (from: string, to: string) =>
+  useQuery({ queryKey: ['calendar', from, to], queryFn: () => api<CalendarDays>(`/game/calendar?from=${from}&to=${to}`) })
+
+export const useXpLedger = (from: string, to: string) =>
+  useQuery({ queryKey: ['xp', from, to], queryFn: () => api<ListResponse<XpEntry>>(`/game/xp?from=${from}&to=${to}`) })
+
+export const useGameConfig = () =>
+  useQuery({ queryKey: ['game-config'], queryFn: () => api<GameConfig>('/game/config'), staleTime: Infinity })
+
 export const useDayOffs = () => useQuery({ queryKey: ['day-offs'], queryFn: () => api<ListResponse<DayOff>>('/day-offs') })
 
 /** Mutação que mostra o efeito no jogo e atualiza HUD, dia e ciclo. */
@@ -36,7 +47,7 @@ function useGameMutation<V, R extends Partial<WithDelta> | void>(fn: (v: V) => P
     mutationFn: fn,
     onSuccess: (result) => {
       if (result && result.game_delta) toast(result.game_delta)
-      for (const key of ['summary', 'day', 'occurrences', 'day-offs', 'sessions']) qc.invalidateQueries({ queryKey: [key] })
+      for (const key of ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp']) qc.invalidateQueries({ queryKey: [key] })
     },
   })
 }

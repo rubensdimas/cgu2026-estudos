@@ -3,6 +3,7 @@ import { NavLink, Route, Routes } from 'react-router-dom'
 
 import { CatalogPage } from '../features/catalog/CatalogPage'
 import { CyclePage } from '../features/cycle/CyclePage'
+import { ProgressPage } from '../features/progress/ProgressPage'
 import { SettingsPage } from '../features/settings/SettingsPage'
 import { TodayPage } from '../features/today/TodayPage'
 import { Hud } from './Hud'
@@ -44,6 +45,7 @@ export function App() {
             <Route path="/" element={<TodayPage />} />
             <Route path="/ciclo" element={<CyclePage />} />
             <Route path="/edital" element={<CatalogPage />} />
+            <Route path="/progresso" element={<ProgressPage />} />
             <Route path="/config" element={<SettingsPage />} />
           </Routes>
         </main>

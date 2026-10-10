@@ -1,3 +1,5 @@
+import type { TitleBand } from '@/shared/game/adapters'
+
 export type Window = 'before' | 'middle' | 'after'
 export type OccurrenceStatus = 'pending' | 'completed' | 'skipped'
 export type Activity = 'theory' | 'questions' | 'review' | 'essay'
@@ -127,3 +129,8 @@ export interface WithDelta { game_delta: GameDelta }
 export interface ListResponse<T> { items: T[]; total: number }
 
 export interface DayOff { day: string; reason: string }
+
+export interface GameConfig {
+  levels: TitleBand[]
+  holiday_suggestions: { date: string; label: string }[]
+}
