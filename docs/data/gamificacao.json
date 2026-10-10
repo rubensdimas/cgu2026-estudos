@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "config_version": "gamificacao-v1",
+  "is_proposed": true,
+  "settings_defaults": {
+    "timezone": "America/Sao_Paulo",
+    "daily_question_goal": 20,
+    "streak_min_minutes": 30,
+    "max_freezes": 2,
+    "weekly_goals": {
+      "minutes": 900,
+      "blocks": 15,
+      "questions": {
+        "P1": 40,
+        "P2": 40,
+        "P3": 90
+      },
+      "essays": {
+        "complementary": 1,
+        "technical_case": 1
+      },
+      "missions": 5
+    }
+  },
+  "xp": {
+    "per_session_minute": 1,
+    "session_minutes_daily_cap": 240,
+    "block_completed": 20,
+    "mission_complete": 50,
+    "mission_optional_item": 10,
+    "question_item": 1,
+    "question_items_daily_cap": 200,
+    "error_note": 10,
+    "error_notes_daily_cap_xp": 100,
+    "review_on_time": 15,
+    "review_late": 5,
+    "essay_rubric": {
+      "complementary": 40,
+      "technical_case": 60
+    },
+    "simulation_complete": 150,
+    "stage_boss": 100,
+    "week_complete": 150,
+    "weekend_active_day": 20
+  },
+  "levels": {
+    "formula": "xp_to_next(n)=100*n; cumulative(L)=50*L*(L-1)",
+    "titles": [
+      {
+        "from": 1,
+        "to": 3,
+        "title": "Estagiário"
+      },
+      {
+        "from": 4,
+        "to": 7,
+        "title": "Analista"
+      },
+      {
+        "from": 8,
+        "to": 12,
+        "title": "Auditor Júnior"
+      },
+      {
+        "from": 13,
+        "to": 17,
+        "title": "Auditor"
+      },
+      {
+        "from": 18,
+        "to": null,
+        "title": "AFFC"
+      }
+    ]
+  },
+  "stages": [
+    {
+      "id": "ST1",
+      "title": "Diagnóstico",
+      "starts_on": "2026-10-09",
+      "ends_on": "2026-10-25",
+      "goals": [
+        {
+          "kind": "subjects_started",
+          "target": 13
+        },
+        {
+          "kind": "essays_each_kind",
+          "target": 1
+        },
+        {
+          "kind": "question_items",
+          "target": 200
+        }
+      ],
+      "boss": {
+        "kind": "simulation_complete",
+        "label": "Simulado diagnóstico completo"
+      },
+      "triggers_rebalance": true
+    },
+    {
+      "id": "ST2",
+      "title": "Aprofundamento",
+      "starts_on": "2026-10-26",
+      "ends_on": "2026-11-22",
+      "goals": [
+        {
+          "kind": "coverage_ratio",
+          "target": 0.7
+        },
+        {
+          "kind": "question_items",
+          "target": 600
+        },
+        {
+          "kind": "essays_total",
+          "target": 4
+        }
+      ],
+      "boss": {
+        "kind": "simulation_complete_with_essays",
+        "label": "Segundo simulado + 1 discursiva de cada tipo"
+      }
+    },
+    {
+      "id": "ST3",
+      "title": "Consolidação",
+      "starts_on": "2026-11-23",
+      "ends_on": "2026-12-06",
+      "goals": [
+        {
+          "kind": "coverage_ratio",
+          "target": 0.9
+        },
+        {
+          "kind": "overdue_reviews_at_end",
+          "target": 0
+        },
+        {
+          "kind": "timed_full_essays",
+          "target": 2
+        }
+      ],
+      "boss": {
+        "kind": "simulation_exam_day",
+        "label": "Simulado em condições de prova"
+      }
+    },
+    {
+      "id": "ST4",
+      "title": "Revisão final",
+      "starts_on": "2026-12-07",
+      "ends_on": "2026-12-12",
+      "goals": [
+        {
+          "kind": "open_errors_unreviewed",
+          "target": 0
+        },
+        {
+          "kind": "overdue_reviews",
+          "target": 0
+        }
+      ],
+      "boss": {
+        "kind": "clean_notebook",
+        "label": "Caderno limpo",
+        "check_on": "2026-12-11"
+      }
+    }
+  ],
+  "milestones": [
+    {
+      "id": "M1",
+      "label": "Inscrição",
+      "starts_at": "2026-10-10T10:00:00-03:00",
+      "ends_at": "2026-11-04T18:00:00-03:00"
+    },
+    {
+      "id": "M2",
+      "label": "Pagamento da taxa",
+      "ends_on": "2026-11-06"
+    },
+    {
+      "id": "M3",
+      "label": "Provas",
+      "on": "2026-12-13"
+    }
+  ],
+  "rebalance": {
+    "max_blocks_moved": 2,
+    "block_minutes": 60,
+    "specific_min_minutes": 300,
+    "paper_to_purpose": {
+      "P1": "basic",
+      "P2": "complementary",
+      "P3": "specific"
+    },
+    "excluded_purposes": [
+      "essay"
+    ]
+  },
+  "achievements": [
+    {
+      "id": "A01",
+      "name": "Primeiro passo",
+      "condition": "sessions>=1"
+    },
+    {
+      "id": "A02",
+      "name": "Missão cumprida",
+      "condition": "missions_complete>=1"
+    },
+    {
+      "id": "A03",
+      "name": "Madrugador",
+      "condition": "before_blocks_completed>=10"
+    },
+    {
+      "id": "A04",
+      "name": "Em chamas",
+      "condition": "streak>=5"
+    },
+    {
+      "id": "A05",
+      "name": "Imparável",
+      "condition": "streak>=20"
+    },
+    {
+      "id": "A06",
+      "name": "Semana cheia",
+      "condition": "weeks_complete>=1"
+    },
+    {
+      "id": "A07",
+      "name": "Panorama",
+      "condition": "subjects_started>=13"
+    },
+    {
+      "id": "A08",
+      "name": "Centena técnica",
+      "condition": "question_items_P3>=100"
+    },
+    {
+      "id": "A09",
+      "name": "Milhar",
+      "condition": "question_items>=1000"
+    },
+    {
+      "id": "A10",
+      "name": "Caçador de erros",
+      "condition": "error_notes>=25"
+    },
+    {
+      "id": "A11",
+      "name": "Memória em dia",
+      "condition": "reviews_on_time>=20"
+    },
+    {
+      "id": "A12",
+      "name": "Escriba",
+      "condition": "essays_with_rubric>=5"
+    },
+    {
+      "id": "A13",
+      "name": "Caso resolvido",
+      "condition": "technical_cases_with_rubric>=5"
+    },
+    {
+      "id": "A14",
+      "name": "Primeiro chefão",
+      "condition": "simulations_complete>=1"
+    },
+    {
+      "id": "A15",
+      "name": "Campanha completa",
+      "condition": "bosses_defeated>=4"
+    },
+    {
+      "id": "A16",
+      "name": "Edital mapeado",
+      "condition": "coverage_ratio>=1.0"
+    }
+  ]
+}

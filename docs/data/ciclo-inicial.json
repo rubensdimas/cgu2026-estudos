@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "exam_id": "cgu-2026-affc-dev",
+  "exam_version_id": "edital-2026-10-08-v1",
+  "timezone": "America/Sao_Paulo",
+  "starts_on": "2026-10-09",
+  "ends_on": "2026-12-11",
+  "first_week": {
+    "week_start": "2026-10-05",
+    "partial": true,
+    "slot_codes": [
+      "S13",
+      "S14",
+      "S15"
+    ],
+    "note": "Plano inicia sexta 09/10/2026; semana inicial contém apenas os blocos de sexta."
+  },
+  "template": {
+    "effective_from": "2026-10-05",
+    "origin": "initial"
+  },
+  "weekly_minutes": 900,
+  "is_proposed_plan": true,
+  "auto_generate_occurrences": false,
+  "exam": {
+    "role": "AFFC — TI — Desenvolvimento de Sistemas",
+    "vacancies_specialty": 10,
+    "exam_date": "2026-12-13",
+    "objective_minutes": 300,
+    "essay_minutes": 210,
+    "papers": [
+      {
+        "code": "P1",
+        "items": 40,
+        "correct_points": 1,
+        "wrong_points": -1,
+        "blank_points": 0,
+        "double_marked_points": 0,
+        "maximum_points": 40,
+        "minimum_points": 8
+      },
+      {
+        "code": "P2",
+        "items": 40,
+        "correct_points": 1,
+        "wrong_points": -1,
+        "blank_points": 0,
+        "double_marked_points": 0,
+        "maximum_points": 40,
+        "minimum_points": 12
+      },
+      {
+        "code": "P3",
+        "items": 90,
+        "correct_points": 2,
+        "wrong_points": -2,
+        "blank_points": 0,
+        "double_marked_points": 0,
+        "maximum_points": 180,
+        "minimum_points": 54
+      }
+    ],
+    "objective_total_minimum": 78,
+    "essay_types": [
+      {
+        "kind": "complementary",
+        "maximum_lines": 30,
+        "maximum_points": 30
+      },
+      {
+        "kind": "technical_case",
+        "maximum_lines": 60,
+        "maximum_points": 70
+      }
+    ],
+    "essay_total_minimum": 50,
+    "final_score_divisors": {
+      "objective": 26,
+      "essay": 10
+    }
+  },
+  "review_offsets_days": [
+    1,
+    7,
+    21
+  ],
+  "small_sample_valid_answers_threshold": 20,
+  "slots": [
+    {
+      "code": "S01",
+      "weekday": 1,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "basic",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "B01.01",
+        "B02.01"
+      ],
+      "title": "Estado e sociedade",
+      "selection_mode": "alternate_subjects",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S02",
+      "weekday": 1,
+      "window": "middle",
+      "minutes": 60,
+      "purpose": "specific",
+      "activity": "questions",
+      "candidate_topic_ids": [
+        "E01.02",
+        "E01.03"
+      ],
+      "title": "Questões de engenharia e Java",
+      "selection_mode": "choose_topic",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S03",
+      "weekday": 1,
+      "window": "after",
+      "minutes": 60,
+      "purpose": "specific",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "E01.01",
+        "E01.02",
+        "E01.03",
+        "E01.05"
+      ],
+      "title": "Engenharia e Java",
+      "selection_mode": "choose_topic",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S04",
+      "weekday": 2,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "complementary",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "C01.01",
+        "C02.01"
+      ],
+      "title": "Governança e transparência",
+      "selection_mode": "alternate_subjects",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S05",
+      "weekday": 2,
+      "window": "middle",
+      "minutes": 60,
+      "purpose": "specific",
+      "activity": "questions",
+      "candidate_topic_ids": [
+        "E02.01",
+        "E02.02",
+        "E02.03"
+      ],
+      "title": "Questões de arquitetura",
+      "selection_mode": "choose_topic",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S06",
+      "weekday": 2,
+      "window": "after",
+      "minutes": 60,
+      "purpose": "specific",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "E02.01",
+        "E02.02",
+        "E02.03",
+        "E02.05"
+      ],
+      "title": "Arquitetura e integração",
+      "selection_mode": "choose_topic",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S07",
+      "weekday": 3,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "basic",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "B03.01",
+        "B04.01"
+      ],
+      "title": "Ética e políticas públicas",
+      "selection_mode": "alternate_subjects",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S08",
+      "weekday": 3,
+      "window": "middle",
+      "minutes": 60,
+      "purpose": "specific",
+      "activity": "questions",
+      "candidate_topic_ids": [
+        "E03.01",
+        "E03.02",
+        "E03.03"
+      ],
+      "title": "Questões de dados",
+      "selection_mode": "choose_topic",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S09",
+      "weekday": 3,
+      "window": "after",
+      "minutes": 60,
+      "purpose": "specific",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "E03.01",
+        "E03.02",
+        "E03.03",
+        "E03.04"
+      ],
+      "title": "Persistência e dados",
+      "selection_mode": "choose_topic",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S10",
+      "weekday": 4,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "complementary",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "C03.01",
+        "C05.01"
+      ],
+      "title": "Direito público e auditoria",
+      "selection_mode": "alternate_subjects",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S11",
+      "weekday": 4,
+      "window": "middle",
+      "minutes": 60,
+      "purpose": "basic",
+      "activity": "questions",
+      "candidate_topic_ids": [
+        "B01.01",
+        "B02.01",
+        "B03.01",
+        "B04.01"
+      ],
+      "title": "Questões de básicos",
+      "selection_mode": "rotate_subjects",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S12",
+      "weekday": 4,
+      "window": "after",
+      "minutes": 60,
+      "purpose": "specific",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "E04.01",
+        "E04.02",
+        "E04.03",
+        "E04.04",
+        "E04.05",
+        "E01.04",
+        "E02.04"
+      ],
+      "title": "Segurança/entrega ou Vue.js/IA",
+      "selection_mode": "alternate_delivery_and_interfaces_ai",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S13",
+      "weekday": 5,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "complementary",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "C02.01",
+        "C04.01"
+      ],
+      "title": "Complementares e revisão",
+      "selection_mode": "alternate_subjects",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S14",
+      "weekday": 5,
+      "window": "middle",
+      "minutes": 60,
+      "purpose": "essay",
+      "activity": "essay",
+      "candidate_topic_ids": [],
+      "title": "Discursiva de complementares",
+      "selection_mode": "complementary",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    },
+    {
+      "code": "S15",
+      "weekday": 5,
+      "window": "after",
+      "minutes": 60,
+      "purpose": "essay",
+      "activity": "essay",
+      "candidate_topic_ids": [],
+      "title": "Situação-problema de TI",
+      "selection_mode": "technical_case",
+      "candidate_policy": "IDs sugerem ponto de entrada; permitir qualquer tópico da disciplina correspondente, com confirmação do usuário."
+    }
+  ]
+}

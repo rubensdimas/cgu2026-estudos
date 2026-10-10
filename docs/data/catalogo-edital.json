@@ -1,0 +1,609 @@
+{
+  "schema_version": 1,
+  "exam_id": "cgu-2026-affc-dev",
+  "exam_version_id": "edital-2026-10-08-v1",
+  "source": {
+    "title": "Edital CGU nº 1, de 8 de outubro de 2026",
+    "publication_date": "2026-10-08",
+    "url": "https://www.in.gov.br/web/dou/-/edital-cgu-n-1-de-8-de-outubro-de-2026-737675154",
+    "sha256": "869d4a424d4cfdb83b7de7023d82bac99944b7c95b8a894686983f2b5d32aee7",
+    "basis": "PDF enviado pelo usuário; sem confirmação de retificações posteriores"
+  },
+  "granularity": "macro_topics",
+  "is_full_transcription": false,
+  "subjects": [
+    {
+      "id": "B01",
+      "code": "B01",
+      "paper": "P1",
+      "title": "Estado, democracia, direitos e ciência política",
+      "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política",
+      "topics": [
+        {
+          "id": "B01.01",
+          "code": "B01.01",
+          "title": "Estado e legitimidade",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política / tópico 1"
+        },
+        {
+          "id": "B01.02",
+          "code": "B01.02",
+          "title": "Democracia e representação",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política / tópico 2"
+        },
+        {
+          "id": "B01.03",
+          "code": "B01.03",
+          "title": "Federalismo e capacidades estatais",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política / tópico 3"
+        },
+        {
+          "id": "B01.04",
+          "code": "B01.04",
+          "title": "Ordem constitucional e direitos",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política / tópico 4"
+        },
+        {
+          "id": "B01.05",
+          "code": "B01.05",
+          "title": "Valor público e controle",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política / tópico 5"
+        },
+        {
+          "id": "B01.06",
+          "code": "B01.06",
+          "title": "Corrupção como fenômeno político e social",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política / tópico 6"
+        },
+        {
+          "id": "B01.07",
+          "code": "B01.07",
+          "title": "Mecanismos de reprodução e captura",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política / tópico 7"
+        },
+        {
+          "id": "B01.08",
+          "code": "B01.08",
+          "title": "Consequências e respostas à corrupção",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política / tópico 8"
+        },
+        {
+          "id": "B01.09",
+          "code": "B01.09",
+          "title": "Estado e modelos de desenvolvimento econômico",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Estado, democracia, direitos e ciência política / tópico 9"
+        }
+      ]
+    },
+    {
+      "id": "B02",
+      "code": "B02",
+      "paper": "P1",
+      "title": "Sociedade brasileira, desigualdades, diversidade e desenvolvimento",
+      "source_ref": "15.2.2 / Sociedade brasileira, desigualdades, diversidade e desenvolvimento",
+      "topics": [
+        {
+          "id": "B02.01",
+          "code": "B02.01",
+          "title": "Fundamentos sociológicos",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Sociedade brasileira, desigualdades, diversidade e desenvolvimento / tópico 1"
+        },
+        {
+          "id": "B02.02",
+          "code": "B02.02",
+          "title": "Formação social e cidadania no Brasil",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Sociedade brasileira, desigualdades, diversidade e desenvolvimento / tópico 2"
+        },
+        {
+          "id": "B02.03",
+          "code": "B02.03",
+          "title": "População, território e trabalho",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Sociedade brasileira, desigualdades, diversidade e desenvolvimento / tópico 3"
+        },
+        {
+          "id": "B02.04",
+          "code": "B02.04",
+          "title": "Diversidade e acesso a direitos",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Sociedade brasileira, desigualdades, diversidade e desenvolvimento / tópico 4"
+        },
+        {
+          "id": "B02.05",
+          "code": "B02.05",
+          "title": "Desenvolvimento e realidade brasileira",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Sociedade brasileira, desigualdades, diversidade e desenvolvimento / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "B03",
+      "code": "B03",
+      "paper": "P1",
+      "title": "Ética pública e responsabilidade profissional",
+      "source_ref": "15.2.2 / Ética pública e responsabilidade profissional",
+      "topics": [
+        {
+          "id": "B03.01",
+          "code": "B03.01",
+          "title": "Fundamentos da ética pública",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Ética pública e responsabilidade profissional / tópico 1"
+        },
+        {
+          "id": "B03.02",
+          "code": "B03.02",
+          "title": "Deveres profissionais",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Ética pública e responsabilidade profissional / tópico 2"
+        },
+        {
+          "id": "B03.03",
+          "code": "B03.03",
+          "title": "Conflitos de interesses e imparcialidade",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Ética pública e responsabilidade profissional / tópico 3"
+        },
+        {
+          "id": "B03.04",
+          "code": "B03.04",
+          "title": "Relações de trabalho e atendimento",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Ética pública e responsabilidade profissional / tópico 4"
+        },
+        {
+          "id": "B03.05",
+          "code": "B03.05",
+          "title": "Integridade como responsabilidade institucional",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Ética pública e responsabilidade profissional / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "B04",
+      "code": "B04",
+      "paper": "P1",
+      "title": "Administração pública e fundamentos de políticas públicas",
+      "source_ref": "15.2.2 / Administração pública e fundamentos de políticas públicas",
+      "topics": [
+        {
+          "id": "B04.01",
+          "code": "B04.01",
+          "title": "Organização administrativa",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Administração pública e fundamentos de políticas públicas / tópico 1"
+        },
+        {
+          "id": "B04.02",
+          "code": "B04.02",
+          "title": "Modelos de administração",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Administração pública e fundamentos de políticas públicas / tópico 2"
+        },
+        {
+          "id": "B04.03",
+          "code": "B04.03",
+          "title": "Políticas públicas",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Administração pública e fundamentos de políticas públicas / tópico 3"
+        },
+        {
+          "id": "B04.04",
+          "code": "B04.04",
+          "title": "Planejamento e recursos",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Administração pública e fundamentos de políticas públicas / tópico 4"
+        },
+        {
+          "id": "B04.05",
+          "code": "B04.05",
+          "title": "Serviços e transformação digital",
+          "is_summary": true,
+          "source_ref": "15.2.2 / Administração pública e fundamentos de políticas públicas / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "C01",
+      "code": "C01",
+      "paper": "P2",
+      "title": "Fundamentos de governança, riscos e integridade pública e privada",
+      "source_ref": "15.2.3 / Fundamentos de governança, riscos e integridade pública e privada",
+      "topics": [
+        {
+          "id": "C01.01",
+          "code": "C01.01",
+          "title": "Governança e responsabilidades",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de governança, riscos e integridade pública e privada / tópico 1"
+        },
+        {
+          "id": "C01.02",
+          "code": "C01.02",
+          "title": "Riscos e controles essenciais",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de governança, riscos e integridade pública e privada / tópico 2"
+        },
+        {
+          "id": "C01.03",
+          "code": "C01.03",
+          "title": "Integridade pública",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de governança, riscos e integridade pública e privada / tópico 3"
+        },
+        {
+          "id": "C01.04",
+          "code": "C01.04",
+          "title": "Integridade privada",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de governança, riscos e integridade pública e privada / tópico 4"
+        },
+        {
+          "id": "C01.05",
+          "code": "C01.05",
+          "title": "Prevenção e melhoria institucional",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de governança, riscos e integridade pública e privada / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "C02",
+      "code": "C02",
+      "paper": "P2",
+      "title": "Fundamentos de transparência, ouvidoria e participação social",
+      "source_ref": "15.2.3 / Fundamentos de transparência, ouvidoria e participação social",
+      "topics": [
+        {
+          "id": "C02.01",
+          "code": "C02.01",
+          "title": "Acesso à informação",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de transparência, ouvidoria e participação social / tópico 1"
+        },
+        {
+          "id": "C02.02",
+          "code": "C02.02",
+          "title": "Transparência e proteção de dados",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de transparência, ouvidoria e participação social / tópico 2"
+        },
+        {
+          "id": "C02.03",
+          "code": "C02.03",
+          "title": "Ouvidoria e proteção das pessoas",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de transparência, ouvidoria e participação social / tópico 3"
+        },
+        {
+          "id": "C02.04",
+          "code": "C02.04",
+          "title": "Participação e melhoria de serviços",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de transparência, ouvidoria e participação social / tópico 4"
+        },
+        {
+          "id": "C02.05",
+          "code": "C02.05",
+          "title": "Integridade da informação e comunicação",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de transparência, ouvidoria e participação social / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "C03",
+      "code": "C03",
+      "paper": "P2",
+      "title": "Fundamentos de direito público aplicado, controle e responsabilização",
+      "source_ref": "15.2.3 / Fundamentos de direito público aplicado, controle e responsabilização",
+      "topics": [
+        {
+          "id": "C03.01",
+          "code": "C03.01",
+          "title": "Decisão administrativa",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de direito público aplicado, controle e responsabilização / tópico 1"
+        },
+        {
+          "id": "C03.02",
+          "code": "C03.02",
+          "title": "Processo e garantias",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de direito público aplicado, controle e responsabilização / tópico 2"
+        },
+        {
+          "id": "C03.03",
+          "code": "C03.03",
+          "title": "Funções de controle e melhoria da gestão",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de direito público aplicado, controle e responsabilização / tópico 3"
+        },
+        {
+          "id": "C03.04",
+          "code": "C03.04",
+          "title": "Responsabilização em nível introdutório",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de direito público aplicado, controle e responsabilização / tópico 4"
+        },
+        {
+          "id": "C03.05",
+          "code": "C03.05",
+          "title": "Proteção e encaminhamento",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de direito público aplicado, controle e responsabilização / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "C04",
+      "code": "C04",
+      "paper": "P2",
+      "title": "Fundamentos de evidências, dados e inteligência artificial",
+      "source_ref": "15.2.3 / Fundamentos de evidências, dados e inteligência artificial",
+      "topics": [
+        {
+          "id": "C04.01",
+          "code": "C04.01",
+          "title": "Perguntas e fontes",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de evidências, dados e inteligência artificial / tópico 1"
+        },
+        {
+          "id": "C04.02",
+          "code": "C04.02",
+          "title": "Leitura de dados e indicadores",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de evidências, dados e inteligência artificial / tópico 2"
+        },
+        {
+          "id": "C04.03",
+          "code": "C04.03",
+          "title": "Inferências e erros de raciocínio",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de evidências, dados e inteligência artificial / tópico 3"
+        },
+        {
+          "id": "C04.04",
+          "code": "C04.04",
+          "title": "Integridade da evidência e proteção",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de evidências, dados e inteligência artificial / tópico 4"
+        },
+        {
+          "id": "C04.05",
+          "code": "C04.05",
+          "title": "Uso responsável de inteligência artificial",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de evidências, dados e inteligência artificial / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "C05",
+      "code": "C05",
+      "paper": "P2",
+      "title": "Fundamentos de auditoria governamental e atuação integrada da CGU",
+      "source_ref": "15.2.3 / Fundamentos de auditoria governamental e atuação integrada da CGU",
+      "topics": [
+        {
+          "id": "C05.01",
+          "code": "C05.01",
+          "title": "Propósito, serviços e papéis",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de auditoria governamental e atuação integrada da CGU / tópico 1"
+        },
+        {
+          "id": "C05.02",
+          "code": "C05.02",
+          "title": "Ciclo do trabalho",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de auditoria governamental e atuação integrada da CGU / tópico 2"
+        },
+        {
+          "id": "C05.03",
+          "code": "C05.03",
+          "title": "Evidência e conclusão",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de auditoria governamental e atuação integrada da CGU / tópico 3"
+        },
+        {
+          "id": "C05.04",
+          "code": "C05.04",
+          "title": "Comunicação e acompanhamento",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de auditoria governamental e atuação integrada da CGU / tópico 4"
+        },
+        {
+          "id": "C05.05",
+          "code": "C05.05",
+          "title": "Integração entre funções da CGU",
+          "is_summary": true,
+          "source_ref": "15.2.3 / Fundamentos de auditoria governamental e atuação integrada da CGU / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "E01",
+      "code": "E01",
+      "paper": "P3",
+      "title": "Engenharia de software e programação",
+      "source_ref": "15.2.4 / Cargo 4 / Engenharia de software e programação",
+      "topics": [
+        {
+          "id": "E01.01",
+          "code": "E01.01",
+          "title": "Problemas e requisitos",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Engenharia de software e programação / tópico 1"
+        },
+        {
+          "id": "E01.02",
+          "code": "E01.02",
+          "title": "Programação e correção em Java",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Engenharia de software e programação / tópico 2"
+        },
+        {
+          "id": "E01.03",
+          "code": "E01.03",
+          "title": "Concorrência e processamento",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Engenharia de software e programação / tópico 3"
+        },
+        {
+          "id": "E01.04",
+          "code": "E01.04",
+          "title": "Interfaces, experiência do usuário e JavaScript/Vue.js",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Engenharia de software e programação / tópico 4"
+        },
+        {
+          "id": "E01.05",
+          "code": "E01.05",
+          "title": "Manutenção e evolução",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Engenharia de software e programação / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "E02",
+      "code": "E02",
+      "paper": "P3",
+      "title": "Arquitetura e integração de sistemas",
+      "source_ref": "15.2.4 / Cargo 4 / Arquitetura e integração de sistemas",
+      "topics": [
+        {
+          "id": "E02.01",
+          "code": "E02.01",
+          "title": "Arquiteturas de aplicações e Spring Framework/Boot",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Arquitetura e integração de sistemas / tópico 1"
+        },
+        {
+          "id": "E02.02",
+          "code": "E02.02",
+          "title": "APIs, identidade e Spring Security",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Arquitetura e integração de sistemas / tópico 2"
+        },
+        {
+          "id": "E02.03",
+          "code": "E02.03",
+          "title": "Comunicação e consistência",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Arquitetura e integração de sistemas / tópico 3"
+        },
+        {
+          "id": "E02.04",
+          "code": "E02.04",
+          "title": "Integração com dados e IA",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Arquitetura e integração de sistemas / tópico 4"
+        },
+        {
+          "id": "E02.05",
+          "code": "E02.05",
+          "title": "Confiabilidade das aplicações",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Arquitetura e integração de sistemas / tópico 5"
+        }
+      ]
+    },
+    {
+      "id": "E03",
+      "code": "E03",
+      "paper": "P3",
+      "title": "Persistência, integração e proteção de dados",
+      "source_ref": "15.2.4 / Cargo 4 / Persistência, integração e proteção de dados",
+      "topics": [
+        {
+          "id": "E03.01",
+          "code": "E03.01",
+          "title": "Modelagem e persistência com JPA/Spring Data JPA",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Persistência, integração e proteção de dados / tópico 1"
+        },
+        {
+          "id": "E03.02",
+          "code": "E03.02",
+          "title": "SQL e desempenho",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Persistência, integração e proteção de dados / tópico 2"
+        },
+        {
+          "id": "E03.03",
+          "code": "E03.03",
+          "title": "Fluxos, interoperabilidade e Spring Batch",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Persistência, integração e proteção de dados / tópico 3"
+        },
+        {
+          "id": "E03.04",
+          "code": "E03.04",
+          "title": "Privacidade e segurança de dados",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Persistência, integração e proteção de dados / tópico 4"
+        }
+      ]
+    },
+    {
+      "id": "E04",
+      "code": "E04",
+      "paper": "P3",
+      "title": "Desenvolvimento seguro, qualidade e gestão da entrega",
+      "source_ref": "15.2.4 / Cargo 4 / Desenvolvimento seguro, qualidade e gestão da entrega",
+      "topics": [
+        {
+          "id": "E04.01",
+          "code": "E04.01",
+          "title": "Segurança de aplicações",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Desenvolvimento seguro, qualidade e gestão da entrega / tópico 1"
+        },
+        {
+          "id": "E04.02",
+          "code": "E04.02",
+          "title": "Testes e qualidade",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Desenvolvimento seguro, qualidade e gestão da entrega / tópico 2"
+        },
+        {
+          "id": "E04.03",
+          "code": "E04.03",
+          "title": "Entrega e operação",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Desenvolvimento seguro, qualidade e gestão da entrega / tópico 3"
+        },
+        {
+          "id": "E04.04",
+          "code": "E04.04",
+          "title": "Gestão de produtos e governança",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Desenvolvimento seguro, qualidade e gestão da entrega / tópico 4"
+        },
+        {
+          "id": "E04.05",
+          "code": "E04.05",
+          "title": "Contratação e fiscalização de soluções",
+          "is_summary": true,
+          "source_ref": "15.2.4 / Cargo 4 / Desenvolvimento seguro, qualidade e gestão da entrega / tópico 5"
+        }
+      ]
+    }
+  ]
+}
