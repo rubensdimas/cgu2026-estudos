@@ -1,36 +1,103 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-@theme {
-  --color-bg: #0b1220;
-  --color-surface: #121a2b;
-  --color-surface-2: #1a2438;
-  --color-border: #26324a;
-  --color-text: #e6eaf2;
-  --color-muted: #9aa6bd;
-  --color-primary: #3b82f6;
-  --color-xp: #facc15;
-  --color-streak: #fb923c;
-  --color-success: #22c55e;
-  --color-danger: #f87171;
-  --color-p1: #60a5fa;
-  --color-p2: #a78bfa;
-  --color-p3: #34d399;
-  --font-display: "Chakra Petch", system-ui, sans-serif;
+@font-face {
+  font-family: "Departure Mono";
+  src: url("/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-xp: var(--xp);
+  --color-streak: var(--streak);
+  --color-success: var(--success);
+  --color-p1: var(--p1);
+  --color-p2: var(--p2);
+  --color-p3: var(--p3);
   --font-sans: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-mono: "Fira Mono", ui-monospace, monospace;
+  --font-pixel: "Departure Mono", "Fira Mono", monospace;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
 }
 
-html {
+:root {
   color-scheme: dark;
+  --radius: 0.625rem;
+  --background: #161718;
+  --foreground: #eeeeee;
+  --card: #1b1c1d;
+  --card-foreground: #eeeeee;
+  --popover: #1b1c1d;
+  --popover-foreground: #eeeeee;
+  --primary: #b78cf2;
+  --primary-foreground: #161718;
+  --secondary: #232525;
+  --secondary-foreground: #eeeeee;
+  --muted: #232525;
+  --muted-foreground: #919191;
+  --accent: #363737;
+  --accent-foreground: #eeeeee;
+  --destructive: #f87171;
+  --border: rgb(255 255 255 / 0.1);
+  --input: rgb(255 255 255 / 0.16);
+  --ring: #b78cf2;
+  --chart-1: #b78cf2;
+  --chart-2: #f2c94f;
+  --chart-3: #00d294;
+  --chart-4: #54a2ff;
+  --chart-5: #ffb96d;
+  --info: #54a2ff;
+  --info-foreground: #161718;
+  --xp: #f2c94f;
+  --streak: #fb923c;
+  --success: #22c55e;
+  --p1: #54a2ff;
+  --p2: #ffb96d;
+  --p3: #00d294;
 }
 
-body {
-  @apply bg-bg text-text font-sans antialiased;
-  font-size: 16px;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 16px;
+  }
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
 

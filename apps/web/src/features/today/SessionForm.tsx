@@ -55,10 +55,10 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
     }
   }
 
-  const input = 'mt-1 w-full rounded-md border border-border bg-surface-2 px-3 py-2'
+  const input = 'mt-1 w-full rounded-md border border-border bg-muted px-3 py-2'
   return (
-    <form onSubmit={submit} className="space-y-3 rounded-lg border border-border bg-surface p-4" aria-label="Registrar sessão">
-      <h3 className="font-display text-lg font-semibold">
+    <form onSubmit={submit} className="space-y-3 rounded-lg border border-border bg-card p-4" aria-label="Registrar sessão">
+      <h3 className="text-lg font-semibold">
         {occurrence ? `${occurrence.slot.code} · ${occurrence.slot.title}` : 'Sessão avulsa'}
       </h3>
       {!occurrence && (
@@ -106,17 +106,17 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
         </label>
       )}
       {error && (
-        <div role="alert" className="rounded-md border border-danger/50 p-3 text-sm text-danger">
+        <div role="alert" className="rounded-md border border-destructive/50 p-3 text-sm text-destructive">
           <p>{error.message}</p>
           {Object.entries(error.fields).map(([f, m]) => <p key={f}>{f}: {m}</p>)}
         </div>
       )}
       <div className="flex gap-2">
         <button type="submit" disabled={create.isPending}
-          className="rounded-md bg-primary px-4 py-2 font-semibold text-white disabled:opacity-60">
+          className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-60">
           {create.isPending ? 'Salvando…' : 'Registrar sessão'}
         </button>
-        <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-muted">Cancelar</button>
+        <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-muted-foreground">Cancelar</button>
       </div>
     </form>
   )

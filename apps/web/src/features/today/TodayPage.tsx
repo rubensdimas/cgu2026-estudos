@@ -19,7 +19,7 @@ export function TodayPage() {
   const subjects = useSubjects()
   const [form, setForm] = useState<{ occurrence: Occurrence | null } | null>(null)
 
-  if (!today || !day.data) return <p className="text-muted" aria-busy="true">Carregando…</p>
+  if (!today || !day.data) return <p className="text-muted-foreground" aria-busy="true">Carregando…</p>
   const view = day.data
 
   return (
@@ -37,7 +37,7 @@ export function TodayPage() {
             <OpenDayCard view={view} />
           )}
           <button onClick={() => setForm({ occurrence: null })}
-            className="w-full rounded-md border border-border px-4 py-2 text-sm text-muted hover:text-text">
+            className="w-full rounded-md border border-border px-4 py-2 text-sm text-muted-foreground hover:text-foreground">
             + Sessão avulsa
           </button>
           <TodaySessions day={today} />
@@ -50,12 +50,12 @@ export function TodayPage() {
 export function OpenDayCard({ view }: { view: DayView }) {
   const open = useOpenDay()
   const [chosen, setChosen] = useState<string[]>([])
-  if (!view.in_plan) return <p className="text-muted">Fora do período do plano.</p>
+  if (!view.in_plan) return <p className="text-muted-foreground">Fora do período do plano.</p>
   const free = view.kind === 'free'
   return (
-    <section className="rounded-lg border border-border bg-surface p-4">
-      <h2 className="font-display text-xl font-bold">{free ? 'Fim de semana' : 'Missão de hoje'}</h2>
-      <p className="mt-1 text-sm text-muted">
+    <section className="rounded-lg border border-border bg-card p-4">
+      <h2 className="text-xl font-bold">{free ? 'Fim de semana' : 'Missão de hoje'}</h2>
+      <p className="mt-1 text-sm text-muted-foreground">
         {free
           ? 'Sem ciclo planejado. Escolha até 2 blocos pendentes da semana para uma missão livre; nada é cobrado.'
           : view.week_generated
@@ -65,10 +65,10 @@ export function OpenDayCard({ view }: { view: DayView }) {
       {free && <FreeBlockPicker day={view.date} chosen={chosen} onChange={setChosen} />}
       <button onClick={() => open.mutate({ day: view.date, occurrence_ids: chosen })}
         disabled={open.isPending || (free && chosen.length === 0)}
-        className="mt-3 rounded-md bg-primary px-4 py-2 font-display font-semibold text-white disabled:opacity-50">
+        className="mt-3 rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-50">
         {free ? 'Abrir missão livre' : 'Abrir o dia'}
       </button>
-      {open.error && <p role="alert" className="mt-2 text-sm text-danger">{open.error.message}</p>}
+      {open.error && <p role="alert" className="mt-2 text-sm text-destructive">{open.error.message}</p>}
     </section>
   )
 }
@@ -80,7 +80,7 @@ function FreeBlockPicker({ day, chosen, onChange }: {
   const { data } = useOccurrences(monday, addDays(monday, 6))
   const pending = (data?.items ?? []).filter((o) => o.status === 'pending')
   if (data && pending.length === 0) {
-    return <p className="mt-2 text-sm text-muted">Nenhum bloco pendente nesta semana. Use “Sessão avulsa”.</p>
+    return <p className="mt-2 text-sm text-muted-foreground">Nenhum bloco pendente nesta semana. Use “Sessão avulsa”.</p>
   }
   const toggle = (id: string) =>
     onChange(chosen.includes(id) ? chosen.filter((c) => c !== id) : [...chosen, id])
@@ -103,14 +103,14 @@ export function TodaySessions({ day }: { day: string }) {
   const remove = useDeleteSession()
   if (!data || data.items.length === 0) return null
   return (
-    <section className="rounded-lg border border-border bg-surface p-4">
-      <h2 className="font-display font-semibold">Sessões de hoje</h2>
+    <section className="rounded-lg border border-border bg-card p-4">
+      <h2 className="font-semibold">Sessões de hoje</h2>
       <ul className="mt-2 space-y-1">
         {data.items.map((s) => (
           <li key={s.id} className="flex items-center gap-2 text-sm">
             <span className="num">{s.duration_minutes} min</span>
-            <span className="min-w-0 flex-1 text-muted">{s.topic_ids.join(', ') || 'Discursiva'}</span>
-            <button aria-label={`Excluir sessão de ${s.duration_minutes} min`} className="px-2 py-1 text-danger"
+            <span className="min-w-0 flex-1 text-muted-foreground">{s.topic_ids.join(', ') || 'Discursiva'}</span>
+            <button aria-label={`Excluir sessão de ${s.duration_minutes} min`} className="px-2 py-1 text-destructive"
               onClick={() => confirm('Excluir esta sessão? Os minutos, o XP e a conclusão do bloco serão recalculados.')
                 && remove.mutate(s.id)}>
               Excluir
@@ -118,7 +118,7 @@ export function TodaySessions({ day }: { day: string }) {
           </li>
         ))}
       </ul>
-      {remove.error && <p role="alert" className="mt-2 text-sm text-danger">{remove.error.message}</p>}
+      {remove.error && <p role="alert" className="mt-2 text-sm text-destructive">{remove.error.message}</p>}
     </section>
   )
 }
@@ -128,11 +128,11 @@ function MissionCard({ view, onRegister }: { view: DayView; onRegister: (o: Occu
   const required = mission.items.filter((i) => i.required)
   const done = required.filter((i) => i.state !== 'pending').length
   return (
-    <section className="rounded-lg border border-border bg-surface p-4">
+    <section className="rounded-lg border border-border bg-card p-4">
       <div className="flex items-center gap-4">
         <MissionRing done={done} total={required.length} />
         <div>
-          <h2 className="font-display text-xl font-bold">
+          <h2 className="text-xl font-bold">
             {mission.complete ? 'Missão cumprida' : mission.kind === 'free' ? 'Missão livre' : 'Missão de hoje'}
           </h2>
           <p className="num text-sm text-xp">+{view.xp_today} XP hoje</p>
@@ -154,24 +154,24 @@ function MissionRow({ item, missionId, view, onRegister }: {
   if (item.kind === 'checkout') return <CheckoutRow missionId={missionId} item={item} note={view.mission!.checkout_note} />
   const occ = view.occurrences.find((o) => o.id === item.ref_id)
   return (
-    <li className="flex flex-wrap items-center gap-2 rounded-md bg-surface-2 p-3">
+    <li className="flex flex-wrap items-center gap-2 rounded-md bg-muted p-3">
       <div className="min-w-0 flex-1">
         <p className="font-semibold">{occ ? `${WINDOW_LABEL[occ.window]} · ${occ.slot.title}` : 'Bloco remanejado'}</p>
-        <p className="text-xs text-muted">{STATE_LABEL[item.state]}{item.na_reason ? ` (${item.na_reason})` : ''}</p>
+        <p className="text-xs text-muted-foreground">{STATE_LABEL[item.state]}{item.na_reason ? ` (${item.na_reason})` : ''}</p>
       </div>
       {item.state === 'pending' && occ && (
         <>
-          <button onClick={() => onRegister(occ)} className="rounded-md bg-primary px-3 py-1 text-sm text-white">
+          <button onClick={() => onRegister(occ)} className="rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
             Registrar sessão
           </button>
           <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: 'Não se aplica hoje' })}
-            className="rounded-md px-3 py-1 text-sm text-muted">Não se aplica hoje</button>
+            className="rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
           <Link to="/ciclo" className="px-3 py-1 text-sm text-primary">Remanejar</Link>
         </>
       )}
       {item.na_reason && item.na_reason !== 'rescheduled' && item.na_reason !== 'skipped' && (
         <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: null })}
-          className="px-3 py-1 text-sm text-muted">Desfazer</button>
+          className="px-3 py-1 text-sm text-muted-foreground">Desfazer</button>
       )}
     </li>
   )
@@ -181,13 +181,13 @@ function CheckoutRow({ missionId, item, note }: { missionId: string; item: Missi
   const [text, setText] = useState(note ?? '')
   const save = useCheckout()
   return (
-    <li className="rounded-md bg-surface-2 p-3">
+    <li className="rounded-md bg-muted p-3">
       <label className="block text-sm font-semibold">Check-out: o que ficou difícil hoje? <span className="text-xp">(bônus)</span>
-        <textarea className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2 font-normal" rows={2}
+        <textarea className="mt-1 w-full rounded-md border border-border bg-card px-3 py-2 font-normal" rows={2}
           maxLength={500} value={text} onChange={(e) => setText(e.target.value)} />
       </label>
       <button onClick={() => save.mutate({ missionId, note: text })}
-        className="mt-2 rounded-md bg-primary px-3 py-1 text-sm text-white">
+        className="mt-2 rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
         {item.state === 'done' ? 'Atualizar' : 'Salvar check-out'}
       </button>
     </li>
@@ -207,9 +207,9 @@ function HolidayBanner() {
   const h = data?.holiday_suggestion
   if (!h) return null
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-md border border-border bg-surface p-3 text-sm">
+    <div className="flex flex-wrap items-center gap-2 rounded-md border border-border bg-card p-3 text-sm">
       <span className="flex-1">{h.date === data!.today ? 'Hoje' : 'Amanhã'} é feriado ({h.label}). Marcar como folga?</span>
-      <button onClick={() => put.mutate({ day: h.date, reason: h.label })} className="rounded-md bg-surface-2 px-3 py-1">
+      <button onClick={() => put.mutate({ day: h.date, reason: h.label })} className="rounded-md bg-muted px-3 py-1">
         Marcar folga
       </button>
     </div>

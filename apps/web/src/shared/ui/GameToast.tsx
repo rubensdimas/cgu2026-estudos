@@ -26,8 +26,8 @@ export function GameToastProvider({ children }: { children: ReactNode }) {
       {children}
       <div aria-live="polite" className="fixed bottom-20 right-4 z-50 flex flex-col gap-2 md:bottom-4">
         {toasts.map((t) => (
-          <div key={t.id} className="rounded-lg border border-xp/40 bg-surface-2 px-4 py-3 shadow-lg">
-            {t.levelUp && <p className="font-display text-lg font-bold text-xp">Nível {t.levelUp}!</p>}
+          <div key={t.id} className="rounded-lg border border-xp/40 bg-muted px-4 py-3 shadow-lg">
+            {t.levelUp && <p className="text-lg font-bold text-xp">Nível {t.levelUp}!</p>}
             {t.lines.map((line) => (
               <p key={line} className="num text-sm text-xp">{line}</p>
             ))}

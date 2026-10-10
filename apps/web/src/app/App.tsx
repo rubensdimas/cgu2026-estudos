@@ -14,14 +14,14 @@ const LINKS = [
 ]
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded-md px-3 py-2 font-display text-sm font-semibold ${isActive ? 'bg-surface-2 text-xp' : 'text-muted hover:text-text'}`
+  `rounded-md px-3 py-2 text-sm font-semibold ${isActive ? 'bg-muted text-xp' : 'text-muted-foreground hover:text-foreground'}`
 
 export function App() {
   return (
     <div className="md:flex">
-      <nav aria-label="Principal" className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-border bg-surface
+      <nav aria-label="Principal" className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-border bg-card
         md:static md:h-screen md:w-48 md:flex-col md:justify-start md:gap-1 md:border-r md:border-t-0 md:p-4">
-        <p className="hidden pb-4 font-display text-lg font-bold text-xp md:block">CGU 2026</p>
+        <p className="hidden pb-4 font-pixel text-xl text-primary md:block">CGU 2026</p>
         {LINKS.map((l) => <NavLink key={l.to} to={l.to} end className={linkClass}>{l.label}</NavLink>)}
       </nav>
       <div className="min-h-screen flex-1 pb-20 md:pb-0">
