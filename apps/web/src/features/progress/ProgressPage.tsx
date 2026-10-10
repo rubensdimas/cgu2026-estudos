@@ -15,7 +15,8 @@ export function ProgressPage() {
   const monthStart = `${today.slice(0, 7)}-01`
   const weekStart = mondayOf(today)
   const calendar = useCalendar(monthStart < weekStart ? monthStart : weekStart, today)
-  const ledger = useXpLedger(PLAN_START, today)
+  // Busca até a prova: lançamentos datados no futuro (semana completa no domingo) entram no ponto de hoje.
+  const ledger = useXpLedger(PLAN_START, summary.data?.exam_date ?? today)
   const config = useGameConfig()
   if (!summary.data || !calendar.data || !ledger.data || !config.data) {
     return <p className="text-muted-foreground" aria-busy="true">Carregando…</p>
