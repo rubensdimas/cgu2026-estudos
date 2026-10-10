@@ -9,6 +9,7 @@ export interface GameDelta {
   xp_gained: number
   entries: XpDeltaEntry[]
   level_up: number | null
+  level_title: string | null
   mission_complete: string[]
   streak: number
 }
