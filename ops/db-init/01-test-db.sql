@@ -1,0 +1,1 @@
+CREATE DATABASE cgu_test;

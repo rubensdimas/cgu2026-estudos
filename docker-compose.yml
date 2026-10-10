@@ -1,0 +1,61 @@
+name: cgu2026
+
+services:
+  db:
+    image: postgres:17.6
+    environment:
+      POSTGRES_DB: cgu
+      POSTGRES_USER: cgu
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./ops/db-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cgu -d cgu"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  app:
+    build: { context: ., target: runtime }
+    environment:
+      DATABASE_URL: postgresql+psycopg://cgu:${POSTGRES_PASSWORD}@db:5432/cgu
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-127.0.0.1,localhost}
+    ports:
+      - "127.0.0.1:8080:8000"
+    depends_on:
+      db: { condition: service_healthy }
+    restart: unless-stopped
+
+  backup:
+    image: postgres:17.6
+    environment:
+      PGHOST: db
+      PGUSER: cgu
+      PGDATABASE: cgu
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      TZ: America/Sao_Paulo
+    volumes:
+      - ./ops/backup.sh:/backup.sh:ro
+      - ${BACKUP_DIR:-./backups}:/backups
+    entrypoint: ["sh", "/backup.sh"]
+    depends_on:
+      db: { condition: service_healthy }
+    restart: unless-stopped
+
+  test:
+    profiles: [test]
+    build: { context: ., target: dev }
+    environment:
+      DATABASE_URL: postgresql+psycopg://cgu:${POSTGRES_PASSWORD}@db:5432/cgu_test
+      ALLOWED_HOSTS: 127.0.0.1,localhost,testserver,*.ts.net
+    volumes:
+      - ./apps/api:/app/apps/api
+      - ./docs/data:/app/docs/data:ro
+    command: ["pytest", "-q", "-p", "no:cacheprovider"]
+    depends_on:
+      db: { condition: service_healthy }
+
+volumes:
+  pgdata:
