@@ -692,7 +692,1472 @@
     ]
   },
   "temas": {
-    "complementary": [],
-    "technical_case": []
+    "complementary": [
+      {
+        "id": "Q1-01",
+        "titulo": "Riscos, controles e segregação de funções",
+        "topic_ids": [
+          "C01.02"
+        ],
+        "linhas": 30,
+        "texto_motivador": "Em uma unidade administrativa, o mesmo servidor cadastra as solicitações de diárias, aprova os afastamentos e autoriza o pagamento. Uma auditoria identificou diárias pagas a servidores que não viajaram. A chefia propôs que, a partir de agora, todas as diárias passem por três aprovações sucessivas, inclusive as de valor baixo.",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "relação entre risco, causa, consequência e controle, aplicada à situação descrita;",
+            "valor": 10
+          },
+          {
+            "texto": "segregação de funções e diferença entre controles preventivos e detectivos, com um exemplo de cada para o caso;",
+            "valor": 10
+          },
+          {
+            "texto": "proporcionalidade dos controles e risco residual diante da proposta da chefia.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "O risco é o evento incerto que pode afetar objetivos: pagamento indevido de diárias. A causa é a concentração, num só agente, de etapas incompatíveis (cadastrar, aprovar e pagar); a consequência é o prejuízo ao erário e à confiança; o controle é a medida que reduz probabilidade ou impacto. Segregação de funções separa autorização, execução, registro e verificação. Controle preventivo atua antes do evento (aprovação por pessoa distinta do solicitante); detectivo identifica depois (conferência de bilhetes e relatórios de viagem por amostragem). Controles devem ser proporcionais ao risco: custo e lentidão não podem superar o benefício. Três aprovações para todas as diárias aumentam custo sem eliminar o risco; sempre resta risco residual, que deve ser conhecido e aceito pela gestão (Decreto 9.203/2017, art. 17).",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Risco, causa, consequência e controle no caso",
+              "conceitos": [
+                "Conceito 0 – Não abordou os quatro elementos aplicados ao caso ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou os quatro elementos aplicados ao caso de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente os quatro elementos aplicados ao caso."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Segregação de funções; controles preventivo e detectivo",
+              "conceitos": [
+                "Conceito 0 – Não abordou a segregação e os dois tipos de controle com exemplos ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a segregação e os dois tipos de controle com exemplos de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a segregação e os dois tipos de controle com exemplos."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Proporcionalidade e risco residual",
+              "conceitos": [
+                "Conceito 0 – Não abordou a proporcionalidade e o risco residual ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a proporcionalidade e o risco residual de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a proporcionalidade e o risco residual."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Decreto 9.203/2017",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/decreto/d9203.htm"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q1-02",
+        "titulo": "Programa de integridade: papel versus efetividade",
+        "topic_ids": [
+          "C01.04"
+        ],
+        "linhas": 30,
+        "texto_motivador": "Uma empresa investigada em processo administrativo de responsabilização apresentou, em sua defesa, um código de conduta aprovado pela diretoria e um canal de denúncias. Verificou-se que o canal nunca recebeu relatos, que não houve treinamentos e que os pagamentos a intermediários não eram registrados de forma confiável.",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "finalidades de um programa de integridade privada e sua relação com o poder público;",
+            "valor": 10
+          },
+          {
+            "texto": "elementos esperados de um programa de integridade, com base na situação descrita;",
+            "valor": 10
+          },
+          {
+            "texto": "diferença entre existência documental, implementação e efetividade, e o reflexo disso na responsabilização.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Programa de integridade é o conjunto de mecanismos para prevenir, detectar e sanar desvios, fraudes e atos lesivos contra a administração (Decreto 11.129/2022, art. 56). Interessa ao poder público porque reduz ilícitos e é considerado na dosimetria das sanções (Lei 12.846/2013, art. 7º, VIII). Elementos: compromisso da alta direção, padrões de conduta, treinamentos, registros contábeis confiáveis, controles internos, diligência sobre terceiros, canais de denúncia com proteção ao denunciante e remediação. Documento aprovado prova existência; implementação exige funcionamento (treinamentos, registros); efetividade exige resultado (relatos tratados, falhas corrigidas). Programa só de papel não deve atenuar a sanção (Decreto 11.129/2022, art. 57).",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Finalidades e relação com o poder público",
+              "conceitos": [
+                "Conceito 0 – Não abordou as finalidades e a relação com o poder público ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as finalidades e a relação com o poder público de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as finalidades e a relação com o poder público."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Elementos do programa no caso",
+              "conceitos": [
+                "Conceito 0 – Não apresentou nenhum(a) elemento do programa relacionado ao caso correto(a).",
+                "Conceito 1 – Apresentou corretamente apenas 1 elemento do programa relacionado ao caso.",
+                "Conceito 2 – Apresentou corretamente apenas 2 elemento do programa relacionado ao caso.",
+                "Conceito 3 – Apresentou corretamente 3 elemento do programa relacionado ao caso, de forma fundamentada."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Existência, implementação e efetividade",
+              "conceitos": [
+                "Conceito 0 – Não abordou a distinção e o reflexo na responsabilização ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a distinção e o reflexo na responsabilização de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a distinção e o reflexo na responsabilização."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Lei 12.846/2013 (Lei Anticorrupção)",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12846.htm"
+          },
+          {
+            "titulo": "Decreto 11.129/2022",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/decreto/D11129.htm"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q1-03",
+        "titulo": "Pedido de acesso, sigilo e acesso parcial",
+        "topic_ids": [
+          "C02.01"
+        ],
+        "linhas": 30,
+        "texto_motivador": "Um cidadão pediu, com base na Lei de Acesso à Informação, cópia integral de um processo de contratação. O órgão negou o pedido inteiro, alegando que o processo continha dados bancários de empregados da contratada e uma nota técnica ainda não usada em decisão. A resposta não indicou recurso nem prazo.",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "transparência ativa e passiva e a publicidade como regra;",
+            "valor": 10
+          },
+          {
+            "texto": "distinção entre informação pessoal e documento preparatório, e o direito de acesso parcial;",
+            "valor": 10
+          },
+          {
+            "texto": "falhas da resposta do órgão quanto à motivação e à comunicação da decisão.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Transparência ativa é a divulgação por iniciativa do órgão (LAI, art. 8º); passiva é a resposta a pedidos (art. 10). A publicidade é preceito geral e o sigilo, exceção (art. 3º, I). Dados bancários de empregados são informação pessoal, com acesso restrito (art. 31), mas isso não torna o processo todo restrito: deve-se dar acesso à parte não sigilosa, com ocultação (art. 7º, § 2º). Documento preparatório tem acesso assegurado a partir da edição do ato decisório (Decreto 7.724/2012, art. 20). A negativa deve ser motivada, indicar o fundamento legal, a possibilidade de recurso, o prazo e a autoridade (LAI, art. 11, § 1º, II, e art. 15).",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Transparência ativa e passiva; publicidade como regra",
+              "conceitos": [
+                "Conceito 0 – Não abordou os conceitos e a regra da publicidade ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou os conceitos e a regra da publicidade de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente os conceitos e a regra da publicidade."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Informação pessoal, documento preparatório e acesso parcial",
+              "conceitos": [
+                "Conceito 0 – Não abordou as distinções e o acesso parcial ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as distinções e o acesso parcial de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as distinções e o acesso parcial."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Motivação e comunicação da decisão",
+              "conceitos": [
+                "Conceito 0 – Não abordou as falhas de motivação e de comunicação ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as falhas de motivação e de comunicação de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as falhas de motivação e de comunicação."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Lei 12.527/2011 (LAI)",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm"
+          },
+          {
+            "titulo": "Decreto 7.724/2012",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/decreto/d7724.htm"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q1-04",
+        "titulo": "Transparência e proteção de dados pessoais",
+        "topic_ids": [
+          "C02.02"
+        ],
+        "linhas": 30,
+        "texto_motivador": "Um órgão pretende publicar, em formato aberto, a lista de beneficiários de um auxílio emergencial com nome, CPF completo, município, valor recebido e uma coluna indicando se o beneficiário tem deficiência. Uma servidora alertou que, mesmo sem o nome, seria possível identificar pessoas em municípios pequenos.",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "compatibilização entre acesso à informação e proteção de dados, com base em finalidade e necessidade;",
+            "valor": 10
+          },
+          {
+            "texto": "diferença entre dado pessoal e dado pessoal sensível, aplicada às colunas da lista;",
+            "valor": 10
+          },
+          {
+            "texto": "tarjamento, anonimização e risco de reidentificação na publicação proposta.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "LAI e LGPD convivem: a publicação de gastos públicos atende à transparência, mas o tratamento deve observar finalidade, adequação e necessidade (LGPD, art. 6º), expondo só o necessário ao controle social. Dado pessoal é o relacionado a pessoa identificada ou identificável (art. 5º, I); dado sensível inclui, entre outros, saúde, o que abrange a condição de deficiência (art. 5º, II), exigindo proteção reforçada. CPF completo é desnecessário e pode ser mascarado. Tarjamento oculta trechos; anonimização retira a possibilidade de associação, por meios razoáveis (art. 5º, XI, e art. 12). Em municípios pequenos, cruzar valor e localidade pode reidentificar: deve-se agregar ou suprimir essas combinações.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Compatibilização LAI × LGPD",
+              "conceitos": [
+                "Conceito 0 – Não abordou a compatibilização com finalidade e necessidade ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a compatibilização com finalidade e necessidade de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a compatibilização com finalidade e necessidade."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Dado pessoal e dado sensível no caso",
+              "conceitos": [
+                "Conceito 0 – Não abordou a distinção aplicada às colunas ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a distinção aplicada às colunas de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a distinção aplicada às colunas."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Tarjamento, anonimização e reidentificação",
+              "conceitos": [
+                "Conceito 0 – Não abordou as técnicas e o risco de reidentificação ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as técnicas e o risco de reidentificação de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as técnicas e o risco de reidentificação."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Lei 12.527/2011 (LAI)",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm"
+          },
+          {
+            "titulo": "Lei 13.709/2018 (LGPD)",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q1-05",
+        "titulo": "Controle interno, externo e social",
+        "topic_ids": [
+          "C03.03"
+        ],
+        "linhas": 30,
+        "texto_motivador": "Após reportagem sobre falhas em um programa federal, um parlamentar afirmou que \"a CGU e o TCU fazem a mesma coisa\" e que bastaria um dos dois órgãos. Na mesma semana, uma associação de usuários protocolou denúncia sobre o mesmo programa.",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "finalidades do controle interno do Poder Executivo federal e inserção institucional da CGU;",
+            "valor": 10
+          },
+          {
+            "texto": "diferenças e complementaridade entre o controle interno e o controle externo exercido pelo Congresso com o auxílio do TCU;",
+            "valor": 10
+          },
+          {
+            "texto": "papel do controle social e da denúncia apresentada pela associação.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "O sistema de controle interno avalia o cumprimento de metas e a execução de programas, comprova a legalidade e avalia resultados da gestão, controla operações de crédito e apoia o controle externo (CF, art. 74, I a IV); a CGU é seu órgão central no Executivo federal. O controle externo é do Congresso, com auxílio do TCU (CF, arts. 70 e 71), órgão autônomo que julga contas e aplica sanções. São complementares: o interno atua junto à gestão, apoia a melhoria e deve dar ciência ao TCU de irregularidades (art. 74, § 1º). O controle social amplia a fiscalização: qualquer cidadão ou associação pode denunciar irregularidades ao TCU (art. 74, § 2º), e as denúncias também alimentam a análise de risco da CGU.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Controle interno e inserção da CGU",
+              "conceitos": [
+                "Conceito 0 – Não abordou as finalidades do controle interno e o papel da CGU ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as finalidades do controle interno e o papel da CGU de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as finalidades do controle interno e o papel da CGU."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Interno × externo: diferenças e complementaridade",
+              "conceitos": [
+                "Conceito 0 – Não abordou as diferenças e a complementaridade ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as diferenças e a complementaridade de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as diferenças e a complementaridade."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Controle social e denúncia",
+              "conceitos": [
+                "Conceito 0 – Não abordou o papel do controle social ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o papel do controle social de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o papel do controle social."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Constituição Federal",
+            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q1-06",
+        "titulo": "Responsabilização de agentes e de empresas",
+        "topic_ids": [
+          "C03.04"
+        ],
+        "linhas": 30,
+        "texto_motivador": "Auditoria identificou indícios de que um servidor favoreceu uma empresa em licitação, recebendo vantagem indevida. A empresa procurou a administração propondo colaborar com as apurações em troca de redução de penas.",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "distinção entre indício, falha de gestão, irregularidade e responsabilidade;",
+            "valor": 10
+          },
+          {
+            "texto": "diferenças entre a responsabilização do servidor (processo disciplinar) e a da empresa (processo administrativo de responsabilização);",
+            "valor": 10
+          },
+          {
+            "texto": "finalidade e requisitos gerais do acordo de leniência.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Indício é sinal que justifica apurar, não conclusão; falha de gestão é erro sem intenção ilícita; irregularidade é desconformidade com a norma; responsabilidade só se atribui após processo com contraditório e ampla defesa. O servidor responde em processo administrativo disciplinar, com garantias da Lei 8.112/1990 (arts. 143 e 148), podendo sofrer demissão. A empresa responde objetivamente pela Lei 12.846/2013, em processo administrativo de responsabilização (art. 8º), com multa e publicação extraordinária da decisão. O acordo de leniência (art. 16) exige que a pessoa jurídica coopere efetivamente, identifique os envolvidos e forneça provas, cessando a conduta; reduz sanções, mas não exime de reparar integralmente o dano.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Indício, falha, irregularidade e responsabilidade",
+              "conceitos": [
+                "Conceito 0 – Não abordou as quatro distinções ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as quatro distinções de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as quatro distinções."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "PAD do servidor × PAR da empresa",
+              "conceitos": [
+                "Conceito 0 – Não abordou as diferenças entre os processos ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as diferenças entre os processos de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as diferenças entre os processos."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Acordo de leniência",
+              "conceitos": [
+                "Conceito 0 – Não abordou a finalidade e os requisitos do acordo ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a finalidade e os requisitos do acordo de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a finalidade e os requisitos do acordo."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Lei 8.112/1990",
+            "url": "https://www.planalto.gov.br/ccivil_03/leis/l8112cons.htm"
+          },
+          {
+            "titulo": "Lei 12.846/2013 (Lei Anticorrupção)",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/lei/l12846.htm"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q1-07",
+        "titulo": "Denúncias, detecção e limites de inferência",
+        "topic_ids": [
+          "C04.01",
+          "C04.02"
+        ],
+        "linhas": 30,
+        "texto_motivador": "Um relatório afirmou que a corrupção em um programa cresceu 40% de um ano para o outro, porque o número de denúncias recebidas pela ouvidoria passou de 500 para 700. No mesmo período, o programa dobrou o número de beneficiários e lançou um aplicativo de denúncia.",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "relação entre problema, pergunta de avaliação e informação necessária no caso;",
+            "valor": 10
+          },
+          {
+            "texto": "distinção entre indicadores de denúncia, detecção e ocorrência, e o efeito da subnotificação;",
+            "valor": 10
+          },
+          {
+            "texto": "problemas de denominador e comparabilidade na conclusão do relatório.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "A pergunta (a corrupção aumentou?) exige informação sobre ocorrência, que não é observada diretamente; denúncias medem relatos, não fatos confirmados. Indicadores de denúncia, detecção e sanção refletem também a capacidade e a disposição de denunciar e de apurar. Um canal novo pode aumentar relatos sem aumento de ilícitos, e a subnotificação faz com que pouca denúncia não signifique pouca corrupção. Comparar totais ignora o denominador: com o dobro de beneficiários, a taxa por beneficiário caiu de 500/N para 700/2N. A conclusão exige confronto de fontes, como auditorias e cruzamento de bases.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Problema, pergunta e informação necessária",
+              "conceitos": [
+                "Conceito 0 – Não abordou a relação no caso ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a relação no caso de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a relação no caso."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Denúncia × detecção × ocorrência; subnotificação",
+              "conceitos": [
+                "Conceito 0 – Não abordou as distinções e a subnotificação ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as distinções e a subnotificação de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as distinções e a subnotificação."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Denominador e comparabilidade",
+              "conceitos": [
+                "Conceito 0 – Não abordou o erro de denominador e a comparabilidade ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o erro de denominador e a comparabilidade de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o erro de denominador e a comparabilidade."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Manual de Orientações Técnicas da Auditoria Interna (CGU)",
+            "url": "https://wiki.cgu.gov.br/index.php/Manual_de_Orienta%C3%A7%C3%B5es_T%C3%A9cnicas_da_Atividade_de_Auditoria_Interna_Governamental_do_Poder_Executivo_Federal"
+          },
+          {
+            "titulo": "Guias de Avaliação de Políticas Públicas (Casa Civil)",
+            "url": "https://www.gov.br/casacivil/pt-br/assuntos/governanca/avaliacao-de-politicas"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q1-08",
+        "titulo": "Inteligência artificial na triagem de denúncias",
+        "topic_ids": [
+          "C04.05"
+        ],
+        "linhas": 30,
+        "texto_motivador": "Uma ouvidoria quer usar um modelo de linguagem para classificar denúncias, resumir os relatos e arquivar automaticamente as que o sistema considerar sem indícios, para reduzir o estoque acumulado.",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "possibilidades do uso de IA na classificação, busca e síntese de relatos;",
+            "valor": 10
+          },
+          {
+            "texto": "riscos de erros, conteúdo não sustentado, vieses e exposição de informações;",
+            "valor": 10
+          },
+          {
+            "texto": "supervisão humana, rastreabilidade e limites da automação de decisões que afetam direitos.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "IA pode apoiar classificação temática, busca de casos semelhantes e resumo, liberando analistas para a apuração; é preciso comparar com soluções simples (regras, filtros) e medir acertos. Modelos erram, podem produzir afirmações sem base nas fontes e reproduzir vieses, prejudicando grupos; o envio de relatos a serviços externos expõe dados pessoais e a identidade de denunciantes. Arquivar sem revisão humana é decisão que afeta direitos: deve haver revisão, registro do critério e possibilidade de contestação (LGPD, art. 20, sobre decisões automatizadas). A IA deve priorizar, não decidir.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Possibilidades de uso",
+              "conceitos": [
+                "Conceito 0 – Não abordou as possibilidades de uso ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as possibilidades de uso de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as possibilidades de uso."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Riscos",
+              "conceitos": [
+                "Conceito 0 – Não apresentou nenhum(a) risco pertinente correto(a).",
+                "Conceito 1 – Apresentou corretamente apenas 1 risco pertinente.",
+                "Conceito 2 – Apresentou corretamente apenas 2 risco pertinente.",
+                "Conceito 3 – Apresentou corretamente 3 risco pertinente, de forma fundamentada."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Supervisão, rastreabilidade e limites",
+              "conceitos": [
+                "Conceito 0 – Não abordou a supervisão humana e os limites da automação ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a supervisão humana e os limites da automação de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a supervisão humana e os limites da automação."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Lei 13.709/2018 (LGPD)",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+          },
+          {
+            "titulo": "OWASP Top 10 para aplicações com LLM",
+            "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q1-09",
+        "titulo": "Evidência de auditoria e conclusão",
+        "topic_ids": [
+          "C05.03"
+        ],
+        "linhas": 30,
+        "texto_motivador": "Em auditoria sobre a entrega de medicamentos, a equipe recebeu uma planilha do próprio gestor indicando 98% de entregas no prazo. Em visita a três de 120 unidades, encontrou atrasos. O rascunho do relatório concluiu que \"o programa é ineficaz em todo o país\".",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "atributos da evidência de auditoria: suficiência, adequação e confiabilidade;",
+            "valor": 10
+          },
+          {
+            "texto": "distinção entre sinal de risco, evidência e conclusão no caso;",
+            "valor": 10
+          },
+          {
+            "texto": "proporcionalidade da afirmação, limitações e necessidade de aprofundamento.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Evidência suficiente é a quantidade bastante para sustentar a conclusão; adequada é a pertinente ao critério e à pergunta; confiável depende da fonte e da forma de obtenção: dados produzidos pelo auditado sem verificação independente são menos confiáveis que a constatação direta. A planilha e as visitas são sinais divergentes que exigem aprofundamento, por exemplo com amostra maior e confronto com registros de entrega. Três visitas não sustentam conclusão sobre 120 unidades nem sobre o país: a afirmação deve ser proporcional ao escopo e explicitar limitações (Manual de Orientações Técnicas, seção 5.3).",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Suficiência, adequação e confiabilidade",
+              "conceitos": [
+                "Conceito 0 – Não apresentou nenhum(a) atributo explicado e aplicado correto(a).",
+                "Conceito 1 – Apresentou corretamente apenas 1 atributo explicado e aplicado.",
+                "Conceito 2 – Apresentou corretamente apenas 2 atributo explicado e aplicado.",
+                "Conceito 3 – Apresentou corretamente 3 atributo explicado e aplicado, de forma fundamentada."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Sinal de risco × evidência × conclusão",
+              "conceitos": [
+                "Conceito 0 – Não abordou a distinção no caso ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a distinção no caso de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a distinção no caso."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Proporcionalidade e limitações",
+              "conceitos": [
+                "Conceito 0 – Não abordou a proporcionalidade da conclusão e as limitações ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a proporcionalidade da conclusão e as limitações de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a proporcionalidade da conclusão e as limitações."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Manual de Orientações Técnicas da Auditoria Interna (CGU)",
+            "url": "https://wiki.cgu.gov.br/index.php/Manual_de_Orienta%C3%A7%C3%B5es_T%C3%A9cnicas_da_Atividade_de_Auditoria_Interna_Governamental_do_Poder_Executivo_Federal"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q1-10",
+        "titulo": "Avaliação, consultoria e apuração na CGU",
+        "topic_ids": [
+          "C05.01",
+          "C05.05"
+        ],
+        "linhas": 30,
+        "texto_motivador": "A ouvidoria de um ministério recebeu várias manifestações sobre atrasos em um serviço digital. O gestor pediu à CGU ajuda para redesenhar o processo; ao mesmo tempo, uma das manifestações relatava cobrança de propina para acelerar atendimentos.",
+        "comando": "Redija um texto dissertativo acerca do tema apresentado, abordando, necessariamente, os seguintes aspectos:",
+        "aspectos": [
+          {
+            "texto": "avaliação e consultoria como serviços de auditoria interna governamental, e diferença em relação à apuração;",
+            "valor": 10
+          },
+          {
+            "texto": "preservação da autonomia técnica da auditoria e da responsabilidade do gestor no pedido de apoio;",
+            "valor": 10
+          },
+          {
+            "texto": "integração entre ouvidoria, auditoria e correição no tratamento das manifestações.",
+            "valor": 10
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Avaliação é o exame objetivo da governança, dos riscos e dos controles; consultoria é o assessoramento pedido pela gestão para agregar valor, sem que o auditor assuma decisões de gestão. Apuração examina atos e fatos com indícios de irregularidade no uso de recursos públicos. No pedido de redesenho cabe consultoria, mas a decisão e a execução continuam do gestor, preservando a objetividade do auditor (modelo das três linhas). As manifestações recorrentes são insumo de risco para planejar auditorias; o relato de propina deve ser encaminhado para apuração e, se for o caso, à correição, com proteção da identidade do denunciante.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Avaliação, consultoria e apuração",
+              "conceitos": [
+                "Conceito 0 – Não abordou os três serviços e suas diferenças ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou os três serviços e suas diferenças de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente os três serviços e suas diferenças."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Autonomia técnica e responsabilidade do gestor",
+              "conceitos": [
+                "Conceito 0 – Não abordou a autonomia e a responsabilidade ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a autonomia e a responsabilidade de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a autonomia e a responsabilidade."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Integração ouvidoria–auditoria–correição",
+              "conceitos": [
+                "Conceito 0 – Não abordou a integração entre as funções ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a integração entre as funções de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a integração entre as funções."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Manual de Orientações Técnicas da Auditoria Interna (CGU)",
+            "url": "https://wiki.cgu.gov.br/index.php/Manual_de_Orienta%C3%A7%C3%B5es_T%C3%A9cnicas_da_Atividade_de_Auditoria_Interna_Governamental_do_Poder_Executivo_Federal"
+          },
+          {
+            "titulo": "Constituição Federal",
+            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm"
+          }
+        ],
+        "semelhante_a": null
+      }
+    ],
+    "technical_case": [
+      {
+        "id": "Q2-01",
+        "titulo": "API de benefícios com falha de controle de acesso",
+        "topic_ids": [
+          "E02.02",
+          "E04.01"
+        ],
+        "linhas": 60,
+        "texto_motivador": "Um órgão mantém uma API REST em Spring Boot que expõe GET /beneficios/{id}. Usuários se autenticam por OpenID Connect e a API recebe tokens JWT. Um cidadão relatou que, ao trocar o número na URL, viu dados de outra pessoa. A configuração atual exige apenas que a requisição esteja autenticada. Os logs registram o token completo de cada chamada.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Que vulnerabilidade está descrita e por que a autenticação não basta para evitá-la?",
+            "valor": 15
+          },
+          {
+            "texto": "Como corrigir a falha com Spring Security, nos endpoints e nos métodos, incluindo a verificação de propriedade do recurso?",
+            "valor": 20
+          },
+          {
+            "texto": "Que validações o resource server deve fazer sobre o token e qual a diferença entre OAuth 2.0 e OpenID Connect nesse cenário?",
+            "valor": 20
+          },
+          {
+            "texto": "Que medidas de registro, preservação de evidências e tratamento do incidente devem ser adotadas, considerando o log atual?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Trata-se de quebra de controle de acesso (referência direta insegura a objeto), primeira categoria do OWASP Top 10: autenticar diz quem é o usuário, mas não se ele pode acessar aquele recurso. A correção exige autorização no servidor: regras por endpoint e segurança de método (@EnableMethodSecurity com @PreAuthorize ou verificação no serviço), comparando o titular do benefício com o sujeito do token, negando por padrão e evitando permissões excessivas. O resource server deve validar assinatura, emissor, audiência, expiração e escopos. OAuth 2.0 trata de autorização delegada (token de acesso); OpenID Connect acrescenta autenticação federada (ID token). O log não deve gravar tokens (segredos): registrar identificador do usuário, recurso e resultado. Deve-se preservar registros, identificar os dados expostos, corrigir, avaliar comunicação à ANPD e aos titulares (LGPD, art. 48) e testar a correção.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Vulnerabilidade e limite da autenticação",
+              "conceitos": [
+                "Conceito 0 – Não abordou a vulnerabilidade e por que autenticar não basta ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a vulnerabilidade e por que autenticar não basta de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a vulnerabilidade e por que autenticar não basta."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Correção com Spring Security e verificação de propriedade",
+              "conceitos": [
+                "Conceito 0 – Não abordou a correção em endpoints, métodos e propriedade ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a correção em endpoints, métodos e propriedade de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a correção em endpoints, métodos e propriedade."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Validação de token; OAuth 2.0 × OIDC",
+              "conceitos": [
+                "Conceito 0 – Não abordou as validações e a diferença entre os protocolos ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as validações e a diferença entre os protocolos de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as validações e a diferença entre os protocolos."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Registro, evidências e incidente",
+              "conceitos": [
+                "Conceito 0 – Não abordou as medidas de registro e tratamento do incidente ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as medidas de registro e tratamento do incidente de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as medidas de registro e tratamento do incidente."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "OWASP Top 10",
+            "url": "https://owasp.org/Top10/"
+          },
+          {
+            "titulo": "Spring Security Reference",
+            "url": "https://docs.spring.io/spring-security/reference/"
+          },
+          {
+            "titulo": "Lei 13.709/2018 (LGPD)",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q2-02",
+        "titulo": "Lote de conciliação que duplica pagamentos",
+        "topic_ids": [
+          "E03.03"
+        ],
+        "linhas": 60,
+        "texto_motivador": "Um job Spring Batch lê diariamente um arquivo CSV com 2 milhões de pagamentos, transforma os registros e grava na tabela de pagamentos conciliados, em chunks de 1.000. Ontem o job falhou no registro 1.250.000. A equipe apagou o histórico de execução e rodou o job do início. Resultado: 1.249.000 pagamentos duplicados.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Explique a organização do processamento em job, step e chunk e o papel do controle transacional por chunk.",
+            "valor": 15
+          },
+          {
+            "texto": "Por que a reexecução gerou duplicação e como o JobRepository e o ExecutionContext permitem reiniciar a partir do ponto de falha?",
+            "valor": 20
+          },
+          {
+            "texto": "Que medidas tornam a gravação idempotente e previnem perdas e duplicações em reprocessamento?",
+            "valor": 20
+          },
+          {
+            "texto": "Que controles de qualidade, conciliação e rastreabilidade deveriam existir ao final do lote?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Um job é composto de steps; num step orientado a chunk, o reader lê, o processor transforma e o writer grava lotes, com commit a cada chunk. Ao falhar, os chunks já confirmados permanecem gravados. O JobRepository guarda o estado das execuções e o ExecutionContext guarda a posição do reader; reiniciar a mesma instância do job retoma do último chunk confirmado. Apagar o histórico e começar do zero regravou o que já estava confirmado. Para idempotência: chave natural com restrição de unicidade, gravação do tipo upsert, writer que ignora registros já processados e identificador do arquivo de origem. Ao final: contagem lida × gravada × rejeitada, somatório de valores, registro de rejeitos e trilha que ligue cada pagamento à linha de origem.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Job, step, chunk e transação",
+              "conceitos": [
+                "Conceito 0 – Não abordou a organização e o controle transacional ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a organização e o controle transacional de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a organização e o controle transacional."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Causa da duplicação e reinício",
+              "conceitos": [
+                "Conceito 0 – Não abordou a causa e o mecanismo de reinício ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a causa e o mecanismo de reinício de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a causa e o mecanismo de reinício."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Idempotência",
+              "conceitos": [
+                "Conceito 0 – Não apresentou nenhum(a) medida de idempotência correto(a).",
+                "Conceito 1 – Apresentou corretamente apenas 1 medida de idempotência.",
+                "Conceito 2 – Apresentou corretamente apenas 2 medida de idempotência.",
+                "Conceito 3 – Apresentou corretamente 3 medida de idempotência, de forma fundamentada."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Qualidade, conciliação e rastreabilidade",
+              "conceitos": [
+                "Conceito 0 – Não abordou os controles de fim de lote ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou os controles de fim de lote de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente os controles de fim de lote."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Spring Batch Reference",
+            "url": "https://docs.spring.io/spring-batch/reference/"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q2-03",
+        "titulo": "Consulta lenta com JPA e paginação",
+        "topic_ids": [
+          "E03.01",
+          "E03.02"
+        ],
+        "linhas": 60,
+        "texto_motivador": "Uma tela lista processos e o nome do interessado de cada um. O repositório Spring Data JPA usa findAll() e o relacionamento Processo → Interessado é mapeado com carregamento sob demanda (LAZY). Com 300 mil processos, a tela leva 40 segundos e o banco registra milhares de consultas por acesso. Um desenvolvedor propôs trocar todos os relacionamentos para EAGER.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Identifique o problema de desempenho descrito e explique sua causa.",
+            "valor": 20
+          },
+          {
+            "texto": "Por que trocar todos os relacionamentos para EAGER não é uma boa solução? Que alternativas a JPA e o Spring Data JPA oferecem?",
+            "valor": 20
+          },
+          {
+            "texto": "Como paginação e índices contribuem para a solução?",
+            "valor": 15
+          },
+          {
+            "texto": "Como diagnosticar a consulta no banco e verificar a melhoria?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "É o problema N+1: uma consulta traz os processos e, para cada um, outra consulta busca o interessado ao acessar o relacionamento LAZY. EAGER global carrega dados desnecessários em todas as telas, piora outras consultas e pode gerar produtos cartesianos. Alternativas: JOIN FETCH na consulta JPQL, @EntityGraph no repositório ou projeção DTO só com as colunas necessárias. Paginação (Pageable) limita a quantidade de linhas por tela; em consultas com fetch de coleções, a paginação deve ser feita com cuidado. Índices nas colunas de junção e de filtro/ordenação evitam varreduras completas. O diagnóstico usa o log de SQL da aplicação, o plano de execução (EXPLAIN) e a medição de tempo antes e depois.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Problema N+1 e causa",
+              "conceitos": [
+                "Conceito 0 – Não abordou o problema e sua causa ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o problema e sua causa de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o problema e sua causa."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "EAGER × alternativas da JPA",
+              "conceitos": [
+                "Conceito 0 – Não abordou a crítica ao EAGER e as alternativas ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a crítica ao EAGER e as alternativas de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a crítica ao EAGER e as alternativas."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Paginação e índices",
+              "conceitos": [
+                "Conceito 0 – Não abordou a contribuição de paginação e índices ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a contribuição de paginação e índices de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a contribuição de paginação e índices."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Diagnóstico",
+              "conceitos": [
+                "Conceito 0 – Não abordou o diagnóstico e a verificação ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o diagnóstico e a verificação de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o diagnóstico e a verificação."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Jakarta Persistence 3.1",
+            "url": "https://jakarta.ee/specifications/persistence/3.1/"
+          },
+          {
+            "titulo": "Spring Data JPA Reference",
+            "url": "https://docs.spring.io/spring-data/jpa/reference/"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q2-04",
+        "titulo": "Número de protocolo duplicado sob concorrência",
+        "topic_ids": [
+          "E01.03",
+          "E03.01"
+        ],
+        "linhas": 60,
+        "texto_motivador": "Um serviço Java gera o número de protocolo assim: lê o maior número gravado na tabela, soma 1 e grava o novo protocolo. Em dias de pico, com várias instâncias da aplicação atrás de um balanceador, surgiram protocolos repetidos. Um desenvolvedor propôs marcar o método como synchronized.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Explique a condição de corrida descrita.",
+            "valor": 15
+          },
+          {
+            "texto": "Por que synchronized não resolve o problema nesse ambiente?",
+            "valor": 20
+          },
+          {
+            "texto": "Que soluções no banco de dados e na camada de persistência garantem unicidade e correção?",
+            "valor": 20
+          },
+          {
+            "texto": "Como testar a correção sob requisições concorrentes?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Duas requisições leem o mesmo máximo antes que qualquer uma grave, e ambas gravam o mesmo número: o resultado depende da ordem de execução. synchronized só serializa threads dentro de uma JVM; com várias instâncias, cada uma tem seu próprio monitor e a corrida continua entre processos. Soluções: sequence do banco, restrição de unicidade no número, bloqueio pessimista da linha de controle ou bloqueio otimista com @Version e nova tentativa em caso de conflito; manter a operação dentro de uma transação. Teste: disparar muitas requisições em paralelo contra mais de uma instância e verificar ausência de duplicados e de exceções não tratadas.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Condição de corrida",
+              "conceitos": [
+                "Conceito 0 – Não abordou a condição de corrida ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a condição de corrida de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a condição de corrida."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Limite do synchronized",
+              "conceitos": [
+                "Conceito 0 – Não abordou por que synchronized não basta ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou por que synchronized não basta de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente por que synchronized não basta."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Soluções no banco e na persistência",
+              "conceitos": [
+                "Conceito 0 – Não apresentou nenhum(a) solução correta correto(a).",
+                "Conceito 1 – Apresentou corretamente apenas 1 solução correta.",
+                "Conceito 2 – Apresentou corretamente apenas 2 solução correta.",
+                "Conceito 3 – Apresentou corretamente 3 solução correta, de forma fundamentada."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Teste concorrente",
+              "conceitos": [
+                "Conceito 0 – Não abordou o teste sob concorrência ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o teste sob concorrência de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o teste sob concorrência."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Jakarta Persistence 3.1",
+            "url": "https://jakarta.ee/specifications/persistence/3.1/"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q2-05",
+        "titulo": "Assistente com recuperação de documentos (RAG)",
+        "topic_ids": [
+          "E02.04"
+        ],
+        "linhas": 60,
+        "texto_motivador": "A CGU quer um assistente que responda a dúvidas de gestores com base em normas e relatórios. O desenho prevê dividir os documentos em trechos, gerar representações vetoriais, buscar os trechos mais próximos da pergunta e enviá-los a um modelo de linguagem. O assistente também poderá ler páginas da internet e consultar, por meio de uma ferramenta, a base de processos do usuário.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Explique o funcionamento da busca semântica com representações vetoriais e da geração aumentada por recuperação.",
+            "valor": 20
+          },
+          {
+            "texto": "Como avaliar a qualidade das respostas e a fidelidade às fontes?",
+            "valor": 15
+          },
+          {
+            "texto": "Explique o risco de instruções maliciosas em conteúdo externo e as medidas de proteção.",
+            "valor": 20
+          },
+          {
+            "texto": "Que limites de autorização e supervisão devem valer para a ferramenta que consulta a base de processos?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Os trechos e a pergunta são convertidos em vetores; a busca por similaridade recupera os trechos semanticamente mais próximos, que vão ao modelo como contexto, para que a resposta se apoie em fontes atualizadas e citáveis. Avaliação: conjunto de perguntas com respostas de referência, verificação de que cada afirmação está nos trechos citados, medição de recuperação e de respostas não sustentadas. Conteúdo externo pode conter instruções que o modelo trata como comandos (injeção de prompt): separar dados de instruções, não dar ao modelo permissões além das do usuário, filtrar saídas e exigir confirmação para ações. A ferramenta deve usar as credenciais e os limites do próprio usuário, registrar as chamadas e nunca executar ações sensíveis sem revisão humana.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Busca vetorial e RAG",
+              "conceitos": [
+                "Conceito 0 – Não abordou o funcionamento ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o funcionamento de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o funcionamento."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Avaliação das respostas e das fontes",
+              "conceitos": [
+                "Conceito 0 – Não abordou a avaliação ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a avaliação de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a avaliação."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Injeção de instruções e proteção",
+              "conceitos": [
+                "Conceito 0 – Não abordou o risco e as medidas ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o risco e as medidas de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o risco e as medidas."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Autorização e supervisão da ferramenta",
+              "conceitos": [
+                "Conceito 0 – Não abordou os limites de autorização e supervisão ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou os limites de autorização e supervisão de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente os limites de autorização e supervisão."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "OWASP Top 10 para aplicações com LLM",
+            "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
+          },
+          {
+            "titulo": "Lei 13.709/2018 (LGPD)",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q2-06",
+        "titulo": "Planejamento da contratação de desenvolvimento de software",
+        "topic_ids": [
+          "E04.05"
+        ],
+        "linhas": 60,
+        "texto_motivador": "Um órgão do SISP quer contratar uma empresa para desenvolver e manter um sistema de gestão de convênios. A área de TI elaborou sozinha o termo de referência, sem estudo técnico preliminar, e estimou o preço com três propostas de empresas que já prestam serviços ao órgão. O contrato prevê pagamento mensal fixo, sem indicadores de entrega, e não trata da titularidade do código-fonte.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Que normas regem a contratação e como deve ser composta a equipe de planejamento?",
+            "valor": 15
+          },
+          {
+            "texto": "Qual a função do estudo técnico preliminar e o que ele deveria comparar nesse caso?",
+            "valor": 20
+          },
+          {
+            "texto": "Que falhas há na pesquisa de preços e no modelo de pagamento? Como corrigi-las?",
+            "valor": 20
+          },
+          {
+            "texto": "Que cláusulas protegem o órgão quanto a propriedade intelectual, acesso ao código e aos dados e plano de saída?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "A contratação segue a Lei 14.133/2021 e, nos órgãos do SISP, a IN SGD/ME 94/2022, que detalha o processo de contratação de soluções de TIC; a equipe de planejamento reúne integrantes requisitante, técnico e administrativo. O estudo técnico preliminar (Lei 14.133/2021, art. 6º, XX, e art. 18) demonstra a necessidade e compara soluções: desenvolvimento próprio, contratação, software existente ou compartilhamento com outro órgão, com custo total de propriedade. A pesquisa de preços deve seguir parâmetros como painéis oficiais e contratações similares (art. 23), e não só fornecedores escolhidos. Pagamento deve estar vinculado a entregas verificáveis e níveis de serviço, com fiscalização. O contrato deve assegurar titularidade do código e da documentação, acesso aos dados, transferência de conhecimento e plano de saída para evitar dependência.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Normas e equipe de planejamento",
+              "conceitos": [
+                "Conceito 0 – Não abordou as normas e a composição da equipe ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as normas e a composição da equipe de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as normas e a composição da equipe."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Estudo técnico preliminar",
+              "conceitos": [
+                "Conceito 0 – Não abordou a função do ETP e as alternativas ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a função do ETP e as alternativas de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a função do ETP e as alternativas."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Pesquisa de preços e pagamento",
+              "conceitos": [
+                "Conceito 0 – Não abordou as falhas e as correções ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as falhas e as correções de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as falhas e as correções."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Propriedade intelectual e plano de saída",
+              "conceitos": [
+                "Conceito 0 – Não apresentou nenhum(a) cláusula pertinente correto(a).",
+                "Conceito 1 – Apresentou corretamente apenas 1 cláusula pertinente.",
+                "Conceito 2 – Apresentou corretamente apenas 2 cláusula pertinente.",
+                "Conceito 3 – Apresentou corretamente 3 cláusula pertinente, de forma fundamentada."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Lei 14.133/2021",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm"
+          },
+          {
+            "titulo": "IN SGD/ME 94/2022",
+            "url": "https://www.gov.br/governodigital/pt-br/contratacoes-de-tic/legislacao/instrucao-normativa-sgd-me-no-94-de-23-de-dezembro-de-2022"
+          }
+        ],
+        "semelhante_a": {
+          "prova": "Cebraspe — TCE-PR 2024, Auditor (TI), parecer sobre contratação de TIC",
+          "url": "https://cdn.cebraspe.org.br/concursos/TCE_PR_24_AUDITOR/arquivos/TCEPR_CARGO_5_DISC.PDF"
+        }
+      },
+      {
+        "id": "Q2-07",
+        "titulo": "Publicação de dados com pseudonimização",
+        "topic_ids": [
+          "E03.04"
+        ],
+        "linhas": 60,
+        "texto_motivador": "Um sistema de fiscalização guarda dados de servidores e de empresas investigadas, com CPF, endereço e observações livres dos auditores. A equipe quer disponibilizar uma cópia diária da base para pesquisadores, trocando o CPF por um hash SHA-256 do próprio CPF. As cópias de segurança antigas ficam sem prazo de descarte.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Que princípios de proteção de dados devem orientar a disponibilização (finalidade, minimização, acesso e segregação)?",
+            "valor": 20
+          },
+          {
+            "texto": "O hash do CPF garante anonimização? Explique pseudonimização e o risco de reidentificação.",
+            "valor": 20
+          },
+          {
+            "texto": "Que proteções de criptografia, retenção e descarte devem valer para a base e as cópias?",
+            "valor": 15
+          },
+          {
+            "texto": "Como aplicar a proteção de dados desde a concepção nas próximas versões do sistema?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "A disponibilização deve ter finalidade definida e compatível, usar só os dados necessários (excluir endereço e observações livres, que podem conter dados sensíveis) e restringir acesso por perfil, em ambiente segregado (LGPD, art. 6º). O hash de CPF sem segredo é pseudonimização fraca: o espaço de CPFs é pequeno e pode ser recalculado. Pseudonimização mantém a possibilidade de reassociação por informação adicional guardada à parte (LGPD, art. 13, § 4º), e o dado continua pessoal; anonimização exige irreversibilidade por meios razoáveis. Criptografia em trânsito e em repouso, inclusive nas cópias; política de retenção com descarte seguro. Desde a concepção: minimização por padrão, campos estruturados em vez de texto livre, registros de acesso e avaliação de impacto.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Princípios aplicados",
+              "conceitos": [
+                "Conceito 0 – Não abordou os princípios aplicados ao caso ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou os princípios aplicados ao caso de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente os princípios aplicados ao caso."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Hash, pseudonimização e reidentificação",
+              "conceitos": [
+                "Conceito 0 – Não abordou a crítica ao hash e os conceitos ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a crítica ao hash e os conceitos de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a crítica ao hash e os conceitos."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Criptografia, retenção e descarte",
+              "conceitos": [
+                "Conceito 0 – Não abordou as proteções ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as proteções de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as proteções."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Proteção desde a concepção",
+              "conceitos": [
+                "Conceito 0 – Não abordou a aplicação desde a concepção ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a aplicação desde a concepção de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a aplicação desde a concepção."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Lei 13.709/2018 (LGPD)",
+            "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q2-08",
+        "titulo": "Integração por mensageria com falhas e repetição",
+        "topic_ids": [
+          "E02.03"
+        ],
+        "linhas": 60,
+        "texto_motivador": "Ao aprovar um convênio, o sistema A grava a aprovação no banco e, em seguida, publica um evento para o sistema B liberar o recurso. Às vezes o banco grava e a publicação falha; em outras, o sistema B recebe o mesmo evento duas vezes e libera o recurso em dobro. A equipe vai acrescentar um campo novo ao evento.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Explique por que gravar no banco e publicar o evento em operações separadas gera inconsistência e como o padrão de caixa de saída (outbox) a resolve.",
+            "valor": 20
+          },
+          {
+            "texto": "Por que mensagens podem ser entregues mais de uma vez e como tornar o consumidor idempotente?",
+            "valor": 20
+          },
+          {
+            "texto": "Como lidar com falhas permanentes de processamento e com a consistência eventual entre os sistemas?",
+            "valor": 15
+          },
+          {
+            "texto": "Como evoluir o contrato do evento sem quebrar os consumidores?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Sem transação distribuída, a gravação pode ser confirmada e a publicação falhar (ou o contrário). No padrão outbox, o evento é gravado numa tabela na mesma transação da aprovação e publicado depois por um processo que repete até conseguir. Corretores costumam garantir entrega pelo menos uma vez: repetições ocorrem após falhas de confirmação. O consumidor idempotente registra o identificador de cada evento já processado e ignora repetições, ou usa operações naturalmente idempotentes. Falhas permanentes vão para fila de mensagens mortas, com alerta e reprocessamento controlado; os sistemas convergem com atraso, o que deve ser aceito pelo negócio e monitorado. Contratos evoluem com compatibilidade retroativa: campos novos opcionais, versão no evento e consumidores tolerantes a campos desconhecidos.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Inconsistência e outbox",
+              "conceitos": [
+                "Conceito 0 – Não abordou o problema e o padrão outbox ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o problema e o padrão outbox de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o problema e o padrão outbox."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Entrega repetida e idempotência",
+              "conceitos": [
+                "Conceito 0 – Não abordou a repetição e o consumidor idempotente ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a repetição e o consumidor idempotente de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a repetição e o consumidor idempotente."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Falhas permanentes e consistência eventual",
+              "conceitos": [
+                "Conceito 0 – Não abordou o tratamento de falhas e a consistência ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o tratamento de falhas e a consistência de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o tratamento de falhas e a consistência."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Evolução de contrato",
+              "conceitos": [
+                "Conceito 0 – Não abordou a evolução compatível do contrato ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a evolução compatível do contrato de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a evolução compatível do contrato."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "Spring Boot — Messaging",
+            "url": "https://docs.spring.io/spring-boot/reference/messaging/index.html"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q2-09",
+        "titulo": "Esteira de entrega com dependência vulnerável",
+        "topic_ids": [
+          "E04.03",
+          "E04.02"
+        ],
+        "linhas": 60,
+        "texto_motivador": "Uma aplicação Spring Boot é implantada por pipeline que compila, executa testes unitários e publica direto em produção. Foi divulgada uma vulnerabilidade crítica em uma biblioteca usada pela aplicação. A senha do banco de produção está no repositório, e a homologação usa cópia dos dados reais. Não há como voltar à versão anterior rapidamente.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Que práticas de DevSecOps e de segurança da cadeia de dependências deveriam existir na esteira?",
+            "valor": 20
+          },
+          {
+            "texto": "Que tipos de teste e de análise devem compor a verificação antes da implantação?",
+            "valor": 15
+          },
+          {
+            "texto": "Como corrigir a gestão de segredos e a segregação de ambientes?",
+            "valor": 20
+          },
+          {
+            "texto": "Como planejar mudanças, reversão e observabilidade para manter a continuidade do serviço?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "A esteira deve analisar dependências (inventário e varredura de vulnerabilidades conhecidas, com bloqueio para falhas críticas), fazer análise estática e manter atualizações frequentes (OWASP Top 10: componentes vulneráveis). Verificação: testes unitários, de integração, de contrato e de aceitação, revisão de código e testes de segurança autorizados. Segredos ficam fora do repositório, em cofre, com rotação imediata da senha exposta; ambientes segregados, com dados de teste sintéticos ou mascarados. Implantação gradual com possibilidade de reversão (versões imutáveis, blue-green ou canário), migrações de banco compatíveis e monitoramento por logs, métricas e rastreamento para detectar falhas e decidir a reversão.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "DevSecOps e cadeia de dependências",
+              "conceitos": [
+                "Conceito 0 – Não abordou as práticas ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as práticas de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as práticas."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Testes e análises",
+              "conceitos": [
+                "Conceito 0 – Não apresentou nenhum(a) tipo de teste ou análise pertinente correto(a).",
+                "Conceito 1 – Apresentou corretamente apenas 1 tipo de teste ou análise pertinente.",
+                "Conceito 2 – Apresentou corretamente apenas 2 tipo de teste ou análise pertinente.",
+                "Conceito 3 – Apresentou corretamente 3 tipo de teste ou análise pertinente, de forma fundamentada."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Segredos e segregação de ambientes",
+              "conceitos": [
+                "Conceito 0 – Não abordou a correção de segredos e ambientes ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a correção de segredos e ambientes de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a correção de segredos e ambientes."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Mudanças, reversão e observabilidade",
+              "conceitos": [
+                "Conceito 0 – Não abordou o planejamento de continuidade ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou o planejamento de continuidade de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente o planejamento de continuidade."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "OWASP ASVS",
+            "url": "https://owasp.org/www-project-application-security-verification-standard/"
+          },
+          {
+            "titulo": "OWASP Top 10",
+            "url": "https://owasp.org/Top10/"
+          }
+        ],
+        "semelhante_a": null
+      },
+      {
+        "id": "Q2-10",
+        "titulo": "Modernização de sistema legado",
+        "topic_ids": [
+          "E01.05",
+          "E02.01"
+        ],
+        "linhas": 60,
+        "texto_motivador": "Um sistema monolítico de 15 anos, sem testes automatizados e com documentação desatualizada, sustenta um serviço usado por milhões de cidadãos. A direção quer reescrevê-lo do zero em microsserviços em seis meses. A equipe tem oito pessoas e o sistema se integra a outros cinco órgãos.",
+        "comando": "Com base na situação hipotética apresentada, redija um texto dissertativo, respondendo, de maneira fundamentada, aos seguintes questionamentos:",
+        "aspectos": [
+          {
+            "texto": "Avalie a proposta de reescrita total considerando débito técnico, riscos e continuidade do serviço.",
+            "valor": 20
+          },
+          {
+            "texto": "Compare monolito e microsserviços quanto a acoplamento, escalabilidade, operação e custo, considerando as restrições da equipe.",
+            "valor": 20
+          },
+          {
+            "texto": "Proponha uma estratégia de modernização incremental, incluindo testes de caracterização e compatibilidade com os órgãos integrados.",
+            "valor": 15
+          },
+          {
+            "texto": "Que medidas de observabilidade e de gestão de mudanças reduzem o impacto de falhas durante a transição?",
+            "valor": 15
+          }
+        ],
+        "espelho": {
+          "texto_padrao": "Reescrita total sem testes nem documentação arrisca perder regras de negócio implícitas, atrasar e interromper o serviço; o débito técnico deve ser pago de forma priorizada. Microsserviços reduzem acoplamento de implantação e permitem escalar partes, mas exigem maturidade operacional (observabilidade, automação, consistência distribuída) que uma equipe de oito pessoas dificilmente sustenta; um monolito modular pode ser suficiente. Estratégia incremental: testes de caracterização que fixem o comportamento atual, extração gradual de módulos (estrangulamento), contratos de integração versionados e manutenção da compatibilidade com os cinco órgãos. Durante a transição: logs, métricas e rastreamento, implantação gradual, plano de reversão e comunicação de mudanças.",
+          "quesitos": [
+            {
+              "id": "2.1",
+              "texto": "Avaliação da reescrita total",
+              "conceitos": [
+                "Conceito 0 – Não abordou os riscos e o débito técnico ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou os riscos e o débito técnico de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente os riscos e o débito técnico."
+              ]
+            },
+            {
+              "id": "2.2",
+              "texto": "Monolito × microsserviços",
+              "conceitos": [
+                "Conceito 0 – Não abordou a comparação considerando as restrições ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a comparação considerando as restrições de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a comparação considerando as restrições."
+              ]
+            },
+            {
+              "id": "2.3",
+              "texto": "Modernização incremental",
+              "conceitos": [
+                "Conceito 0 – Não abordou a estratégia incremental ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou a estratégia incremental de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente a estratégia incremental."
+              ]
+            },
+            {
+              "id": "2.4",
+              "texto": "Observabilidade e mudanças",
+              "conceitos": [
+                "Conceito 0 – Não abordou as medidas de transição ou o fez de forma totalmente equivocada.",
+                "Conceito 1 – Abordou as medidas de transição de forma parcialmente correta ou insuficiente.",
+                "Conceito 2 – Abordou corretamente as medidas de transição."
+              ]
+            }
+          ]
+        },
+        "fontes": [
+          {
+            "titulo": "SWEBOK (IEEE)",
+            "url": "https://www.computer.org/education/bodies-of-knowledge/software-engineering"
+          },
+          {
+            "titulo": "Spring Boot Reference",
+            "url": "https://docs.spring.io/spring-boot/reference/"
+          }
+        ],
+        "semelhante_a": null
+      }
+    ]
   }
 }

@@ -54,3 +54,11 @@ def test_every_topic_has_subitems():
 
 def test_next_two_weeks_have_materials():
     assert NEXT_TWO_WEEKS <= set(content.guidance()["materiais"])
+
+
+def test_enough_themes_until_exam():
+    temas = content.guidance()["temas"]
+    assert len(temas["complementary"]) >= 10
+    assert len(temas["technical_case"]) >= 10
+    subjects = {t.split(".")[0] for th in temas["complementary"] for t in th["topic_ids"]}
+    assert subjects == {"C01", "C02", "C03", "C04", "C05"}
