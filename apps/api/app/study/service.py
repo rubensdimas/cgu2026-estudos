@@ -7,6 +7,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.errors import ApiError
+from app.guidance.service import current_theme
 from app.models import Occurrence, SessionTopic, StudySession, Topic
 
 Activity = Literal["theory", "questions", "review", "essay"]
@@ -109,6 +110,9 @@ def create_session(db: Session, data: SessionIn, today: date) -> tuple[StudySess
             raise ApiError(422, "unknown_occurrence", "Bloco inexistente.", {"occurrence_id": "Inexistente."})
         if occurrence.status == "skipped":
             raise ApiError(422, "occurrence_skipped", "Bloco dispensado: reabra antes de registrar.")
+    if occurrence is not None and occurrence.theme_id is None and occurrence.slot.activity == "essay":
+        # Fixa o tema exibido antes que esta sessão o marque como feito e mude o rodízio.
+        occurrence.theme_id = current_theme(db, occurrence)
     session = StudySession(
         id=data.id,
         occurrence_id=data.occurrence_id,
