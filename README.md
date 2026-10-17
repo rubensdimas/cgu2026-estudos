@@ -35,10 +35,15 @@ Carga horária, ciclo, metas, XP e etapas são **propostas de produto**, não de
 
 ## Como rodar
 
+Depois de clonar o projeto, crie o `.env` e configure a senha do PostgreSQL. Para iniciar o app localmente:
+
 ```bash
-cp .env.example .env                          # trocar POSTGRES_PASSWORD
-docker compose up -d --build                  # app em http://127.0.0.1:8082
+cp .env.example .env
+# edite .env e defina POSTGRES_PASSWORD
+./scripts/start-local.sh                      # app em http://127.0.0.1:8082
 ```
+
+Para restaurar um backup em outra máquina, coloque o arquivo `.dump` em `BACKUP_DIR` no `.env` (padrão: `./backups/`) e execute `./scripts/start-local.sh --restore`. O script escolhe o arquivo `cgu-*.dump` mais recente e informa o erro antes de iniciar serviços se não encontrar nenhum. A restauração só ocorre em um banco vazio; se o banco já tiver tabelas, o script cancela para preservar os dados. Depois de restaurar, ele inicia o app normalmente.
 
 Para coexistir com outros projetos, escolha uma porta TCP livre em `APP_PORT` no `.env` da raiz (por exemplo, `APP_PORT=18082`). Ausente ou vazia usa `8082`; a variável do terminal tem precedência, inclusive vazia. O app fica acessível somente em `127.0.0.1`. Cada projeto mantém seu PostgreSQL; este usa `db:5432` apenas entre containers, sem porta no host. O projeto Compose `cgu2026`, o volume existente `cgu2026_pgdata`, os bancos `cgu` e `cgu_test` e os backups são preservados.
 
@@ -58,6 +63,7 @@ docker compose --profile test run --rm test   # API: unitários + integração (
 cd apps/api && uv run pytest tests/unit       # só unitários, sem banco
 cd apps/web && npm test                       # frontend
 python3 -m unittest discover -s tests/ops -p test_compose.py -v   # configuração Compose, na raiz, sem subir containers
+python3 -m unittest tests.ops.test_start_local -v                   # fluxo do script local, com Docker simulado
 ```
 
 Teste de arranque, na raiz, com Docker ativo e a imagem atual construída:
