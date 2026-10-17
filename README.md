@@ -57,8 +57,17 @@ Testes:
 docker compose --profile test run --rm test   # API: unitários + integração (banco cgu_test)
 cd apps/api && uv run pytest tests/unit       # só unitários, sem banco
 cd apps/web && npm test                       # frontend
-python3 -m unittest discover -s tests/ops -v   # contrato Compose, na raiz, sem subir containers
+python3 -m unittest discover -s tests/ops -p test_compose.py -v   # configuração Compose, na raiz, sem subir containers
 ```
+
+Teste de arranque, na raiz, com Docker ativo e a imagem atual construída:
+
+```bash
+docker compose build app
+python3 -m unittest discover -s tests/ops -p test_startup.py -v
+```
+
+Esse teste sobe PostgreSQL descartável em memória, com projeto/rede exclusivos e senha fictícia, sem acessar os bancos ou volumes existentes. Reproduz a revisão `5c9e1f3a7b21` já aplicada e verifica o arranque normal da imagem, a saúde HTTP e o catálogo persistido. Os containers temporários são removidos ao terminar. `CGU_STARTUP_IMAGE` permite escolher outra imagem runtime local.
 
 Backups: um `pg_dump` ao subir e a cada 24 h em `./backups` (ou `BACKUP_DIR`), mantendo 14 arquivos. Ensaiar a restauração sem tocar no banco principal: `scripts/restore-check.sh backups/<arquivo>.dump`.
 
