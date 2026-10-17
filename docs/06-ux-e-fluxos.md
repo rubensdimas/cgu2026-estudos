@@ -68,7 +68,7 @@ Desktop: navegação lateral com ícones `lucide` e barra roxa no item ativo. Ce
 
 ## Fluxo A — Primeira utilização (09/10/2026)
 
-`docker compose up -d` → abrir `http://127.0.0.1:8080` → app já tem catálogo, plano e template inicial (seed) → tela Hoje oferece **“Gerar semana”** (parcial: S13–S15) → **“Abrir o dia”** → missão com 3 blocos e check-out. Opcional: instalar como app no celular via endereço Tailscale. Sem formulário de cadastro.
+`docker compose up -d` → abrir `http://127.0.0.1:8082` (ou a porta escolhida em `APP_PORT`) → app já tem catálogo, plano e template inicial (seed) → tela Hoje oferece **“Gerar semana”** (parcial: S13–S15) → **“Abrir o dia”** → missão com 3 blocos e check-out. Opcional: instalar como app no celular via endereço Tailscale. Sem formulário de cadastro.
 
 ## Fluxo B — Dia típico
 
