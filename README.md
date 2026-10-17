@@ -37,8 +37,19 @@ Carga horária, ciclo, metas, XP e etapas são **propostas de produto**, não de
 
 ```bash
 cp .env.example .env                          # trocar POSTGRES_PASSWORD
-docker compose up -d --build                  # app em http://127.0.0.1:8080
+docker compose up -d --build                  # app em http://127.0.0.1:8082
 ```
+
+Para coexistir com outros projetos, escolha uma porta TCP livre em `APP_PORT` no `.env` da raiz (por exemplo, `APP_PORT=18082`). Ausente ou vazia usa `8082`; a variável do terminal tem precedência, inclusive vazia. O app fica acessível somente em `127.0.0.1`. Cada projeto mantém seu PostgreSQL; este usa `db:5432` apenas entre containers, sem porta no host. O projeto Compose `cgu2026`, o volume existente `cgu2026_pgdata`, os bancos `cgu` e `cgu_test` e os backups são preservados.
+
+Para desenvolver o frontend com recarga automática, mantenha o Compose ativo e execute:
+
+```bash
+cd apps/web
+npm run dev
+```
+
+O proxy `/api` do Vite usa a mesma `APP_PORT` do `.env` da raiz, mesmo iniciado em `apps/web`, com a mesma precedência do terminal e padrão `8082`. Use o mesmo override nos dois comandos se configurar a porta pelo terminal. Depois de mudar a porta, reinicie o Vite e recrie o app com `docker compose up -d app` na raiz. A leitura dessa configuração não disponibiliza a senha do banco ao frontend; o build de produção também funciona sem `.env`, inclusive no Docker.
 
 Testes:
 
@@ -46,11 +57,12 @@ Testes:
 docker compose --profile test run --rm test   # API: unitários + integração (banco cgu_test)
 cd apps/api && uv run pytest tests/unit       # só unitários, sem banco
 cd apps/web && npm test                       # frontend
+python3 -m unittest discover -s tests/ops -v   # contrato Compose, na raiz, sem subir containers
 ```
 
 Backups: um `pg_dump` ao subir e a cada 24 h em `./backups` (ou `BACKUP_DIR`), mantendo 14 arquivos. Ensaiar a restauração sem tocar no banco principal: `scripts/restore-check.sh backups/<arquivo>.dump`.
 
-Celular: instalar o Tailscale no Mac e no celular (mesma conta), rodar `tailscale serve --bg 8080`, acrescentar o nome `*.ts.net` mostrado por `tailscale serve status` em `ALLOWED_HOSTS` no `.env` e executar `docker compose up -d app`. Abrir o endereço no celular e usar “Adicionar à tela de início”. Nunca usar `tailscale funnel`: o app não tem login. O Mac precisa estar ligado para o celular acessar.
+Celular: instalar o Tailscale no Mac e no celular (mesma conta), rodar `tailscale serve --bg 8082` (ou a porta escolhida em `APP_PORT`), acrescentar o nome `*.ts.net` mostrado por `tailscale serve status` em `ALLOWED_HOSTS` no `.env` e executar `docker compose up -d app`. Abrir o endereço no celular e usar “Adicionar à tela de início”. Nunca usar `tailscale funnel`: o app não tem login. O Mac precisa estar ligado para o celular acessar.
 
 ## Changelog
 
