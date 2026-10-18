@@ -2,9 +2,10 @@ import { useState, type FormEvent } from 'react'
 
 import { useDayOffs, useDeleteDayOff, usePutDayOff } from '../../shared/api/hooks'
 import { formatDay } from '../../shared/format'
+import { QueryState } from '../../shared/ui/QueryState'
 
 export function SettingsPage() {
-  const { data } = useDayOffs()
+  const dayOffs = useDayOffs()
   const put = usePutDayOff()
   const del = useDeleteDayOff()
   const [day, setDay] = useState('')
@@ -33,8 +34,9 @@ export function SettingsPage() {
           <button className="rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">Marcar folga</button>
         </form>
         {put.error && <p role="alert" className="mt-2 text-sm text-destructive">{put.error.message}</p>}
+        {!dayOffs.data && <div className="mt-3"><QueryState title="Não foi possível carregar as folgas" query={dayOffs} /></div>}
         <ul className="mt-3 space-y-1">
-          {data?.items.map((d) => (
+          {dayOffs.data?.items.map((d) => (
             <li key={d.day} className="flex items-center gap-2 text-sm">
               <span className="flex-1">{formatDay(d.day)} · {d.reason}</span>
               <button onClick={() => del.mutate(d.day)} className="text-muted-foreground">Remover</button>

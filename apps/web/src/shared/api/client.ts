@@ -13,6 +13,9 @@ export class ApiError extends Error {
 
 export class NetworkError extends Error {}
 
+/** Registro alterado em outro lugar: a versão enviada não é mais a atual. */
+export const isConflict = (e: unknown): e is ApiError => e instanceof ApiError && e.status === 409
+
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 export async function api<T>(path: string, method: Method = 'GET', body?: unknown): Promise<T> {
