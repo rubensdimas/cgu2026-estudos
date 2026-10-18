@@ -37,6 +37,23 @@ async function openMove() {
 }
 
 describe('remanejamento', () => {
+  it('não permite fechar o formulário enquanto o remanejamento é enviado', async () => {
+    const fetchMock = stubFetch([])
+    fetchMock.mockImplementation(() => new Promise<Response>(() => {}))
+    renderWithProviders(<ul><OccurrenceRow occ={occ} /></ul>)
+    const user = await openMove()
+    await user.click(screen.getByRole('button', { name: 'Confirmar remanejamento' }))
+    expect(screen.getByRole('button', { name: 'Remanejar bloco' })).toBeDisabled()
+  })
+
+  it('abre o formulário a partir da ocorrência atual', async () => {
+    stubFetch([])
+    const { rerender } = renderWithProviders(<ul><OccurrenceRow occ={occ} /></ul>)
+    rerender(<ul><OccurrenceRow occ={{ ...occ, window: 'middle', version: 4 }} /></ul>)
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Remanejar bloco' }))
+    expect(screen.getByLabelText('Janela')).toHaveValue('middle')
+  })
+
   it('mostra o destino e só envia após confirmar', async () => {
     const fetchMock = stubFetch([{ method: 'PATCH', match: '/occurrences/occ-1', body: { ...occ, game_delta: null } }])
     renderWithProviders(<ul><OccurrenceRow occ={occ} /></ul>)

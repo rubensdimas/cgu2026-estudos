@@ -119,7 +119,7 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
         </div>
       )}
       <div className="flex gap-2">
-        <button type="submit" disabled={create.isPending}
+        <button type="submit" disabled={create.isPending || !subjects.data}
           className="touch-target rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-60">
           {create.isPending ? 'Salvando…' : 'Registrar sessão'}
         </button>

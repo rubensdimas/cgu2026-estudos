@@ -82,4 +82,19 @@ describe('SessionForm', () => {
     expect(screen.getByLabelText('Observação')).toHaveValue('lei 12.527')
     expect(screen.getByRole('option', { name: 'C02.01 Acesso à informação' })).toBeInTheDocument()
   })
+
+  it('tentar carregar os tópicos de novo não envia o formulário', async () => {
+    const fetchMock = vi.fn()
+    vi.stubGlobal('fetch', fetchMock)
+    const refetch = vi.fn()
+    renderForm(vi.fn(), { ...query, isPending: true, error: new Error('Erro inesperado.'), refetch })
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Tentar novamente' }))
+    expect(refetch).toHaveBeenCalledOnce()
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('não permite registrar enquanto os tópicos não carregaram', () => {
+    renderForm(vi.fn(), { ...query, isPending: true, error: new Error('Erro inesperado.') })
+    expect(screen.getByRole('button', { name: 'Registrar sessão' })).toBeDisabled()
+  })
 })

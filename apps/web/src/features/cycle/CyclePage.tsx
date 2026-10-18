@@ -57,6 +57,11 @@ export function OccurrenceRow({ occ }: { occ: Occurrence }) {
   const move = usePatchOccurrence()
   const send = (body: Record<string, unknown>) => patch.mutate({ id: occ.id, body: { version: occ.version, ...body } })
   const unchanged = date === occ.planned_on && window === occ.window
+  function openMove() {
+    setDate(occ.planned_on)
+    setWindow(occ.window)
+    setMoving(true)
+  }
   function cancelMove() {
     setMoving(false)
     setDate(occ.planned_on)
@@ -83,7 +88,7 @@ export function OccurrenceRow({ occ }: { occ: Occurrence }) {
         </div>
         {occ.status === 'pending' && (
           <>
-            <button onClick={() => (moving ? cancelMove() : setMoving(true))} aria-expanded={moving}
+            <button onClick={() => (moving ? cancelMove() : openMove())} aria-expanded={moving} disabled={move.isPending}
               className="touch-target px-2 py-1 text-sm text-primary">Remanejar bloco</button>
             <button onClick={() => {
               const reason = prompt('Motivo (opcional)')

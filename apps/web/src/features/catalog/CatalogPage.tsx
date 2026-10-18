@@ -92,7 +92,7 @@ function TopicRow({ topic, subjectRef }: { topic: Topic; subjectRef: string }) {
         className="touch-target ml-auto max-w-full rounded-md border border-border bg-muted px-2 py-1 disabled:opacity-60">
         {STATUS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
       </select>
-      <span aria-live="polite" className="w-full text-right text-muted-foreground empty:hidden">
+      <span role="status" className="w-full text-right text-muted-foreground">
         {pending !== null ? 'Salvando…' : saved ? 'Salvo' : ''}
       </span>
       {put.error && !pending && (

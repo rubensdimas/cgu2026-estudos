@@ -20,6 +20,19 @@ describe('ProgressPage', () => {
     expect(urls.some((u) => u.includes('/game/calendar') || u.includes('/game/xp'))).toBe(false)
   })
 
+  it('mostra a falha de uma consulta mesmo com outra ainda carregando', async () => {
+    const fetchMock = stubFetch([
+      { match: '/game/summary', body: summary },
+      { match: '/game/xp', body: errorBody('Erro inesperado.'), status: 500 },
+      { match: '/game/config', body: { levels: [], holiday_suggestions: [] } },
+    ])
+    const base = fetchMock.getMockImplementation()!
+    fetchMock.mockImplementation(async (url: string, init?: RequestInit) =>
+      url.includes('/game/calendar') ? new Promise<Response>(() => {}) : base(url, init))
+    renderWithProviders(<ProgressPage />)
+    expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar o Progresso')
+  })
+
   it('não mostra gráficos parciais quando o histórico de XP falha', async () => {
     stubFetch([
       { match: '/game/summary', body: summary },

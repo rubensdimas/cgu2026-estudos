@@ -11,7 +11,7 @@ export function QueryState({ title, query }: { title: string; query: QueryLike }
       <div role="alert" className="rounded-lg border border-destructive/50 bg-card p-4">
         <p className="font-semibold">{title}</p>
         <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
-        <button onClick={() => query.refetch()} disabled={isFetching}
+        <button type="button" onClick={() => query.refetch()} disabled={isFetching}
           className="touch-target mt-3 rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-muted disabled:opacity-60">
           {isFetching ? 'Tentando novamente…' : 'Tentar novamente'}
         </button>

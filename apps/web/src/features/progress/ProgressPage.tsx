@@ -29,7 +29,9 @@ function Dashboard({ s }: { s: Summary }) {
   const ledger = useXpLedger(PLAN_START, s.exam_date)
   const config = useGameConfig()
   if (!calendar.data || !ledger.data || !config.data) {
-    return <QueryState title={FAILED} query={[calendar, ledger, config].find((q) => !q.data)!} />
+    // Uma falha aparece mesmo que outra consulta ainda esteja carregando.
+    const queries = [calendar, ledger, config]
+    return <QueryState title={FAILED} query={queries.find((q) => q.error) ?? queries.find((q) => !q.data)!} />
   }
   const periods = toStreakPeriods(calendar.data)
   return (

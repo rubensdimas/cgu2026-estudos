@@ -13,10 +13,10 @@ export class ApiError extends Error {
 
 export class NetworkError extends Error {}
 
-/** Registro alterado em outro lugar: a versão enviada não é mais a atual. */
 export const CONFLICT_MESSAGE = 'Alterado em outro lugar; dados recarregados — revise e confirme de novo.'
 
-export const isConflict = (e: unknown): e is ApiError => e instanceof ApiError && e.status === 409
+/** Registro alterado em outro lugar: a versão enviada não é mais a atual. */
+export const isConflict = (e: unknown): e is ApiError => e instanceof ApiError && e.code === 'version_conflict'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
