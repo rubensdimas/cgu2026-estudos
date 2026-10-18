@@ -8,13 +8,14 @@ import { GameToastProvider } from '../shared/ui/GameToast'
 
 export function renderWithProviders(ui: ReactNode) {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } })
-  return render(
+  const wrapper = ({ children }: { children: ReactNode }) => (
     <QueryClientProvider client={qc}>
       <GameToastProvider>
-        <MemoryRouter>{ui}</MemoryRouter>
+        <MemoryRouter>{children}</MemoryRouter>
       </GameToastProvider>
-    </QueryClientProvider>,
+    </QueryClientProvider>
   )
+  return render(ui, { wrapper })
 }
 
 type Route = { method?: string; match: string; body: unknown; status?: number }

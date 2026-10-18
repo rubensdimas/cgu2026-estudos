@@ -3,9 +3,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { CalendarDays, XpEntry } from '@/shared/game/adapters'
 
 import { useGameToast } from '../ui/GameToast'
-import { api } from './client'
+import { api, isConflict } from './client'
 import type {
-  DayOff, DayView, GameConfig, Guidance, ListResponse, Mission, Occurrence, Plan, Session, SessionInput, Subject, Summary, WithDelta,
+  DayOff, DayView, ExamVersion, GameConfig, Guidance, ListResponse, Mission, Occurrence, Plan, Session, SessionInput, Subject,
+  Summary, TopicProgressOut, WithDelta,
 } from './types'
 
 export const useSummary = () => useQuery({ queryKey: ['summary'], queryFn: () => api<Summary>('/game/summary') })
@@ -33,6 +34,9 @@ export const useOccurrences = (from: string, to: string, enabled = true) =>
 export const useSubjects = () =>
   useQuery({ queryKey: ['subjects'], queryFn: () => api<ListResponse<Subject>>('/subjects'), staleTime: Infinity })
 
+export const useCurrentExamVersion = () =>
+  useQuery({ queryKey: ['exam-version'], queryFn: () => api<ExamVersion>('/exam-versions/current'), staleTime: Infinity })
+
 export const useSessions = (day: string) =>
   useQuery({
     queryKey: ['sessions', day],
@@ -50,16 +54,20 @@ export const useGameConfig = () =>
 
 export const useDayOffs = () => useQuery({ queryKey: ['day-offs'], queryFn: () => api<ListResponse<DayOff>>('/day-offs') })
 
-/** Mutação que mostra o efeito no jogo e atualiza HUD, dia e ciclo. */
+const GAME_KEYS = ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance']
+
+/** Mutação que mostra o efeito no jogo e atualiza HUD, dia e ciclo; em conflito, recarrega para obter a versão atual. */
 function useGameMutation<V, R extends Partial<WithDelta> | void>(fn: (v: V) => Promise<R>) {
   const qc = useQueryClient()
   const toast = useGameToast()
+  const refresh = () => { for (const key of GAME_KEYS) qc.invalidateQueries({ queryKey: [key] }) }
   return useMutation({
     mutationFn: fn,
     onSuccess: (result) => {
       if (result && result.game_delta) toast(result.game_delta)
-      for (const key of ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance']) qc.invalidateQueries({ queryKey: [key] })
+      refresh()
     },
+    onError: (e) => { if (isConflict(e)) refresh() },
   })
 }
 
@@ -92,11 +100,19 @@ export const usePutDayOff = () =>
 
 export const useDeleteDayOff = () => useGameMutation((day: string) => api<void>(`/day-offs/${day}`, 'DELETE'))
 
+/** Aplica o progresso confirmado ao catálogo em cache; em conflito, recarrega o catálogo. */
 export const usePutProgress = () => {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: (v: { topicId: string; status: string; version?: number }) =>
-      api(`/topics/${v.topicId}/progress`, 'PUT', { status: v.status, version: v.version }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['subjects'] }),
+      api<TopicProgressOut>(`/topics/${v.topicId}/progress`, 'PUT', { status: v.status, version: v.version }),
+    onSuccess: ({ topic_id, ...progress }) =>
+      qc.setQueryData<ListResponse<Subject>>(['subjects'], (old) => old && {
+        ...old,
+        items: old.items.map((s) => ({
+          ...s, topics: s.topics.map((t) => (t.id === topic_id ? { ...t, progress } : t)),
+        })),
+      }),
+    onError: (e) => { if (isConflict(e)) qc.invalidateQueries({ queryKey: ['subjects'] }) },
   })
 }

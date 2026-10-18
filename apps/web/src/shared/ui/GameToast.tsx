@@ -28,7 +28,7 @@ export function GameToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={show}>
       {children}
-      <div aria-live="polite" className="fixed bottom-20 right-4 z-50 flex flex-col gap-2 md:bottom-4">
+      <div aria-live="polite" className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 z-50 flex flex-col gap-2 md:bottom-4">
         {toasts.map((t) => (
           <div key={t.id} className="rounded-lg border border-xp/40 bg-muted px-4 py-3 shadow-lg">
             {t.lines.map((line) => (

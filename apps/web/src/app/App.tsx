@@ -18,7 +18,8 @@ const LINKS = [
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   [
-    'flex flex-1 flex-col items-center gap-1 px-2 py-2 text-xs font-medium transition-colors',
+    'touch-target flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0 py-1.5 text-center text-sm leading-tight tracking-tight [overflow-wrap:anywhere]',
+    'font-medium transition-colors',
     'md:flex-none md:flex-row md:gap-3 md:px-3 md:py-3 md:text-base',
     isActive
       ? 'text-primary md:border-r-2 md:border-primary'
@@ -28,7 +29,7 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
 export function App() {
   return (
     <div className="md:flex">
-      <nav aria-label="Principal" className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-card
+      <nav aria-label="Principal" className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-card pb-[env(safe-area-inset-bottom)]
         md:sticky md:top-0 md:h-screen md:w-56 md:flex-col md:border-r md:border-t-0 md:bg-background md:py-6 md:pl-4">
         <p className="hidden pb-8 pl-3 font-pixel text-xl text-primary md:block">CGU 2026</p>
         {LINKS.map((l) => (
@@ -38,7 +39,7 @@ export function App() {
           </NavLink>
         ))}
       </nav>
-      <div className="min-h-screen flex-1 pb-20 md:pb-0">
+      <div className="min-h-screen flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
         <Hud />
         <main className="mx-auto max-w-3xl p-4 md:p-8">
           <Routes>

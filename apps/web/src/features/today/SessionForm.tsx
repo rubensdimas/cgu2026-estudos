@@ -2,12 +2,15 @@ import { useState, type FormEvent } from 'react'
 
 import { ApiError } from '../../shared/api/client'
 import { useCreateSession } from '../../shared/api/hooks'
-import type { Activity, EssayKind, Occurrence, Subject } from '../../shared/api/types'
+import type { Activity, EssayKind, ListResponse, Occurrence, Subject } from '../../shared/api/types'
+import { QueryState, type QueryLike } from '../../shared/ui/QueryState'
+
+export type SubjectsQuery = QueryLike & { data?: ListResponse<Subject> }
 
 interface Props {
   occurrence: Occurrence | null
   today: string
-  subjects: Subject[]
+  subjects: SubjectsQuery
   onSaved: () => void
   onCancel: () => void
 }
@@ -55,7 +58,7 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
     }
   }
 
-  const input = 'mt-1 w-full rounded-md border border-border bg-muted px-3 py-2'
+  const input = 'touch-target mt-1 w-full rounded-md border border-border bg-muted px-3 py-2'
   return (
     <form onSubmit={submit} className="space-y-3 rounded-lg border border-border bg-card p-4" aria-label="Registrar sessão">
       <h3 className="text-lg font-semibold">
@@ -76,16 +79,20 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
           </select>
         </label>
       )}
-      <label className="block text-sm">Tópico {isEssay && '(opcional)'}
-        <select className={input} value={topicId} onChange={(e) => setTopicId(e.target.value)} required={!isEssay}>
-          <option value="">Selecione…</option>
-          {subjects.map((s) => (
-            <optgroup key={s.id} label={`${s.paper} · ${s.id} ${s.title}`}>
-              {s.topics.map((t) => <option key={t.id} value={t.id}>{t.id} {t.title}</option>)}
-            </optgroup>
-          ))}
-        </select>
-      </label>
+      {subjects.data ? (
+        <label className="block text-sm">Tópico {isEssay && '(opcional)'}
+          <select className={input} value={topicId} onChange={(e) => setTopicId(e.target.value)} required={!isEssay}>
+            <option value="">Selecione…</option>
+            {subjects.data.items.map((s) => (
+              <optgroup key={s.id} label={`${s.paper} · ${s.id} ${s.title}`}>
+                {s.topics.map((t) => <option key={t.id} value={t.id}>{t.id} {t.title}</option>)}
+              </optgroup>
+            ))}
+          </select>
+        </label>
+      ) : (
+        <QueryState title="Não foi possível carregar os tópicos" query={subjects} />
+      )}
       <div className="grid grid-cols-2 gap-3">
         <label className="block text-sm">Minutos
           <input className={`${input} num`} type="number" inputMode="numeric" min={1} max={720} required
@@ -100,7 +107,7 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
         <textarea className={input} rows={2} maxLength={2000} value={notes} onChange={(e) => setNotes(e.target.value)} />
       </label>
       {occurrence && (
-        <label className="flex items-center gap-2 text-sm">
+        <label className="touch-target flex items-center gap-2 text-sm">
           <input type="checkbox" checked={complete} onChange={(e) => setComplete(e.target.checked)} />
           Concluir o bloco
         </label>
@@ -112,11 +119,11 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
         </div>
       )}
       <div className="flex gap-2">
-        <button type="submit" disabled={create.isPending}
-          className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-60">
+        <button type="submit" disabled={create.isPending || !subjects.data}
+          className="touch-target rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-60">
           {create.isPending ? 'Salvando…' : 'Registrar sessão'}
         </button>
-        <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-muted-foreground">Cancelar</button>
+        <button type="button" onClick={onCancel} className="touch-target rounded-md px-4 py-2 text-muted-foreground">Cancelar</button>
       </div>
     </form>
   )

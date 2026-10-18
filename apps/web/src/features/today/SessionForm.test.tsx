@@ -5,10 +5,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import type { Occurrence, Subject } from '../../shared/api/types'
 import { GameToastProvider } from '../../shared/ui/GameToast'
-import { SessionForm } from './SessionForm'
+import { SessionForm, type SubjectsQuery } from './SessionForm'
 
 const subjects: Subject[] = [
-  { id: 'C02', paper: 'P2', title: 'Transparência', topics: [{ id: 'C02.01', title: 'Acesso à informação', source_ref: '', progress: null }] },
+  { id: 'C02', paper: 'P2', title: 'Transparência', source_ref: '', topics: [{ id: 'C02.01', title: 'Acesso à informação', source_ref: '', progress: null }] },
 ]
 
 const occurrence: Occurrence = {
@@ -18,16 +18,20 @@ const occurrence: Occurrence = {
     selection_mode: 'alternate_subjects', candidate_topic_ids: ['C02.01'] },
 }
 
-function renderForm(onSaved = vi.fn()) {
+const query = { isPending: false, isFetching: false, error: null, refetch: () => {} }
+const loaded = { ...query, data: { items: subjects, total: 1 } }
+
+function renderForm(onSaved = vi.fn(), topics: SubjectsQuery = loaded) {
   const qc = new QueryClient({ defaultOptions: { mutations: { retry: false } } })
-  render(
+  const tree = (t: SubjectsQuery) => (
     <QueryClientProvider client={qc}>
       <GameToastProvider>
-        <SessionForm occurrence={occurrence} today="2026-10-09" subjects={subjects} onSaved={onSaved} onCancel={vi.fn()} />
+        <SessionForm occurrence={occurrence} today="2026-10-09" subjects={t} onSaved={onSaved} onCancel={vi.fn()} />
       </GameToastProvider>
-    </QueryClientProvider>,
+    </QueryClientProvider>
   )
-  return onSaved
+  const { rerender } = render(tree(topics))
+  return { onSaved, rerender: (t: SubjectsQuery) => rerender(tree(t)) }
 }
 
 afterEach(() => vi.unstubAllGlobals())
@@ -39,7 +43,7 @@ describe('SessionForm', () => {
       .mockRejectedValueOnce(new TypeError('Failed to fetch'))
       .mockResolvedValueOnce(new Response(JSON.stringify({ game_delta: delta }), { status: 201 }))
     vi.stubGlobal('fetch', fetchMock)
-    const onSaved = renderForm()
+    const { onSaved } = renderForm()
     const user = userEvent.setup()
 
     const minutes = screen.getByLabelText('Minutos')
@@ -64,5 +68,33 @@ describe('SessionForm', () => {
     renderForm()
     await userEvent.setup().click(screen.getByRole('button', { name: 'Registrar sessão' }))
     expect(await screen.findByRole('alert')).toHaveTextContent('studied_on: Data futura.')
+  })
+
+  it('mantém o rascunho quando os tópicos não carregam e os oferece após nova tentativa', async () => {
+    const failed = { ...query, isPending: true, error: new Error('Erro inesperado.') }
+    const { rerender } = renderForm(vi.fn(), failed)
+    expect(screen.getByRole('alert')).toHaveTextContent('Não foi possível carregar os tópicos')
+    expect(screen.getByRole('button', { name: 'Tentar novamente' })).toBeInTheDocument()
+    expect(screen.queryByRole('combobox', { name: /Tópico/ })).not.toBeInTheDocument()
+    const user = userEvent.setup()
+    await user.type(screen.getByLabelText('Observação'), 'lei 12.527')
+    rerender(loaded)
+    expect(screen.getByLabelText('Observação')).toHaveValue('lei 12.527')
+    expect(screen.getByRole('option', { name: 'C02.01 Acesso à informação' })).toBeInTheDocument()
+  })
+
+  it('tentar carregar os tópicos de novo não envia o formulário', async () => {
+    const fetchMock = vi.fn()
+    vi.stubGlobal('fetch', fetchMock)
+    const refetch = vi.fn()
+    renderForm(vi.fn(), { ...query, isPending: true, error: new Error('Erro inesperado.'), refetch })
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Tentar novamente' }))
+    expect(refetch).toHaveBeenCalledOnce()
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('não permite registrar enquanto os tópicos não carregaram', () => {
+    renderForm(vi.fn(), { ...query, isPending: true, error: new Error('Erro inesperado.') })
+    expect(screen.getByRole('button', { name: 'Registrar sessão' })).toBeDisabled()
   })
 })

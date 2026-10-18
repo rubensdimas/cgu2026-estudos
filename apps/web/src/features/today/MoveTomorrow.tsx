@@ -11,7 +11,7 @@ export function MoveTomorrowButton({ occ, today }: { occ: Occurrence; today: str
   return (
     <>
       <button onClick={() => patch.mutate({ id: occ.id, body: { version: occ.version, planned_on: tomorrow } })}
-        disabled={patch.isPending} className="px-3 py-1 text-sm text-primary">
+        disabled={patch.isPending} className="touch-target px-3 py-1 text-sm text-primary">
         Mover para amanhã
       </button>
       {patch.error && <p role="alert" className="w-full text-sm text-destructive">{patch.error.message}</p>}

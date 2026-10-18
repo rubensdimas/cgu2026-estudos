@@ -3,25 +3,36 @@ import { PointsLevelsTimeline } from '@/components/ui/points-levels-timeline'
 import { StreakCalendar } from '@/components/ui/streak-calendar'
 import { StreakCard } from '@/components/ui/streak-card'
 import { useCalendar, useGameConfig, useSummary, useXpLedger } from '@/shared/api/hooks'
+import type { Summary } from '@/shared/api/types'
 import { mondayOf } from '@/shared/format'
+import { QueryState } from '@/shared/ui/QueryState'
 import { levelLines, toLevelsTimeline, toStreakPeriods, toXpSeries } from '@/shared/game/adapters'
 
 const PLAN_START = '2026-10-09'
 
+const FAILED = 'Não foi possível carregar o Progresso'
+
 export function ProgressPage() {
   const summary = useSummary()
-  const today = summary.data?.today ?? PLAN_START
+  if (!summary.data) return <QueryState title={FAILED} query={summary} />
+  return <Dashboard s={summary.data} />
+}
+
+/** Só monta com o resumo carregado: as consultas dependentes usam a data de hoje do servidor. */
+function Dashboard({ s }: { s: Summary }) {
+  const today = s.today
   // O calendário mostra o mês e a semana inteiros: busca desde o que vier primeiro (dias fora do plano voltam neutros).
   const monthStart = `${today.slice(0, 7)}-01`
   const weekStart = mondayOf(today)
   const calendar = useCalendar(monthStart < weekStart ? monthStart : weekStart, today)
   // Busca até a prova: lançamentos datados no futuro (semana completa no domingo) entram no ponto de hoje.
-  const ledger = useXpLedger(PLAN_START, summary.data?.exam_date ?? today)
+  const ledger = useXpLedger(PLAN_START, s.exam_date)
   const config = useGameConfig()
-  if (!summary.data || !calendar.data || !ledger.data || !config.data) {
-    return <p className="text-muted-foreground" aria-busy="true">Carregando…</p>
+  if (!calendar.data || !ledger.data || !config.data) {
+    // Uma falha aparece mesmo que outra consulta ainda esteja carregando.
+    const queries = [calendar, ledger, config]
+    return <QueryState title={FAILED} query={queries.find((q) => q.error) ?? queries.find((q) => !q.data)!} />
   }
-  const s = summary.data
   const periods = toStreakPeriods(calendar.data)
   return (
     <div className="space-y-6">

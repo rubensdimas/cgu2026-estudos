@@ -100,7 +100,19 @@ export interface Topic {
   progress: { status: string; declared_on: string; version: number } | null
 }
 
-export interface Subject { id: string; paper: 'P1' | 'P2' | 'P3'; title: string; topics: Topic[] }
+export interface Subject { id: string; paper: 'P1' | 'P2' | 'P3'; title: string; source_ref: string; topics: Topic[] }
+
+export interface TopicProgressOut { topic_id: string; status: string; declared_on: string; version: number }
+
+export interface ExamVersion {
+  id: string
+  title: string
+  publication_date: string
+  source_url: string
+  source_sha256: string
+  exam_date: string
+  scoring_rules: Record<string, unknown>
+}
 
 export interface SessionInput {
   id: string
