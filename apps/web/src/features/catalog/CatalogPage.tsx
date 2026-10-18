@@ -31,7 +31,7 @@ export function CatalogPage() {
             <span className={`num mr-2 ${PAPER_COLOR[s.paper]}`}>{s.paper} {s.id}</span>{s.title}
             <span className="mt-0.5 block text-sm font-normal text-muted-foreground">Item {s.source_ref}</span>
           </summary>
-          <ul className="mt-2 space-y-1">
+          <ul className="mt-2 space-y-3">
             {s.topics.map((t) => <TopicRow key={t.id} topic={t} subjectRef={s.source_ref} />)}
           </ul>
         </details>
@@ -83,13 +83,13 @@ function TopicRow({ topic, subjectRef }: { topic: Topic; subjectRef: string }) {
   return (
     <li className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
       <span className="num text-muted-foreground">{topic.id}</span>
-      <span className="min-w-0 flex-1">
+      <span className="min-w-0 flex-1 basis-48 hyphens-auto [overflow-wrap:anywhere]">
         {topic.title}
         {ref && <span className="block text-muted-foreground">{ref}</span>}
       </span>
       <select aria-label={`Estado de ${topic.id}`} value={pending ?? confirmed} disabled={pending !== null}
         onChange={(e) => change(e.target.value)}
-        className="touch-target rounded-md border border-border bg-muted px-2 py-1 disabled:opacity-60">
+        className="touch-target ml-auto max-w-full rounded-md border border-border bg-muted px-2 py-1 disabled:opacity-60">
         {STATUS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
       </select>
       <span aria-live="polite" className="w-full text-right text-muted-foreground empty:hidden">

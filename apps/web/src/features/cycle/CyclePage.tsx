@@ -104,13 +104,13 @@ export function OccurrenceRow({ occ }: { occ: Occurrence }) {
       {moving && (
         <div className="mt-2 space-y-2 rounded-md border border-border p-3">
           <div className="flex flex-wrap items-end gap-2">
-            <label className="text-sm">Data
+            <label className="flex min-w-0 max-w-full flex-col gap-1 text-sm">Data
               <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-                className="touch-target ml-1 rounded-md border border-border bg-muted px-2 py-1" />
+                className="touch-target w-full rounded-md border border-border bg-muted px-2 py-1" />
             </label>
-            <label className="text-sm">Janela
+            <label className="flex min-w-0 max-w-full flex-col gap-1 text-sm">Janela
               <select value={window} onChange={(e) => setWindow(e.target.value as Window)}
-                className="touch-target ml-1 rounded-md border border-border bg-muted px-2 py-1">
+                className="touch-target w-full rounded-md border border-border bg-muted px-2 py-1">
                 {Object.entries(WINDOW_LABEL).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
               </select>
             </label>

@@ -18,7 +18,7 @@ const LINKS = [
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   [
-    'touch-target flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0.5 py-1.5 text-center text-sm leading-tight',
+    'touch-target flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0 py-1.5 text-center text-sm leading-tight tracking-tight [overflow-wrap:anywhere]',
     'font-medium transition-colors',
     'md:flex-none md:flex-row md:gap-3 md:px-3 md:py-3 md:text-base',
     isActive
