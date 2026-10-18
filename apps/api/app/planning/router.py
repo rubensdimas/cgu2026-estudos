@@ -3,7 +3,7 @@ from datetime import date
 from typing import Literal
 
 from fastapi import APIRouter, Depends, Query, Response
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -25,6 +25,7 @@ class OccurrencePatch(BaseModel):
     window: Literal["before", "middle", "after"] | None = None
     status: Literal["pending", "completed", "skipped"] | None = None
     skip_reason: str | None = None
+    theme_id: str | None = Field(default=None, max_length=16)
 
 
 @router.get("/plans/current")

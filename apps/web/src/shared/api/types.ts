@@ -37,6 +37,8 @@ export interface Summary {
   holiday_suggestion: { date: string; label: string } | null
 }
 
+export interface Plan { id: string; starts_on: string; ends_on: string; exam_date: string }
+
 export interface Slot {
   code: string
   title: string
@@ -133,4 +135,29 @@ export interface DayOff { day: string; reason: string }
 export interface GameConfig {
   levels: TitleBand[]
   holiday_suggestions: { date: string; label: string }[]
+}
+
+export interface GuidanceStep { minutos: number; texto: string }
+
+export interface Theme {
+  id: string
+  titulo: string
+  topic_ids: string[]
+  linhas: number
+  texto_motivador: string
+  comando: string
+  aspectos: { texto: string; valor: number }[]
+  espelho: { texto_padrao: string; quesitos: { id: string; texto: string; conceitos: string[] }[] }
+  fontes: { titulo: string; url: string }[]
+  semelhante_a: { prova: string; url: string } | null
+}
+
+export interface Guidance {
+  roteiro: { ate: string | null; titulo: string; passos: GuidanceStep[] }
+  nota: string | null
+  topic: { id: string; title: string; subitens: string[] } | null
+  materiais: { titulo: string; url: string; nota: string }[]
+  tema: Theme | null
+  next_theme_id: string | null
+  lembretes: string[]
 }

@@ -29,3 +29,13 @@ def test_seed_never_overwrites_settings(db):
     seed(db)
     db.expire_all()
     assert db.get(AppSettings, 1).streak_min_minutes == 45
+
+
+def test_seed_updates_slot_titles(db):
+    slot = db.scalar(select(CycleSlot).where(CycleSlot.code == "S13"))
+    assert slot.title == "Complementares + revisão da semana"
+    slot.title = "antigo"
+    db.commit()
+    seed(db)
+    db.expire_all()
+    assert db.scalar(select(CycleSlot).where(CycleSlot.code == "S13")).title == "Complementares + revisão da semana"

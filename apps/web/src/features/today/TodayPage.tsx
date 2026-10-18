@@ -7,7 +7,11 @@ import {
 } from '../../shared/api/hooks'
 import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, WINDOW_LABEL } from '../../shared/format'
+import { GuidancePanel } from '../guidance/GuidancePanel'
+import { LateBlocks } from './LateBlocks'
 import { MissionRing } from './MissionRing'
+import { MoveTomorrowButton } from './MoveTomorrow'
+import { OtherBlocks } from './OtherBlocks'
 import { SessionForm } from './SessionForm'
 
 const STATE_LABEL = { pending: 'Pendente', done: '✓ Feito', not_applicable: '— Não se aplica' } as const
@@ -26,13 +30,17 @@ export function TodayPage() {
     <div className="space-y-4">
       <HolidayBanner />
       <StreakHint />
+      {view.in_plan && <LateBlocks today={today} />}
       {form ? (
         <SessionForm occurrence={form.occurrence} today={today} subjects={subjects.data?.items ?? []}
           onSaved={() => setForm(null)} onCancel={() => setForm(null)} />
       ) : (
         <>
           {view.mission ? (
-            <MissionCard view={view} onRegister={(o) => setForm({ occurrence: o })} />
+            <>
+              <MissionCard view={view} onRegister={(o) => setForm({ occurrence: o })} />
+              <OtherBlocks view={view} onRegister={(o) => setForm({ occurrence: o })} />
+            </>
           ) : (
             <OpenDayCard view={view} />
           )}
@@ -166,9 +174,11 @@ function MissionRow({ item, missionId, view, onRegister }: {
           </button>
           <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: 'Não se aplica hoje' })}
             className="rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
+          <MoveTomorrowButton occ={occ} today={view.date} />
           <Link to="/ciclo" className="px-3 py-1 text-sm text-primary">Remanejar</Link>
         </>
       )}
+      {occ && <GuidancePanel occ={occ} />}
       {item.na_reason && item.na_reason !== 'rescheduled' && item.na_reason !== 'skipped' && (
         <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: null })}
           className="px-3 py-1 text-sm text-muted-foreground">Desfazer</button>

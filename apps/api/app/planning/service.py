@@ -139,6 +139,10 @@ def patch_occurrence(db: Session, occ_id: uuid.UUID, patch: dict) -> Occurrence:
             raise ApiError(422, "outside_plan", "Data fora do plano.", {"planned_on": "Fora do plano."})
         occ.planned_on = target
         occ.window = patch.get("window") or occ.window
+    if patch.get("theme_id") is not None:
+        from app.guidance.service import set_theme  # import tardio: guidance depende de planning
+
+        set_theme(db, occ, patch["theme_id"])
     status = patch.get("status")
     if status == "completed":
         minutes, _ = session_stats(db, [occ.id]).get(occ.id, (0, None))
