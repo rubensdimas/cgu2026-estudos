@@ -101,6 +101,12 @@
   outline-offset: 2px;
 }
 
+/* Alvo mínimo de toque (44 px); só tamanho, cada uso mantém seu display. */
+@utility touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 .num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;

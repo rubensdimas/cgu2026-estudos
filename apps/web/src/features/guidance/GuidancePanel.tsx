@@ -11,7 +11,7 @@ export function GuidancePanel({ occ }: { occ: Occurrence }) {
   const { data, error } = useGuidance(occ.id, open)
   return (
     <div className="w-full">
-      <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="text-sm text-primary">
+      <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="touch-target text-sm text-primary">
         {open ? 'Ocultar orientações' : 'Como fazer este bloco'}
       </button>
       {open && !data && !error && <p aria-busy="true" className="text-sm text-muted-foreground">Carregando…</p>}
@@ -95,11 +95,11 @@ function ThemeView({ occ, tema, nextId }: { occ: Occurrence; tema: Theme; nextId
       </p>
       <div className="flex flex-wrap gap-2">
         {!showKey && (
-          <button onClick={() => setShowKey(true)} className="rounded-md bg-muted px-3 py-1">Ver pontos esperados</button>
+          <button onClick={() => setShowKey(true)} className="touch-target rounded-md bg-muted px-3 py-1">Ver pontos esperados</button>
         )}
         {nextId && (
           <button onClick={() => patch.mutate({ id: occ.id, body: { version: occ.version, theme_id: nextId } })}
-            disabled={patch.isPending} className="px-3 py-1 text-primary">Trocar tema</button>
+            disabled={patch.isPending} className="touch-target px-3 py-1 text-primary">Trocar tema</button>
         )}
       </div>
       {patch.error && <p role="alert" className="text-destructive">{patch.error.message}</p>}

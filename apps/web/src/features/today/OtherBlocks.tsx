@@ -22,7 +22,7 @@ export function OtherBlocks({ view, onRegister }: { view: DayView; onRegister: (
             </div>
             {o.status === 'pending' && (
               <>
-                <button onClick={() => onRegister(o)} className="rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
+                <button onClick={() => onRegister(o)} className="touch-target rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
                   Registrar sessão
                 </button>
                 <MoveTomorrowButton occ={o} today={view.date} />

@@ -36,20 +36,20 @@ export function LateBlocks({ today }: { today: string }) {
   const n = late.length
   return (
     <section className="rounded-md border border-border bg-card p-3 text-sm">
-      <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="font-semibold text-streak">
+      <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="touch-target font-semibold text-streak">
         {n} {n === 1 ? 'bloco atrasado' : 'blocos atrasados'} — escolher quais trazer para hoje
       </button>
       {open && (
         <fieldset className="mt-2 space-y-1">
           <legend className="sr-only">Blocos atrasados</legend>
           {late.map((o) => (
-            <label key={o.id} className="flex items-center gap-2">
+            <label key={o.id} className="touch-target flex items-center gap-2">
               <input type="checkbox" checked={chosen.includes(o.id)} onChange={() => toggle(o.id)} />
               {formatDay(o.planned_on)} · {o.slot.title}
             </label>
           ))}
           <button onClick={bring} disabled={selected.length === 0 || patch.isPending}
-            className="mt-2 rounded-md bg-primary px-3 py-1 text-primary-foreground disabled:opacity-50">
+            className="touch-target mt-2 rounded-md bg-primary px-3 py-1 text-primary-foreground disabled:opacity-50">
             Trazer para hoje
           </button>
         </fieldset>

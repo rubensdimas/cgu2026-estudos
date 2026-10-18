@@ -49,7 +49,7 @@ export function TodayPage() {
             <OpenDayCard view={view} />
           )}
           <button onClick={() => setForm({ occurrence: null })}
-            className="w-full rounded-md border border-border px-4 py-2 text-sm text-muted-foreground hover:text-foreground">
+            className="touch-target w-full rounded-md border border-border px-4 py-2 text-sm text-muted-foreground hover:text-foreground">
             + Sessão avulsa
           </button>
           <TodaySessions day={today} />
@@ -77,7 +77,7 @@ export function OpenDayCard({ view }: { view: DayView }) {
       {free && <FreeBlockPicker day={view.date} chosen={chosen} onChange={setChosen} />}
       <button onClick={() => open.mutate({ day: view.date, occurrence_ids: chosen })}
         disabled={open.isPending || (free && chosen.length === 0)}
-        className="mt-3 rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-50">
+        className="touch-target mt-3 rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-50">
         {free ? 'Abrir missão livre' : 'Abrir o dia'}
       </button>
       {open.error && <p role="alert" className="mt-2 text-sm text-destructive">{open.error.message}</p>}
@@ -102,7 +102,7 @@ function FreeBlockPicker({ day, chosen, onChange }: {
     <fieldset className="mt-3 space-y-1">
       <legend className="text-sm font-semibold">Blocos pendentes (máx. 2)</legend>
       {pending.map((o) => (
-        <label key={o.id} className="flex items-center gap-2 text-sm">
+        <label key={o.id} className="touch-target flex items-center gap-2 text-sm">
           <input type="checkbox" checked={chosen.includes(o.id)} onChange={() => toggle(o.id)}
             disabled={!chosen.includes(o.id) && chosen.length >= 2} />
           {formatDay(o.planned_on)} · {o.slot.title}
@@ -126,7 +126,7 @@ export function TodaySessions({ day }: { day: string }) {
           <li key={s.id} className="flex items-center gap-2 text-sm">
             <span className="num">{s.duration_minutes} min</span>
             <span className="min-w-0 flex-1 text-muted-foreground">{s.topic_ids.join(', ') || 'Discursiva'}</span>
-            <button aria-label={`Excluir sessão de ${s.duration_minutes} min`} className="px-2 py-1 text-destructive"
+            <button aria-label={`Excluir sessão de ${s.duration_minutes} min`} className="touch-target px-2 py-1 text-destructive"
               onClick={() => confirm('Excluir esta sessão? Os minutos, o XP e a conclusão do bloco serão recalculados.')
                 && remove.mutate(s.id)}>
               Excluir
@@ -177,19 +177,19 @@ export function MissionRow({ item, missionId, view, onRegister }: {
       </div>
       {item.state === 'pending' && occ && (
         <>
-          <button onClick={() => onRegister(occ)} className="rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
+          <button onClick={() => onRegister(occ)} className="touch-target rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
             Registrar sessão
           </button>
           <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: 'Não se aplica hoje' })}
-            disabled={setNa.isPending} className="rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
+            disabled={setNa.isPending} className="touch-target rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
           <MoveTomorrowButton occ={occ} today={view.date} />
-          <Link to="/ciclo" className="px-3 py-1 text-sm text-primary">Remanejar</Link>
+          <Link to="/ciclo" className="touch-target inline-flex items-center px-3 py-1 text-sm text-primary">Remanejar</Link>
         </>
       )}
       {occ && <GuidancePanel occ={occ} />}
       {item.na_reason && item.na_reason !== 'rescheduled' && item.na_reason !== 'skipped' && (
         <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: null })}
-          disabled={setNa.isPending} className="px-3 py-1 text-sm text-muted-foreground">Desfazer</button>
+          disabled={setNa.isPending} className="touch-target px-3 py-1 text-sm text-muted-foreground">Desfazer</button>
       )}
       {setNa.error && <p role="alert" className="w-full text-sm text-destructive">{setNa.error.message}</p>}
     </li>
@@ -202,11 +202,11 @@ export function CheckoutRow({ missionId, item, note }: { missionId: string; item
   return (
     <li className="rounded-md bg-muted p-3">
       <label className="block text-sm font-semibold">Check-out: o que ficou difícil hoje? <span className="text-xp">(bônus)</span>
-        <textarea className="mt-1 w-full rounded-md border border-border bg-card px-3 py-2 font-normal" rows={2}
+        <textarea className="touch-target mt-1 w-full rounded-md border border-border bg-card px-3 py-2 font-normal" rows={2}
           maxLength={500} value={text} onChange={(e) => setText(e.target.value)} />
       </label>
       <button onClick={() => save.mutate({ missionId, note: text })} disabled={save.isPending}
-        className="mt-2 rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground disabled:opacity-60">
+        className="touch-target mt-2 rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground disabled:opacity-60">
         {item.state === 'done' ? 'Atualizar' : 'Salvar check-out'}
       </button>
       {save.error && <p role="alert" className="mt-2 text-sm text-destructive">{save.error.message}</p>}
@@ -230,7 +230,7 @@ export function HolidayBanner() {
     <div className="flex flex-wrap items-center gap-2 rounded-md border border-border bg-card p-3 text-sm">
       <span className="flex-1">{h.date === data!.today ? 'Hoje' : 'Amanhã'} é feriado ({h.label}). Marcar como folga?</span>
       <button onClick={() => put.mutate({ day: h.date, reason: h.label })} disabled={put.isPending}
-        className="rounded-md bg-muted px-3 py-1 disabled:opacity-60">
+        className="touch-target rounded-md bg-muted px-3 py-1 disabled:opacity-60">
         Marcar folga
       </button>
       {put.error && <p role="alert" className="w-full text-destructive">{put.error.message}</p>}

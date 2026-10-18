@@ -25,15 +25,15 @@ function Week({ weekStart, onMove }: { weekStart: string; onMove: (delta: number
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <button onClick={() => onMove(-1)} className="px-3 py-2 text-primary" aria-label="Semana anterior">←</button>
+        <button onClick={() => onMove(-1)} className="touch-target px-3 py-2 text-primary" aria-label="Semana anterior">←</button>
         <h1 className="text-lg font-bold">Semana de {formatDay(weekStart)}</h1>
-        <button onClick={() => onMove(1)} className="px-3 py-2 text-primary" aria-label="Próxima semana">→</button>
+        <button onClick={() => onMove(1)} className="touch-target px-3 py-2 text-primary" aria-label="Próxima semana">→</button>
       </div>
       {!data && <QueryState title="Não foi possível carregar a semana" query={week} />}
       {data && data.items.length === 0 && (
         <div className="rounded-lg border border-border bg-card p-4">
           <p className="text-sm text-muted-foreground">Semana ainda não gerada.</p>
-          <button onClick={() => generate.mutate(weekStart)} className="mt-2 rounded-md bg-primary px-4 py-2 text-primary-foreground">
+          <button onClick={() => generate.mutate(weekStart)} className="touch-target mt-2 rounded-md bg-primary px-4 py-2 text-primary-foreground">
             Gerar semana
           </button>
           {generate.error && <p role="alert" className="mt-2 text-sm text-destructive">{generate.error.message}</p>}
@@ -84,20 +84,20 @@ export function OccurrenceRow({ occ }: { occ: Occurrence }) {
         {occ.status === 'pending' && (
           <>
             <button onClick={() => (moving ? cancelMove() : setMoving(true))} aria-expanded={moving}
-              className="px-2 py-1 text-sm text-primary">Remanejar bloco</button>
+              className="touch-target px-2 py-1 text-sm text-primary">Remanejar bloco</button>
             <button onClick={() => {
               const reason = prompt('Motivo (opcional)')
               if (reason !== null) send({ status: 'skipped', skip_reason: reason })
             }}
-              className="px-2 py-1 text-sm text-muted-foreground">Dispensar</button>
+              className="touch-target px-2 py-1 text-sm text-muted-foreground">Dispensar</button>
             {occ.actual_minutes > 0 && (
-              <button onClick={() => send({ status: 'completed' })} className="px-2 py-1 text-sm text-success">Concluir</button>
+              <button onClick={() => send({ status: 'completed' })} className="touch-target px-2 py-1 text-sm text-success">Concluir</button>
             )}
           </>
         )}
         {occ.status !== 'pending' && (
           <button onClick={() => confirm('Reabrir este bloco? As sessões continuam registradas.') && send({ status: 'pending' })}
-            className="px-2 py-1 text-sm text-muted-foreground">Reabrir</button>
+            className="touch-target px-2 py-1 text-sm text-muted-foreground">Reabrir</button>
         )}
       </div>
       <div className="mt-2"><GuidancePanel occ={occ} /></div>
@@ -106,11 +106,11 @@ export function OccurrenceRow({ occ }: { occ: Occurrence }) {
           <div className="flex flex-wrap items-end gap-2">
             <label className="text-sm">Data
               <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-                className="ml-1 rounded-md border border-border bg-muted px-2 py-1" />
+                className="touch-target ml-1 rounded-md border border-border bg-muted px-2 py-1" />
             </label>
             <label className="text-sm">Janela
               <select value={window} onChange={(e) => setWindow(e.target.value as Window)}
-                className="ml-1 rounded-md border border-border bg-muted px-2 py-1">
+                className="touch-target ml-1 rounded-md border border-border bg-muted px-2 py-1">
                 {Object.entries(WINDOW_LABEL).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
               </select>
             </label>
@@ -127,10 +127,10 @@ export function OccurrenceRow({ occ }: { occ: Occurrence }) {
           )}
           <div className="flex flex-wrap gap-2">
             <button onClick={confirmMove} disabled={!date || unchanged || move.isPending}
-              className="rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground disabled:opacity-50">
+              className="touch-target rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground disabled:opacity-50">
               {move.isPending ? 'Remanejando…' : 'Confirmar remanejamento'}
             </button>
-            <button onClick={cancelMove} disabled={move.isPending} className="px-3 py-1 text-sm text-muted-foreground">
+            <button onClick={cancelMove} disabled={move.isPending} className="touch-target px-3 py-1 text-sm text-muted-foreground">
               Cancelar
             </button>
           </div>

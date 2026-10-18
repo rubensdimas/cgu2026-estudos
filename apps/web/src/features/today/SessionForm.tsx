@@ -58,7 +58,7 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
     }
   }
 
-  const input = 'mt-1 w-full rounded-md border border-border bg-muted px-3 py-2'
+  const input = 'touch-target mt-1 w-full rounded-md border border-border bg-muted px-3 py-2'
   return (
     <form onSubmit={submit} className="space-y-3 rounded-lg border border-border bg-card p-4" aria-label="Registrar sessão">
       <h3 className="text-lg font-semibold">
@@ -107,7 +107,7 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
         <textarea className={input} rows={2} maxLength={2000} value={notes} onChange={(e) => setNotes(e.target.value)} />
       </label>
       {occurrence && (
-        <label className="flex items-center gap-2 text-sm">
+        <label className="touch-target flex items-center gap-2 text-sm">
           <input type="checkbox" checked={complete} onChange={(e) => setComplete(e.target.checked)} />
           Concluir o bloco
         </label>
@@ -120,10 +120,10 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
       )}
       <div className="flex gap-2">
         <button type="submit" disabled={create.isPending}
-          className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-60">
+          className="touch-target rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-60">
           {create.isPending ? 'Salvando…' : 'Registrar sessão'}
         </button>
-        <button type="button" onClick={onCancel} className="rounded-md px-4 py-2 text-muted-foreground">Cancelar</button>
+        <button type="button" onClick={onCancel} className="touch-target rounded-md px-4 py-2 text-muted-foreground">Cancelar</button>
       </div>
     </form>
   )

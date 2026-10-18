@@ -89,7 +89,7 @@ function TopicRow({ topic, subjectRef }: { topic: Topic; subjectRef: string }) {
       </span>
       <select aria-label={`Estado de ${topic.id}`} value={pending ?? confirmed} disabled={pending !== null}
         onChange={(e) => change(e.target.value)}
-        className="rounded-md border border-border bg-muted px-2 py-1 disabled:opacity-60">
+        className="touch-target rounded-md border border-border bg-muted px-2 py-1 disabled:opacity-60">
         {STATUS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
       </select>
       <span aria-live="polite" className="w-full text-right text-muted-foreground empty:hidden">
