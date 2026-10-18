@@ -31,7 +31,9 @@ export function SettingsPage() {
             <input required maxLength={100} value={reason} onChange={(e) => setReason(e.target.value)}
               className="ml-1 rounded-md border border-border bg-muted px-2 py-1" />
           </label>
-          <button className="rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">Marcar folga</button>
+          <button disabled={put.isPending} className="rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground disabled:opacity-60">
+            Marcar folga
+          </button>
         </form>
         {put.error && <p role="alert" className="mt-2 text-sm text-destructive">{put.error.message}</p>}
         {!dayOffs.data && <div className="mt-3"><QueryState title="Não foi possível carregar as folgas" query={dayOffs} /></div>}
@@ -39,10 +41,12 @@ export function SettingsPage() {
           {dayOffs.data?.items.map((d) => (
             <li key={d.day} className="flex items-center gap-2 text-sm">
               <span className="flex-1">{formatDay(d.day)} · {d.reason}</span>
-              <button onClick={() => del.mutate(d.day)} className="text-muted-foreground">Remover</button>
+              <button onClick={() => del.mutate(d.day)} disabled={del.isPending} aria-label={`Remover folga de ${formatDay(d.day)}`}
+                className="text-muted-foreground disabled:opacity-60">Remover</button>
             </li>
           ))}
         </ul>
+        {del.error && <p role="alert" className="mt-2 text-sm text-destructive">{del.error.message}</p>}
       </section>
     </div>
   )

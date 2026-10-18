@@ -163,7 +163,7 @@ function MissionCard({ view, onRegister }: { view: DayView; onRegister: (o: Occu
   )
 }
 
-function MissionRow({ item, missionId, view, onRegister }: {
+export function MissionRow({ item, missionId, view, onRegister }: {
   item: MissionItem; missionId: string; view: DayView; onRegister: (o: Occurrence) => void
 }) {
   const setNa = useSetItemNa()
@@ -181,7 +181,7 @@ function MissionRow({ item, missionId, view, onRegister }: {
             Registrar sessão
           </button>
           <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: 'Não se aplica hoje' })}
-            className="rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
+            disabled={setNa.isPending} className="rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
           <MoveTomorrowButton occ={occ} today={view.date} />
           <Link to="/ciclo" className="px-3 py-1 text-sm text-primary">Remanejar</Link>
         </>
@@ -189,13 +189,14 @@ function MissionRow({ item, missionId, view, onRegister }: {
       {occ && <GuidancePanel occ={occ} />}
       {item.na_reason && item.na_reason !== 'rescheduled' && item.na_reason !== 'skipped' && (
         <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: null })}
-          className="px-3 py-1 text-sm text-muted-foreground">Desfazer</button>
+          disabled={setNa.isPending} className="px-3 py-1 text-sm text-muted-foreground">Desfazer</button>
       )}
+      {setNa.error && <p role="alert" className="w-full text-sm text-destructive">{setNa.error.message}</p>}
     </li>
   )
 }
 
-function CheckoutRow({ missionId, item, note }: { missionId: string; item: MissionItem; note: string | null }) {
+export function CheckoutRow({ missionId, item, note }: { missionId: string; item: MissionItem; note: string | null }) {
   const [text, setText] = useState(note ?? '')
   const save = useCheckout()
   return (
@@ -204,10 +205,11 @@ function CheckoutRow({ missionId, item, note }: { missionId: string; item: Missi
         <textarea className="mt-1 w-full rounded-md border border-border bg-card px-3 py-2 font-normal" rows={2}
           maxLength={500} value={text} onChange={(e) => setText(e.target.value)} />
       </label>
-      <button onClick={() => save.mutate({ missionId, note: text })}
-        className="mt-2 rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
+      <button onClick={() => save.mutate({ missionId, note: text })} disabled={save.isPending}
+        className="mt-2 rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground disabled:opacity-60">
         {item.state === 'done' ? 'Atualizar' : 'Salvar check-out'}
       </button>
+      {save.error && <p role="alert" className="mt-2 text-sm text-destructive">{save.error.message}</p>}
     </li>
   )
 }
@@ -219,7 +221,7 @@ function StreakHint() {
   return <p className="text-sm text-streak">Hoje ainda conta: faltam <span className="num">{left}</span> min para manter a sequência.</p>
 }
 
-function HolidayBanner() {
+export function HolidayBanner() {
   const { data } = useSummary()
   const put = usePutDayOff()
   const h = data?.holiday_suggestion
@@ -227,9 +229,11 @@ function HolidayBanner() {
   return (
     <div className="flex flex-wrap items-center gap-2 rounded-md border border-border bg-card p-3 text-sm">
       <span className="flex-1">{h.date === data!.today ? 'Hoje' : 'Amanhã'} é feriado ({h.label}). Marcar como folga?</span>
-      <button onClick={() => put.mutate({ day: h.date, reason: h.label })} className="rounded-md bg-muted px-3 py-1">
+      <button onClick={() => put.mutate({ day: h.date, reason: h.label })} disabled={put.isPending}
+        className="rounded-md bg-muted px-3 py-1 disabled:opacity-60">
         Marcar folga
       </button>
+      {put.error && <p role="alert" className="w-full text-destructive">{put.error.message}</p>}
     </div>
   )
 }

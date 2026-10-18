@@ -2,10 +2,10 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import type { DayView, Occurrence } from '../../shared/api/types'
+import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
 import { errorBody, summary } from '../../test/fixtures'
 import { renderWithProviders, stubFetch } from '../../test/render'
-import { OpenDayCard, TodayPage, TodaySessions } from './TodayPage'
+import { CheckoutRow, HolidayBanner, MissionRow, OpenDayCard, TodayPage, TodaySessions } from './TodayPage'
 
 const pending = (id: string, title: string, planned_on: string): Occurrence => ({
   id, version: 1, week_start: '2026-10-05', planned_on, window: 'before', status: 'pending', skip_reason: null,
@@ -83,5 +83,45 @@ describe('estados de falha em Hoje', () => {
     renderWithProviders(<OpenDayCard view={saturday} />)
     expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar os blocos da semana')
     expect(screen.queryByText(/Nenhum bloco pendente/)).not.toBeInTheDocument()
+  })
+})
+
+describe('gravações com falha visível', () => {
+  const checkout: MissionItem = { id: 'i9', position: 9, kind: 'checkout', ref_id: null, required: false, target: null,
+    state: 'pending', na_reason: null }
+
+  it('mantém o texto do check-out e mostra o erro quando salvar falha', async () => {
+    stubFetch([{ method: 'PUT', match: '/missions/m1/checkout', body: errorBody('Erro inesperado.'), status: 500 }])
+    renderWithProviders(<ul><CheckoutRow missionId="m1" item={checkout} note={null} /></ul>)
+    const user = userEvent.setup()
+    await user.type(screen.getByRole('textbox'), 'juros compostos')
+    await user.click(screen.getByRole('button', { name: 'Salvar check-out' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Erro inesperado.')
+    expect(screen.getByRole('textbox')).toHaveValue('juros compostos')
+  })
+
+  it('mostra o erro quando marcar "não se aplica" falha', async () => {
+    const occ = pending('o1', 'Estado e sociedade', '2026-10-14')
+    const item: MissionItem = { id: 'i1', position: 1, kind: 'block', ref_id: 'o1', required: true, target: null,
+      state: 'pending', na_reason: null }
+    const view: DayView = { date: '2026-10-14', kind: 'weekday', in_plan: true, week_generated: true, occurrences: [occ],
+      mission: { id: 'm1', date: '2026-10-14', kind: 'weekday', checkout_note: null, complete: false, items: [item] }, xp_today: 0 }
+    stubFetch([
+      { match: '/plans/current', body: { id: 'p', starts_on: '2026-10-09', ends_on: '2026-12-12', exam_date: '2026-12-13' } },
+      { method: 'PATCH', match: '/missions/m1/items/i1', body: errorBody('Erro inesperado.'), status: 500 },
+    ])
+    renderWithProviders(<ul><MissionRow item={item} missionId="m1" view={view} onRegister={vi.fn()} /></ul>)
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Não se aplica hoje' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Erro inesperado.')
+  })
+
+  it('mostra o erro quando marcar o feriado como folga falha', async () => {
+    stubFetch([
+      { match: '/game/summary', body: { ...summary, holiday_suggestion: { date: '2026-10-15', label: 'Dia do Professor' } } },
+      { method: 'PUT', match: '/day-offs/2026-10-15', body: errorBody('Erro inesperado.'), status: 500 },
+    ])
+    renderWithProviders(<HolidayBanner />)
+    await userEvent.setup().click(await screen.findByRole('button', { name: 'Marcar folga' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Erro inesperado.')
   })
 })
