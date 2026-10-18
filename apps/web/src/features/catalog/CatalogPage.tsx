@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { isConflict } from '../../shared/api/client'
+import { CONFLICT_MESSAGE, isConflict } from '../../shared/api/client'
 import { useCurrentExamVersion, usePutProgress, useSubjects } from '../../shared/api/hooks'
 import type { Topic } from '../../shared/api/types'
 import { QueryState } from '../../shared/ui/QueryState'
@@ -97,7 +97,7 @@ function TopicRow({ topic, subjectRef }: { topic: Topic; subjectRef: string }) {
       </span>
       {put.error && !pending && (
         <p role="alert" className="w-full text-destructive">
-          {isConflict(put.error) ? 'Alterado em outro lugar; dados recarregados — revise e confirme de novo.' : put.error.message}
+          {isConflict(put.error) ? CONFLICT_MESSAGE : put.error.message}
         </p>
       )}
     </li>

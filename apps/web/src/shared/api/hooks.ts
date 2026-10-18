@@ -54,16 +54,20 @@ export const useGameConfig = () =>
 
 export const useDayOffs = () => useQuery({ queryKey: ['day-offs'], queryFn: () => api<ListResponse<DayOff>>('/day-offs') })
 
-/** Mutação que mostra o efeito no jogo e atualiza HUD, dia e ciclo. */
+const GAME_KEYS = ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance']
+
+/** Mutação que mostra o efeito no jogo e atualiza HUD, dia e ciclo; em conflito, recarrega para obter a versão atual. */
 function useGameMutation<V, R extends Partial<WithDelta> | void>(fn: (v: V) => Promise<R>) {
   const qc = useQueryClient()
   const toast = useGameToast()
+  const refresh = () => { for (const key of GAME_KEYS) qc.invalidateQueries({ queryKey: [key] }) }
   return useMutation({
     mutationFn: fn,
     onSuccess: (result) => {
       if (result && result.game_delta) toast(result.game_delta)
-      for (const key of ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance']) qc.invalidateQueries({ queryKey: [key] })
+      refresh()
     },
+    onError: (e) => { if (isConflict(e)) refresh() },
   })
 }
 
