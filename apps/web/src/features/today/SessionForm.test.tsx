@@ -8,7 +8,7 @@ import { GameToastProvider } from '../../shared/ui/GameToast'
 import { SessionForm, type SubjectsQuery } from './SessionForm'
 
 const subjects: Subject[] = [
-  { id: 'C02', paper: 'P2', title: 'Transparência', topics: [{ id: 'C02.01', title: 'Acesso à informação', source_ref: '', progress: null }] },
+  { id: 'C02', paper: 'P2', title: 'Transparência', source_ref: '', topics: [{ id: 'C02.01', title: 'Acesso à informação', source_ref: '', progress: null }] },
 ]
 
 const occurrence: Occurrence = {
