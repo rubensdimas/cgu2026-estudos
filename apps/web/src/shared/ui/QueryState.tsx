@@ -1,6 +1,6 @@
 import { NetworkError } from '../api/client'
 
-type QueryLike = { isPending: boolean; isFetching: boolean; error: Error | null; refetch: () => unknown }
+export type QueryLike = { isPending: boolean; isFetching: boolean; error: Error | null; refetch: () => unknown }
 
 /** Carregamento ou falha de uma consulta sem dados; nada quando a consulta já tem dados. */
 export function QueryState({ title, query }: { title: string; query: QueryLike }) {

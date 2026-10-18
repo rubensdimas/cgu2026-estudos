@@ -3,8 +3,9 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import type { DayView, Occurrence } from '../../shared/api/types'
+import { errorBody, summary } from '../../test/fixtures'
 import { renderWithProviders, stubFetch } from '../../test/render'
-import { OpenDayCard, TodaySessions } from './TodayPage'
+import { OpenDayCard, TodayPage, TodaySessions } from './TodayPage'
 
 const pending = (id: string, title: string, planned_on: string): Occurrence => ({
   id, version: 1, week_start: '2026-10-05', planned_on, window: 'before', status: 'pending', skip_reason: null,
@@ -51,5 +52,36 @@ describe('TodaySessions', () => {
     await userEvent.setup().click(await screen.findByRole('button', { name: /Excluir sessão de 600 min/ }))
     await waitFor(() =>
       expect(fetchMock).toHaveBeenCalledWith('/api/v1/sessions/s1', expect.objectContaining({ method: 'DELETE' })))
+  })
+})
+
+describe('estados de falha em Hoje', () => {
+  it('oferece nova tentativa quando o resumo não carrega', async () => {
+    stubFetch([{ match: '/game/summary', body: errorBody('Erro inesperado.'), status: 500 }])
+    renderWithProviders(<TodayPage />)
+    expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar o dia')
+    expect(screen.getByRole('button', { name: 'Tentar novamente' })).toBeInTheDocument()
+  })
+
+  it('oferece nova tentativa quando o dia não carrega', async () => {
+    stubFetch([
+      { match: '/game/summary', body: summary },
+      { match: '/days/2026-10-14', body: errorBody('Erro inesperado.'), status: 500 },
+    ])
+    renderWithProviders(<TodayPage />)
+    expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar o dia')
+  })
+
+  it('não esconde a lista de sessões quando ela falha', async () => {
+    stubFetch([{ match: '/sessions?', body: errorBody('Erro inesperado.'), status: 500 }])
+    renderWithProviders(<TodaySessions day="2026-10-09" />)
+    expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar as sessões de hoje')
+  })
+
+  it('não apresenta semana sem blocos quando a busca de blocos falha', async () => {
+    stubFetch([{ match: '/occurrences?', body: errorBody('Erro inesperado.'), status: 500 }])
+    renderWithProviders(<OpenDayCard view={saturday} />)
+    expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar os blocos da semana')
+    expect(screen.queryByText(/Nenhum bloco pendente/)).not.toBeInTheDocument()
   })
 })

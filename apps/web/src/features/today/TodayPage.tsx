@@ -7,12 +7,15 @@ import {
 } from '../../shared/api/hooks'
 import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, WINDOW_LABEL } from '../../shared/format'
+import { QueryState } from '../../shared/ui/QueryState'
 import { GuidancePanel } from '../guidance/GuidancePanel'
 import { LateBlocks } from './LateBlocks'
 import { MissionRing } from './MissionRing'
 import { MoveTomorrowButton } from './MoveTomorrow'
 import { OtherBlocks } from './OtherBlocks'
 import { SessionForm } from './SessionForm'
+
+const DAY_FAILED = 'Não foi possível carregar o dia'
 
 const STATE_LABEL = { pending: 'Pendente', done: '✓ Feito', not_applicable: '— Não se aplica' } as const
 
@@ -23,7 +26,8 @@ export function TodayPage() {
   const subjects = useSubjects()
   const [form, setForm] = useState<{ occurrence: Occurrence | null } | null>(null)
 
-  if (!today || !day.data) return <p className="text-muted-foreground" aria-busy="true">Carregando…</p>
+  if (!today) return <QueryState title={DAY_FAILED} query={summary} />
+  if (!day.data) return <QueryState title={DAY_FAILED} query={day} />
   const view = day.data
 
   return (
@@ -32,7 +36,7 @@ export function TodayPage() {
       <StreakHint />
       {view.in_plan && <LateBlocks today={today} />}
       {form ? (
-        <SessionForm occurrence={form.occurrence} today={today} subjects={subjects.data?.items ?? []}
+        <SessionForm occurrence={form.occurrence} today={today} subjects={subjects}
           onSaved={() => setForm(null)} onCancel={() => setForm(null)} />
       ) : (
         <>
@@ -85,9 +89,11 @@ function FreeBlockPicker({ day, chosen, onChange }: {
   day: string; chosen: string[]; onChange: (ids: string[]) => void
 }) {
   const monday = mondayOf(day)
-  const { data } = useOccurrences(monday, addDays(monday, 6))
-  const pending = (data?.items ?? []).filter((o) => o.status === 'pending')
-  if (data && pending.length === 0) {
+  const week = useOccurrences(monday, addDays(monday, 6))
+  const { data } = week
+  if (!data) return <div className="mt-3"><QueryState title="Não foi possível carregar os blocos da semana" query={week} /></div>
+  const pending = data.items.filter((o) => o.status === 'pending')
+  if (pending.length === 0) {
     return <p className="mt-2 text-sm text-muted-foreground">Nenhum bloco pendente nesta semana. Use “Sessão avulsa”.</p>
   }
   const toggle = (id: string) =>
@@ -107,9 +113,11 @@ function FreeBlockPicker({ day, chosen, onChange }: {
 }
 
 export function TodaySessions({ day }: { day: string }) {
-  const { data } = useSessions(day)
+  const sessions = useSessions(day)
+  const { data } = sessions
   const remove = useDeleteSession()
-  if (!data || data.items.length === 0) return null
+  if (!data) return <QueryState title="Não foi possível carregar as sessões de hoje" query={sessions} />
+  if (data.items.length === 0) return null
   return (
     <section className="rounded-lg border border-border bg-card p-4">
       <h2 className="font-semibold">Sessões de hoje</h2>

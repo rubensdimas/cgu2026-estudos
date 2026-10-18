@@ -3,8 +3,9 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import type { Occurrence } from '../../shared/api/types'
+import { errorBody, summary } from '../../test/fixtures'
 import { renderWithProviders, stubFetch } from '../../test/render'
-import { OccurrenceRow } from './CyclePage'
+import { CyclePage, OccurrenceRow } from './CyclePage'
 
 const occ: Occurrence = {
   id: 'occ-1', version: 3, week_start: '2026-10-12', planned_on: '2026-10-12', window: 'before', status: 'pending',
@@ -22,5 +23,17 @@ describe('OccurrenceRow', () => {
     renderWithProviders(<ul><OccurrenceRow occ={occ} /></ul>)
     await userEvent.setup().click(screen.getByRole('button', { name: 'Dispensar' }))
     expect(fetchMock).not.toHaveBeenCalled()
+  })
+})
+
+describe('CyclePage', () => {
+  it('oferece nova tentativa em vez de semana não gerada quando a busca da semana falha', async () => {
+    stubFetch([
+      { match: '/game/summary', body: summary },
+      { match: '/occurrences?', body: errorBody('Erro inesperado.'), status: 500 },
+    ])
+    renderWithProviders(<CyclePage />)
+    expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar a semana')
+    expect(screen.queryByText('Semana ainda não gerada.')).not.toBeInTheDocument()
   })
 })

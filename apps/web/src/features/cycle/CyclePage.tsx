@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { useGenerateWeek, useOccurrences, usePatchOccurrence, useSummary } from '../../shared/api/hooks'
+import { QueryState } from '../../shared/ui/QueryState'
 import { GuidancePanel } from '../guidance/GuidancePanel'
 import type { Occurrence, Window } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, PURPOSE_LABEL, WINDOW_LABEL } from '../../shared/format'
@@ -8,14 +9,15 @@ import { addDays, formatDay, mondayOf, PURPOSE_LABEL, WINDOW_LABEL } from '../..
 export function CyclePage() {
   const summary = useSummary()
   const [offset, setOffset] = useState(0)
-  if (!summary.data) return <p className="text-muted-foreground" aria-busy="true">Carregando…</p>
+  if (!summary.data) return <QueryState title="Não foi possível carregar o Ciclo" query={summary} />
   const weekStart = addDays(mondayOf(summary.data.today), offset * 7)
   return <Week weekStart={weekStart} onMove={(d) => setOffset((o) => o + d)} />
 }
 
 function Week({ weekStart, onMove }: { weekStart: string; onMove: (delta: number) => void }) {
   const weekEnd = addDays(weekStart, 6)
-  const { data } = useOccurrences(weekStart, weekEnd)
+  const week = useOccurrences(weekStart, weekEnd)
+  const { data } = week
   const generate = useGenerateWeek()
   const byDay = new Map<string, Occurrence[]>()
   for (const o of data?.items ?? []) byDay.set(o.planned_on, [...(byDay.get(o.planned_on) ?? []), o])
@@ -26,6 +28,7 @@ function Week({ weekStart, onMove }: { weekStart: string; onMove: (delta: number
         <h1 className="text-lg font-bold">Semana de {formatDay(weekStart)}</h1>
         <button onClick={() => onMove(1)} className="px-3 py-2 text-primary" aria-label="Próxima semana">→</button>
       </div>
+      {!data && <QueryState title="Não foi possível carregar a semana" query={week} />}
       {data && data.items.length === 0 && (
         <div className="rounded-lg border border-border bg-card p-4">
           <p className="text-sm text-muted-foreground">Semana ainda não gerada.</p>

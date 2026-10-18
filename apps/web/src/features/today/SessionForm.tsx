@@ -2,12 +2,15 @@ import { useState, type FormEvent } from 'react'
 
 import { ApiError } from '../../shared/api/client'
 import { useCreateSession } from '../../shared/api/hooks'
-import type { Activity, EssayKind, Occurrence, Subject } from '../../shared/api/types'
+import type { Activity, EssayKind, ListResponse, Occurrence, Subject } from '../../shared/api/types'
+import { QueryState, type QueryLike } from '../../shared/ui/QueryState'
+
+export type SubjectsQuery = QueryLike & { data?: ListResponse<Subject> }
 
 interface Props {
   occurrence: Occurrence | null
   today: string
-  subjects: Subject[]
+  subjects: SubjectsQuery
   onSaved: () => void
   onCancel: () => void
 }
@@ -76,16 +79,20 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
           </select>
         </label>
       )}
-      <label className="block text-sm">Tópico {isEssay && '(opcional)'}
-        <select className={input} value={topicId} onChange={(e) => setTopicId(e.target.value)} required={!isEssay}>
-          <option value="">Selecione…</option>
-          {subjects.map((s) => (
-            <optgroup key={s.id} label={`${s.paper} · ${s.id} ${s.title}`}>
-              {s.topics.map((t) => <option key={t.id} value={t.id}>{t.id} {t.title}</option>)}
-            </optgroup>
-          ))}
-        </select>
-      </label>
+      {subjects.data ? (
+        <label className="block text-sm">Tópico {isEssay && '(opcional)'}
+          <select className={input} value={topicId} onChange={(e) => setTopicId(e.target.value)} required={!isEssay}>
+            <option value="">Selecione…</option>
+            {subjects.data.items.map((s) => (
+              <optgroup key={s.id} label={`${s.paper} · ${s.id} ${s.title}`}>
+                {s.topics.map((t) => <option key={t.id} value={t.id}>{t.id} {t.title}</option>)}
+              </optgroup>
+            ))}
+          </select>
+        </label>
+      ) : (
+        <QueryState title="Não foi possível carregar os tópicos" query={subjects} />
+      )}
       <div className="grid grid-cols-2 gap-3">
         <label className="block text-sm">Minutos
           <input className={`${input} num`} type="number" inputMode="numeric" min={1} max={720} required
