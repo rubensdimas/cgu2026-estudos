@@ -12,7 +12,7 @@ Alternativas descartadas na v2.0: Supabase/BaaS (exigiria conta e dados fora da 
 
 ```mermaid
 flowchart LR
-    MAC["Navegador do Mac"] --> L["127.0.0.1:8080"]
+    MAC["Navegador do Mac"] --> L["127.0.0.1:8082 (APP_PORT)"]
     CEL["Celular (Tailscale)"] --> TS["tailscale serve — HTTPS"]
     TS --> L
     L --> APP["app: FastAPI + React estático"]
@@ -23,11 +23,12 @@ flowchart LR
 
 | Serviço | Imagem | Notas |
 |---|---|---|
-| `app` | Build multi-stage: Node compila `apps/web` → Python serve `apps/api` + `/static` | Porta `127.0.0.1:8080:8000`; roda `alembic upgrade head` e seed idempotente ao iniciar |
-| `db` | `postgres:17` (tag com versão fixa) | Volume nomeado `pgdata`; sem porta publicada; healthcheck |
+| `app` | Build multi-stage: Node compila `apps/web` → Python serve `apps/api` + `/static` | Porta `127.0.0.1:${APP_PORT:-8082}:8000`; roda `alembic upgrade head` e seed idempotente ao iniciar |
+| `db` | `postgres:17.6` | Volume nomeado `pgdata` (`cgu2026_pgdata`); acesso interno em `db:5432`, sem porta publicada; healthcheck |
 | `backup` | Mesma imagem do Postgres | Laço diário de `pg_dump -Fc` para `./backups`, mantém 14 arquivos |
 
-- Acesso pelo celular: `tailscale serve --bg 8080` no Mac publica `https://<mac>.<tailnet>.ts.net` só dentro da tailnet, com certificado válido (necessário para instalar o PWA). Nunca usar `tailscale funnel`.
+- Coexistência local: o namespace Compose `cgu2026`, sua rede padrão `cgu2026_default`, o volume existente `cgu2026_pgdata`, os bancos e os backups são preservados. Cada projeto usa seu próprio PostgreSQL. `APP_PORT` no `.env` da raiz escolhe a porta externa do app; ausente ou vazia usa `8082`. A variável do terminal tem precedência, inclusive quando vazia.
+- Acesso pelo celular: `tailscale serve --bg 8082` (ou a porta escolhida em `APP_PORT`) no Mac publica `https://<mac>.<tailnet>.ts.net` só dentro da tailnet, com certificado válido (necessário para instalar o PWA). Nunca usar `tailscale funnel`.
 - Segredos (senha do Postgres) em `.env` fora do Git; `.env.example` versionado. `ALLOWED_HOSTS` lista `127.0.0.1`, `localhost` e o nome `*.ts.net` do Mac. `BACKUP_DIR` permite apontar os backups para uma pasta sincronizada (ex.: iCloud Drive) e ter cópia fora do disco.
 - Pré-requisito ainda não instalado em 09/10/2026: **Tailscale** no Mac e no celular. Sem ele, a v1 funciona só no Mac.
 - Banco de testes: database `cgu_test` criado no mesmo serviço `db` por script de init (`ops/db-init/`). O `Dockerfile` tem os alvos `dev` (com dependências de teste) e `runtime`; o serviço `test` (perfil `test`) usa `dev`, monta `apps/api` e roda `docker compose --profile test run --rm test`. O Postgres continua sem porta publicada.
