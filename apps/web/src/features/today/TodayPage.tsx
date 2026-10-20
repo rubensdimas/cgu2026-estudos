@@ -7,6 +7,7 @@ import {
 } from '../../shared/api/hooks'
 import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, WINDOW_LABEL } from '../../shared/format'
+import { CARD, CARD_BODY, CARD_DESC, CARD_ROW, CARD_TITLE, CARD_TITLE_PRIMARY, ROW_PRIMARY_ACTION } from '../../shared/ui/card'
 import { QueryState } from '../../shared/ui/QueryState'
 import { GuidancePanel } from '../guidance/GuidancePanel'
 import { LateBlocks } from './LateBlocks'
@@ -31,7 +32,7 @@ export function TodayPage() {
   const view = day.data
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 md:space-y-6">
       <HolidayBanner />
       <StreakHint />
       {view.in_plan && <LateBlocks today={today} />}
@@ -65,9 +66,9 @@ export function OpenDayCard({ view }: { view: DayView }) {
   if (!view.in_plan) return <p className="text-muted-foreground">Fora do período do plano.</p>
   const free = view.kind === 'free'
   return (
-    <section className="rounded-lg border border-border bg-card p-4">
-      <h2 className="text-xl font-bold">{free ? 'Fim de semana' : 'Missão de hoje'}</h2>
-      <p className="mt-1 text-sm text-muted-foreground">
+    <section className={CARD}>
+      <h2 className={CARD_TITLE_PRIMARY}>{free ? 'Fim de semana' : 'Missão de hoje'}</h2>
+      <p className={CARD_DESC}>
         {free
           ? 'Sem ciclo planejado. Escolha até 2 blocos pendentes da semana para uma missão livre; nada é cobrado.'
           : view.week_generated
@@ -77,7 +78,7 @@ export function OpenDayCard({ view }: { view: DayView }) {
       {free && <FreeBlockPicker day={view.date} chosen={chosen} onChange={setChosen} />}
       <button onClick={() => open.mutate({ day: view.date, occurrence_ids: chosen })}
         disabled={open.isPending || (free && chosen.length === 0)}
-        className="touch-target mt-3 rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-50">
+        className={`${ROW_PRIMARY_ACTION} ${CARD_BODY} disabled:opacity-50`}>
         {free ? 'Abrir missão livre' : 'Abrir o dia'}
       </button>
       {open.error && <p role="alert" className="mt-2 text-sm text-destructive">{open.error.message}</p>}
@@ -91,18 +92,18 @@ function FreeBlockPicker({ day, chosen, onChange }: {
   const monday = mondayOf(day)
   const week = useOccurrences(monday, addDays(monday, 6))
   const { data } = week
-  if (!data) return <div className="mt-3"><QueryState title="Não foi possível carregar os blocos da semana" query={week} /></div>
+  if (!data) return <div className={CARD_BODY}><QueryState title="Não foi possível carregar os blocos da semana" query={week} /></div>
   const pending = data.items.filter((o) => o.status === 'pending')
   if (pending.length === 0) {
-    return <p className="mt-2 text-sm text-muted-foreground">Nenhum bloco pendente nesta semana. Use “Sessão avulsa”.</p>
+    return <p className={`${CARD_BODY} text-sm text-muted-foreground`}>Nenhum bloco pendente nesta semana. Use “Sessão avulsa”.</p>
   }
   const toggle = (id: string) =>
     onChange(chosen.includes(id) ? chosen.filter((c) => c !== id) : [...chosen, id])
   return (
-    <fieldset className="mt-3 space-y-1">
-      <legend className="text-sm font-semibold">Blocos pendentes (máx. 2)</legend>
+    <fieldset className={`${CARD_BODY} space-y-1`}>
+      <legend className="mb-1 text-sm font-semibold">Blocos pendentes (máx. 2)</legend>
       {pending.map((o) => (
-        <label key={o.id} className="touch-target flex items-center gap-2 text-sm">
+        <label key={o.id} className="touch-target flex items-center gap-3 text-sm">
           <input type="checkbox" checked={chosen.includes(o.id)} onChange={() => toggle(o.id)}
             disabled={!chosen.includes(o.id) && chosen.length >= 2} />
           {formatDay(o.planned_on)} · {o.slot.title}
@@ -119,14 +120,14 @@ export function TodaySessions({ day }: { day: string }) {
   if (!data) return <QueryState title="Não foi possível carregar as sessões de hoje" query={sessions} />
   if (data.items.length === 0) return null
   return (
-    <section className="rounded-lg border border-border bg-card p-4">
-      <h2 className="font-semibold">Sessões de hoje</h2>
-      <ul className="mt-2 space-y-1">
+    <section className={CARD}>
+      <h2 className={CARD_TITLE}>Sessões de hoje</h2>
+      <ul className={`${CARD_BODY} divide-y divide-border`}>
         {data.items.map((s) => (
-          <li key={s.id} className="flex items-center gap-2 text-sm">
+          <li key={s.id} className="flex items-center gap-3 py-1 text-sm">
             <span className="num">{s.duration_minutes} min</span>
             <span className="min-w-0 flex-1 text-muted-foreground">{s.topic_ids.join(', ') || 'Discursiva'}</span>
-            <button aria-label={`Excluir sessão de ${s.duration_minutes} min`} className="touch-target px-2 py-1 text-destructive"
+            <button aria-label={`Excluir sessão de ${s.duration_minutes} min`} className="touch-target -mr-2 px-2 py-1 text-destructive"
               onClick={() => confirm('Excluir esta sessão? Os minutos, o XP e a conclusão do bloco serão recalculados.')
                 && remove.mutate(s.id)}>
               Excluir
@@ -144,17 +145,17 @@ function MissionCard({ view, onRegister }: { view: DayView; onRegister: (o: Occu
   const required = mission.items.filter((i) => i.required)
   const done = required.filter((i) => i.state !== 'pending').length
   return (
-    <section className="rounded-lg border border-border bg-card p-4">
+    <section className={CARD}>
       <div className="flex items-center gap-4">
         <MissionRing done={done} total={required.length} />
-        <div>
-          <h2 className="text-xl font-bold">
+        <div className="min-w-0">
+          <h2 className={CARD_TITLE_PRIMARY}>
             {mission.complete ? 'Missão cumprida' : mission.kind === 'free' ? 'Missão livre' : 'Missão de hoje'}
           </h2>
-          <p className="num text-sm text-xp">+{view.xp_today} XP hoje</p>
+          <p className="num mt-1 text-sm text-xp">+{view.xp_today} XP hoje</p>
         </div>
       </div>
-      <ul className="mt-4 space-y-2">
+      <ul className={`${CARD_BODY} space-y-3`}>
         {mission.items.map((item) => (
           <MissionRow key={item.id} item={item} missionId={mission.id} view={view} onRegister={onRegister} />
         ))}
@@ -170,28 +171,30 @@ export function MissionRow({ item, missionId, view, onRegister }: {
   if (item.kind === 'checkout') return <CheckoutRow missionId={missionId} item={item} note={view.mission!.checkout_note} />
   const occ = view.occurrences.find((o) => o.id === item.ref_id)
   return (
-    <li className="flex flex-wrap items-center gap-2 rounded-md bg-muted p-3">
-      <div className="min-w-0 flex-1">
-        <p className="font-semibold">{occ ? `${WINDOW_LABEL[occ.window]} · ${occ.slot.title}` : 'Bloco remanejado'}</p>
-        <p className="text-xs text-muted-foreground">{STATE_LABEL[item.state]}{item.na_reason ? ` (${item.na_reason})` : ''}</p>
-      </div>
+    <li className={CARD_ROW}>
+      <p className="font-semibold leading-snug [overflow-wrap:anywhere]">
+        {occ ? `${WINDOW_LABEL[occ.window]} · ${occ.slot.title}` : 'Bloco remanejado'}
+      </p>
+      <p className="mt-1 text-xs text-muted-foreground">{STATE_LABEL[item.state]}{item.na_reason ? ` (${item.na_reason})` : ''}</p>
       {item.state === 'pending' && occ && (
-        <>
-          <button onClick={() => onRegister(occ)} className="touch-target rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <button onClick={() => onRegister(occ)} className={ROW_PRIMARY_ACTION}>
             Registrar sessão
           </button>
-          <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: 'Não se aplica hoje' })}
-            disabled={setNa.isPending} className="touch-target rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
-          <MoveTomorrowButton occ={occ} today={view.date} />
-          <Link to="/ciclo" className="touch-target inline-flex items-center px-3 py-1 text-sm text-primary">Remanejar</Link>
-        </>
+          <div className="-mx-3 flex flex-wrap items-center sm:mx-0">
+            <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: 'Não se aplica hoje' })}
+              disabled={setNa.isPending} className="touch-target rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
+            <MoveTomorrowButton occ={occ} today={view.date} />
+            <Link to="/ciclo" className="touch-target inline-flex items-center px-3 py-1 text-sm text-primary">Remanejar</Link>
+          </div>
+        </div>
       )}
-      {occ && <GuidancePanel occ={occ} />}
       {item.na_reason && item.na_reason !== 'rescheduled' && item.na_reason !== 'skipped' && (
         <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: null })}
-          disabled={setNa.isPending} className="touch-target px-3 py-1 text-sm text-muted-foreground">Desfazer</button>
+          disabled={setNa.isPending} className="touch-target -ml-3 mt-1 px-3 py-1 text-sm text-muted-foreground">Desfazer</button>
       )}
-      {setNa.error && <p role="alert" className="w-full text-sm text-destructive">{setNa.error.message}</p>}
+      {setNa.error && <p role="alert" className="mt-2 text-sm text-destructive">{setNa.error.message}</p>}
+      {occ && <div className="mt-3 border-t border-border pt-1"><GuidancePanel occ={occ} /></div>}
     </li>
   )
 }
@@ -200,13 +203,13 @@ export function CheckoutRow({ missionId, item, note }: { missionId: string; item
   const [text, setText] = useState(note ?? '')
   const save = useCheckout()
   return (
-    <li className="rounded-md bg-muted p-3">
-      <label className="block text-sm font-semibold">Check-out: o que ficou difícil hoje? <span className="text-xp">(bônus)</span>
-        <textarea className="touch-target mt-1 w-full rounded-md border border-border bg-card px-3 py-2 font-normal" rows={2}
+    <li className={CARD_ROW}>
+      <label className="block text-sm font-semibold leading-snug">Check-out: o que ficou difícil hoje? <span className="text-xp">(bônus)</span>
+        <textarea className="touch-target mt-2 w-full rounded-md border border-border bg-card px-3 py-2 font-normal" rows={2}
           maxLength={500} value={text} onChange={(e) => setText(e.target.value)} />
       </label>
       <button onClick={() => save.mutate({ missionId, note: text })} disabled={save.isPending}
-        className="touch-target mt-2 rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground disabled:opacity-60">
+        className={`${ROW_PRIMARY_ACTION} mt-3 disabled:opacity-60`}>
         {item.state === 'done' ? 'Atualizar' : 'Salvar check-out'}
       </button>
       {save.error && <p role="alert" className="mt-2 text-sm text-destructive">{save.error.message}</p>}
@@ -227,13 +230,13 @@ export function HolidayBanner() {
   const h = data?.holiday_suggestion
   if (!h) return null
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-md border border-border bg-card p-3 text-sm">
-      <span className="flex-1">{h.date === data!.today ? 'Hoje' : 'Amanhã'} é feriado ({h.label}). Marcar como folga?</span>
+    <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 text-sm sm:flex-row sm:items-center">
+      <span className="flex-1 leading-relaxed">{h.date === data!.today ? 'Hoje' : 'Amanhã'} é feriado ({h.label}). Marcar como folga?</span>
       <button onClick={() => put.mutate({ day: h.date, reason: h.label })} disabled={put.isPending}
-        className="touch-target rounded-md bg-muted px-3 py-1 disabled:opacity-60">
+        className="touch-target w-full rounded-md bg-muted px-4 py-2 disabled:opacity-60 sm:w-auto">
         Marcar folga
       </button>
-      {put.error && <p role="alert" className="w-full text-destructive">{put.error.message}</p>}
+      {put.error && <p role="alert" className="text-destructive sm:basis-full">{put.error.message}</p>}
     </div>
   )
 }

@@ -35,26 +35,26 @@ export function LateBlocks({ today }: { today: string }) {
 
   const n = late.length
   return (
-    <section className="rounded-md border border-border bg-card p-3 text-sm">
-      <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="touch-target font-semibold text-streak">
+    <section className="rounded-lg border border-border bg-card px-4 py-2 text-sm md:px-6">
+      <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="touch-target w-full text-left font-semibold leading-snug text-streak">
         {n} {n === 1 ? 'bloco atrasado' : 'blocos atrasados'} — escolher quais trazer para hoje
       </button>
       {open && (
-        <fieldset className="mt-2 space-y-1">
+        <fieldset className="mt-2 space-y-1 pb-2">
           <legend className="sr-only">Blocos atrasados</legend>
           {late.map((o) => (
-            <label key={o.id} className="touch-target flex items-center gap-2">
+            <label key={o.id} className="touch-target flex items-center gap-3">
               <input type="checkbox" checked={chosen.includes(o.id)} onChange={() => toggle(o.id)} />
               {formatDay(o.planned_on)} · {o.slot.title}
             </label>
           ))}
           <button onClick={bring} disabled={selected.length === 0 || patch.isPending}
-            className="touch-target mt-2 rounded-md bg-primary px-3 py-1 text-primary-foreground disabled:opacity-50">
+            className="touch-target mt-3 w-full rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-50 sm:w-auto">
             Trazer para hoje
           </button>
         </fieldset>
       )}
-      {patch.error && <p role="alert" className="mt-2 text-destructive">{patch.error.message}</p>}
+      {patch.error && <p role="alert" className="mt-2 pb-2 text-destructive">{patch.error.message}</p>}
     </section>
   )
 }
