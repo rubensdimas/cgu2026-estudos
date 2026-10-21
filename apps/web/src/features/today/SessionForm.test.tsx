@@ -31,7 +31,7 @@ function renderForm(onSaved = vi.fn(), topics: SubjectsQuery = loaded) {
     </QueryClientProvider>
   )
   const { rerender } = render(tree(topics))
-  return { onSaved, rerender: (t: SubjectsQuery) => rerender(tree(t)) }
+  return { onSaved, qc, rerender: (t: SubjectsQuery) => rerender(tree(t)) }
 }
 
 afterEach(() => vi.unstubAllGlobals())
@@ -60,6 +60,16 @@ describe('SessionForm', () => {
     const [first, second] = fetchMock.mock.calls.map((c) => JSON.parse(c[1].body))
     expect(second.id).toBe(first.id)
     expect(second).toMatchObject({ duration_minutes: 45, topic_ids: ['C02.01'], complete_occurrence: true, occurrence_id: 'occ-1' })
+  })
+
+  it('recarrega o Edital após registrar, pois a sessão pode promover o tópico', async () => {
+    const delta = { xp_gained: 0, entries: [], level_up: null, mission_complete: [], streak: 1 }
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ game_delta: delta }), { status: 201 })))
+    const { onSaved, qc } = renderForm()
+    const invalidate = vi.spyOn(qc, 'invalidateQueries')
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Registrar sessão' }))
+    await waitFor(() => expect(onSaved).toHaveBeenCalled())
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: ['subjects'] })
   })
 
   it('mostra erros de campo do servidor', async () => {
