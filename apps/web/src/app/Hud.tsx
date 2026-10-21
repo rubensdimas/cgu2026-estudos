@@ -1,4 +1,5 @@
-import { Flame, Snowflake } from 'lucide-react'
+import { Flame, Settings, Snowflake } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 import { PointsBadge } from '@/components/ui/points-badge'
 
@@ -33,6 +34,10 @@ export function Hud() {
         <span className="sr-only"> dias úteis de sequência</span>
       </p>
       <p className="font-pixel text-sm text-xp">D-{data.days_to_exam}</p>
+      <Link to="/config" aria-label="Configurações"
+        className="touch-target -mr-2 flex items-center justify-center px-2 text-muted-foreground hover:text-foreground md:hidden">
+        <Settings className="size-5" aria-hidden="true" />
+      </Link>
     </header>
   )
 }

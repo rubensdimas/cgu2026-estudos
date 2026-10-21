@@ -1,8 +1,9 @@
-import { BookOpen, CalendarDays, House, Settings, Trophy } from 'lucide-react'
+import { BookOpen, CalendarDays, House, Layers, Settings, Trophy } from 'lucide-react'
 import { NavLink, Route, Routes } from 'react-router-dom'
 
 import { CatalogPage } from '../features/catalog/CatalogPage'
 import { CyclePage } from '../features/cycle/CyclePage'
+import { FlashcardsPage } from '../features/flashcards/FlashcardsPage'
 import { ProgressPage } from '../features/progress/ProgressPage'
 import { SettingsPage } from '../features/settings/SettingsPage'
 import { TodayPage } from '../features/today/TodayPage'
@@ -12,8 +13,9 @@ const LINKS = [
   { to: '/', label: 'Hoje', icon: House },
   { to: '/ciclo', label: 'Ciclo', icon: CalendarDays },
   { to: '/edital', label: 'Edital', icon: BookOpen },
+  { to: '/cartoes', label: 'Cartões', icon: Layers },
   { to: '/progresso', label: 'Progresso', icon: Trophy },
-  { to: '/config', label: 'Config.', icon: Settings },
+  { to: '/config', label: 'Config.', icon: Settings, mobile: false }, // no celular, a engrenagem fica no Hud
 ]
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -33,7 +35,8 @@ export function App() {
         md:sticky md:top-0 md:h-screen md:w-56 md:flex-col md:border-r md:border-t-0 md:bg-background md:py-6 md:pl-4">
         <p className="hidden pb-8 pl-3 font-pixel text-xl text-primary md:block">CGU 2026</p>
         {LINKS.map((l) => (
-          <NavLink key={l.to} to={l.to} end className={linkClass}>
+          <NavLink key={l.to} to={l.to} end
+            className={(state) => `${linkClass(state)}${'mobile' in l && !l.mobile ? ' max-md:hidden' : ''}`}>
             <l.icon className="size-5" aria-hidden="true" />
             {l.label}
           </NavLink>
@@ -46,6 +49,7 @@ export function App() {
             <Route path="/" element={<TodayPage />} />
             <Route path="/ciclo" element={<CyclePage />} />
             <Route path="/edital" element={<CatalogPage />} />
+            <Route path="/cartoes" element={<FlashcardsPage />} />
             <Route path="/progresso" element={<ProgressPage />} />
             <Route path="/config" element={<SettingsPage />} />
           </Routes>

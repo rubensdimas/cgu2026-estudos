@@ -23,7 +23,7 @@ const QUIET = 'touch-target rounded-md px-3 py-2 text-sm text-muted-foreground h
 
 const errorText = (e: unknown) => (isConflict(e) ? CONFLICT_MESSAGE : e instanceof Error ? e.message : 'Erro inesperado.')
 
-/** Gera flashcards de uma sessão de teoria e revisa os rascunhos antes de irem para o baralho (R13). */
+/** Gera flashcards de uma sessão de teoria e revisa os rascunhos antes de irem para o baralho (R16). */
 export function FlashcardPanel({ session }: { session: Session }) {
   const [studied, setStudied] = useState(session.notes)
   const status = useFlashcardStatus()
