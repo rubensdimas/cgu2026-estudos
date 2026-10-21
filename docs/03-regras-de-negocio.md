@@ -53,7 +53,7 @@ Unicidade: `(session_id, offset_days, topic_id)`. Repetir criação não duplica
 
 ## R08 — Cobertura e prioridades
 
-Estado declarado por tópico: `not_started|in_progress|first_pass|reviewed`. Resultado de questões não altera automaticamente esse estado. “Cobertura” = número de tópicos com primeira passagem ou revisado / total ativo; não é probabilidade de domínio.
+Estado declarado por tópico: `not_started|in_progress|first_pass|reviewed`. O usuário ajusta o estado no Edital a qualquer momento. Sessões ativas de teoria também o promovem: sessão avulsa ou em bloco concluído leva a `first_pass`; sessão em bloco não concluído leva a `in_progress`; concluir o bloco depois promove os tópicos das suas sessões de teoria a `first_pass`. A promoção só sobe nessa ordem, nunca rebaixa, e grava `declared_on` com a data do estudo. Excluir sessão, trocar tópico ou reabrir bloco não reverte o estado. Questões, revisões, discursivas e resultados de questões não alteram o estado. “Cobertura” = número de tópicos com primeira passagem ou revisado / total ativo; não é probabilidade de domínio.
 
 Lista inicial de atenção: tópicos não iniciados, erros ainda abertos e revisões atrasadas. Resultados com menos de 20 itens válidos por tópico mostram “amostra pequena”. Esse corte é uma regra interna proposta, não limiar estatístico validado. Não misturar tentativas repetidas com contagem de questões únicas; MVP contabiliza tentativas agregadas.
 
