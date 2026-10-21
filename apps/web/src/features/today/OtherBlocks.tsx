@@ -1,6 +1,7 @@
 import { GuidancePanel } from '../guidance/GuidancePanel'
 import type { DayView, Occurrence } from '../../shared/api/types'
 import { WINDOW_LABEL } from '../../shared/format'
+import { CARD, CARD_BODY, CARD_DESC, CARD_ROW, CARD_TITLE, ROW_PRIMARY_ACTION } from '../../shared/ui/card'
 import { MoveTomorrowButton } from './MoveTomorrow'
 
 /** Blocos do dia que ficaram fora da missão (entraram depois de o dia ser aberto). */
@@ -10,25 +11,25 @@ export function OtherBlocks({ view, onRegister }: { view: DayView; onRegister: (
   const others = view.occurrences.filter((o) => !inMission.has(o.id) && o.status !== 'skipped')
   if (others.length === 0) return null
   return (
-    <section aria-label="Outros blocos de hoje" className="rounded-lg border border-border bg-card p-4">
-      <h2 className="font-semibold">Outros blocos de hoje</h2>
-      <p className="text-xs text-muted-foreground">Fora da missão: dão XP e concluem o bloco, mas não contam para a missão.</p>
-      <ul className="mt-2 space-y-2">
+    <section aria-label="Outros blocos de hoje" className={CARD}>
+      <h2 className={CARD_TITLE}>Outros blocos de hoje</h2>
+      <p className={CARD_DESC}>Fora da missão: dão XP e concluem o bloco, mas não contam para a missão.</p>
+      <ul className={`${CARD_BODY} space-y-3`}>
         {others.map((o) => (
-          <li key={o.id} className="flex flex-wrap items-center gap-2 rounded-md bg-muted p-3">
-            <div className="min-w-0 flex-1">
-              <p className="font-semibold">{WINDOW_LABEL[o.window]} · {o.slot.title}</p>
-              <p className="text-xs text-muted-foreground">{o.status === 'completed' ? '✓ Feito' : 'Pendente'}</p>
-            </div>
+          <li key={o.id} className={CARD_ROW}>
+            <p className="font-semibold leading-snug [overflow-wrap:anywhere]">{WINDOW_LABEL[o.window]} · {o.slot.title}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{o.status === 'completed' ? '✓ Feito' : 'Pendente'}</p>
             {o.status === 'pending' && (
-              <>
-                <button onClick={() => onRegister(o)} className="touch-target rounded-md bg-primary px-3 py-1 text-sm text-primary-foreground">
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+                <button onClick={() => onRegister(o)} className={ROW_PRIMARY_ACTION}>
                   Registrar sessão
                 </button>
-                <MoveTomorrowButton occ={o} today={view.date} />
-              </>
+                <div className="-mx-3 flex flex-wrap items-center sm:mx-0">
+                  <MoveTomorrowButton occ={o} today={view.date} />
+                </div>
+              </div>
             )}
-            <GuidancePanel occ={o} />
+            <div className="mt-3 border-t border-border pt-1"><GuidancePanel occ={o} /></div>
           </li>
         ))}
       </ul>
