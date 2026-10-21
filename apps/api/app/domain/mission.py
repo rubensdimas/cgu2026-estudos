@@ -15,6 +15,12 @@ class OccRef:
 
 
 @dataclass(frozen=True)
+class ReviewRef:
+    id: str
+    due_on: date
+
+
+@dataclass(frozen=True)
 class MissionItemInput:
     position: int
     kind: str  # block | review | questions | checkout
@@ -32,6 +38,8 @@ class DayFacts:
     occurrence_completed_on: dict[str, date] = field(default_factory=dict)
     question_items: int = 0
     checkout_saved: bool = False
+    review_status: dict[str, str] = field(default_factory=dict)
+    review_completed_on: dict[str, date] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -44,10 +52,13 @@ def mission_kind(day: date) -> str:
     return "free" if day.weekday() >= 5 else "weekday"
 
 
-def build_mission(day: date, occurrences: list[OccRef], question_goal: int = 0) -> list[MissionItemInput]:
+def build_mission(day: date, occurrences: list[OccRef], question_goal: int = 0,
+                  reviews: list[ReviewRef] = ()) -> list[MissionItemInput]:
     items: list[MissionItemInput] = []
     for occ in sorted(occurrences, key=lambda o: WINDOW_ORDER[o.window]):
         items.append(MissionItemInput(len(items), "block", True, ref_id=occ.id))
+    for review in reviews:
+        items.append(MissionItemInput(len(items), "review", True, ref_id=review.id))
     if question_goal > 0:
         items.append(MissionItemInput(len(items), "questions", False, target=question_goal))
     items.append(MissionItemInput(len(items), "checkout", False))
@@ -60,8 +71,14 @@ def item_state(item: MissionItemInput, facts: DayFacts) -> ItemState:
         completed_on = facts.occurrence_completed_on.get(item.ref_id)
         if completed_on is not None and completed_on <= facts.mission_date:
             return ItemState("done")
+    if item.kind == "review":
+        completed_on = facts.review_completed_on.get(item.ref_id)
+        if facts.review_status.get(item.ref_id) == "completed" and completed_on and completed_on <= facts.mission_date:
+            return ItemState("done")
     if item.na_reason:
         return ItemState("not_applicable", item.na_reason)
+    if item.kind == "review" and facts.review_status.get(item.ref_id) == "dismissed":
+        return ItemState("not_applicable", "dismissed")
     if item.kind == "block":
         if facts.occurrence_status.get(item.ref_id) == "skipped":
             return ItemState("not_applicable", "skipped")

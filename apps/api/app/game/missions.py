@@ -10,7 +10,7 @@ from app.domain import mission as mission_domain
 from app.domain.cycle import week_start_of
 from app.errors import ApiError
 from app.game.snapshot import ledger, load_world, mission_states
-from app.models import DailyMission, MissionItem, Occurrence
+from app.models import DailyMission, MissionItem, Occurrence, ReviewTask
 from app.planning.service import current_plan, ensure_week, occurrences_out
 
 
@@ -45,7 +45,27 @@ def _plan_day_guard(db: Session, day: date, today: date) -> None:
         raise ApiError(422, "outside_plan", "Data fora do plano de estudos.")
 
 
-def open_day(db: Session, day: date, today: date, chosen: list[uuid.UUID]) -> tuple[DailyMission, bool]:
+MAX_WEEKEND_REVIEWS = 4
+
+
+def due_reviews(db: Session, day: date) -> list[ReviewTask]:
+    """Pendentes vencidas até a data, mais antigas primeiro."""
+    return list(db.scalars(select(ReviewTask).where(ReviewTask.status == "pending", ReviewTask.due_on <= day)
+                           .order_by(ReviewTask.due_on, ReviewTask.created_at)))
+
+
+def _chosen_reviews(db: Session, day: date, review_ids: list[uuid.UUID]) -> list[ReviewTask]:
+    if len(review_ids) > MAX_WEEKEND_REVIEWS:
+        raise ApiError(422, "too_many_reviews", "Escolha no máximo 4 revisões na missão livre.")
+    due = {r.id: r for r in due_reviews(db, day)}
+    for rid in review_ids:
+        if rid not in due:
+            raise ApiError(422, "invalid_review", "Escolha revisões pendentes já vencidas.", {"review_ids": str(rid)})
+    return sorted((due[rid] for rid in set(review_ids)), key=lambda r: (r.due_on, r.created_at))
+
+
+def open_day(db: Session, day: date, today: date, chosen: list[uuid.UUID],
+             review_ids: list[uuid.UUID] = ()) -> tuple[DailyMission, bool]:
     existing = get_mission(db, day)
     if existing is not None:
         return existing, False
@@ -54,7 +74,9 @@ def open_day(db: Session, day: date, today: date, chosen: list[uuid.UUID]) -> tu
     if kind == "weekday":
         ensure_week(db, week_start_of(day))
         occs = list(db.scalars(select(Occurrence).where(Occurrence.planned_on == day)))
+        reviews = due_reviews(db, day)[:1]
     else:
+        reviews = _chosen_reviews(db, day, list(review_ids))
         if len(chosen) > 2:
             raise ApiError(422, "too_many_blocks", "Escolha no máximo 2 blocos na missão livre.")
         occs = []
@@ -72,7 +94,8 @@ def open_day(db: Session, day: date, today: date, chosen: list[uuid.UUID]) -> tu
         MissionItem(id=uuid.uuid4(), position=i.position, kind=i.kind,
                     ref_id=uuid.UUID(i.ref_id) if i.ref_id else None,
                     target=i.target, required=i.required, na_reason=i.na_reason)
-        for i in mission_domain.build_mission(day, refs, question_goal)
+        for i in mission_domain.build_mission(
+            day, refs, question_goal, [mission_domain.ReviewRef(str(r.id), r.due_on) for r in reviews])
     ]
     db.add(mission)
     db.flush()

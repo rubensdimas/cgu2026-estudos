@@ -16,6 +16,7 @@ router = APIRouter(tags=["missions"])
 
 class OpenDayIn(BaseModel):
     occurrence_ids: list[uuid.UUID] = []
+    review_ids: list[uuid.UUID] = []
 
 
 class ItemPatch(BaseModel):
@@ -35,7 +36,7 @@ def get_day(day: date, db: Session = Depends(get_db), today: date = Depends(get_
 def open_day(day: date, body: OpenDayIn, response: Response, db: Session = Depends(get_db),
              today: date = Depends(get_today)):
     def action():
-        return service.open_day(db, day, today, body.occurrence_ids)
+        return service.open_day(db, day, today, body.occurrence_ids, body.review_ids)
 
     try:
         (mission, created), delta = tracked(db, today, action)

@@ -76,3 +76,25 @@ def test_completed_block_counts_even_if_marked_not_applicable():
     facts = DayFacts(FRI, occurrence_status={"o1": "completed"}, occurrence_planned_on={"o1": FRI},
                      occurrence_completed_on={"o1": FRI})
     assert item_state(item, facts).state == "done"
+
+
+def test_build_mission_puts_reviews_after_blocks():
+    from app.domain.mission import ReviewRef
+
+    items = build_mission(FRI, [occ("a", "before")], reviews=[ReviewRef("r1", FRI)])
+    assert [(i.kind, i.ref_id, i.required) for i in items] == [
+        ("block", "a", True), ("review", "r1", True), ("checkout", None, False),
+    ]
+
+
+def test_review_item_states():
+    item = MissionItemInput(0, "review", True, ref_id="r1")
+
+    def state(status, completed_on=None):
+        facts = DayFacts(FRI, review_status={"r1": status}, review_completed_on={"r1": completed_on} if completed_on else {})
+        return item_state(item, facts)
+
+    assert state("completed", FRI) == ItemState("done")
+    assert state("completed", date(2026, 10, 12)) == ItemState("pending")
+    assert state("dismissed") == ItemState("not_applicable", "dismissed")
+    assert state("pending") == ItemState("pending")

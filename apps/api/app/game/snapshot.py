@@ -41,6 +41,7 @@ class World:
     completed_on: dict[uuid.UUID, date]
     minutes_by_date: dict[date, int]
     sessions: list[SessionFact]
+    reviews: dict[uuid.UUID, ReviewTask]
 
 
 def load_world(db: Session) -> World:
@@ -56,11 +57,13 @@ def load_world(db: Session) -> World:
         if occ_id is not None and occurrences[occ_id].status == "completed":
             completed_on[occ_id] = max(completed_on.get(occ_id, studied_on), studied_on)
     sessions = [SessionFact(str(sid), studied_on, minutes) for sid, _, studied_on, minutes in rows]
-    return World(occurrences, completed_on, dict(minutes_by_date), sessions)
+    reviews = {r.id: r for r in db.scalars(select(ReviewTask))}
+    return World(occurrences, completed_on, dict(minutes_by_date), sessions, reviews)
 
 
 def day_facts(world: World, mission: DailyMission) -> mission_domain.DayFacts:
     refs = [i.ref_id for i in mission.items if i.kind == "block" and i.ref_id is not None]
+    review_refs = [i.ref_id for i in mission.items if i.kind == "review" and i.ref_id is not None]
     return mission_domain.DayFacts(
         mission_date=mission.mission_date,
         occurrence_status={str(r): world.occurrences[r].status for r in refs},
@@ -68,6 +71,9 @@ def day_facts(world: World, mission: DailyMission) -> mission_domain.DayFacts:
         occurrence_completed_on={str(r): world.completed_on[r] for r in refs if r in world.completed_on},
         question_items=0,
         checkout_saved=bool(mission.checkout_note and mission.checkout_note.strip()),
+        review_status={str(r): world.reviews[r].status for r in review_refs if r in world.reviews},
+        review_completed_on={str(r): world.reviews[r].completed_on for r in review_refs
+                             if r in world.reviews and world.reviews[r].completed_on},
     )
 
 

@@ -60,7 +60,7 @@ def review_out(r: ReviewTask, today: date, cards_count: int) -> dict:
             "late": r.status == "pending" and r.due_on < today, "cards_count": cards_count}
 
 
-def _card_counts(db: Session) -> dict[str, int]:
+def card_counts(db: Session) -> dict[str, int]:
     return dict(db.execute(select(Flashcard.topic_id, func.count()).where(Flashcard.status == "approved")
                            .group_by(Flashcard.topic_id)).all())
 
@@ -71,7 +71,7 @@ def list_reviews(db: Session, start: date, end: date, today: date) -> list[dict]
         (ReviewTask.status == "completed") & ReviewTask.completed_on.between(start, end),
         (ReviewTask.status == "dismissed") & ReviewTask.due_on.between(start, end),
     )).order_by(ReviewTask.due_on, ReviewTask.topic_id))
-    counts = _card_counts(db)
+    counts = card_counts(db)
     return [review_out(r, today, counts.get(r.topic_id, 0)) for r in rows]
 
 

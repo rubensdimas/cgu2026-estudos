@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.clock import get_today
 from app.db import get_db
+from app.game.missions import due_reviews
 from app.game.snapshot import tracked
 from app.reviews import service
 
@@ -16,6 +17,13 @@ router = APIRouter(tags=["reviews"])
 def list_reviews(from_: date = Query(alias="from"), to: date = Query(), db: Session = Depends(get_db),
                  today: date = Depends(get_today)):
     items = service.list_reviews(db, from_, to, today)
+    return {"items": items, "total": len(items)}
+
+
+@router.get("/reviews/due")
+def due(day: date, db: Session = Depends(get_db), today: date = Depends(get_today)):
+    counts = service.card_counts(db)
+    items = [service.review_out(r, today, counts.get(r.topic_id, 0)) for r in due_reviews(db, day)]
     return {"items": items, "total": len(items)}
 
 

@@ -112,3 +112,47 @@ def test_moving_session_date_uncompletes_original_mission(client, clock):
                          json={"version": created["version"], "studied_on": "2026-10-12"})
     assert moved.json()["game_delta"]["xp_gained"] == -50
     assert client.get("/api/v1/days/2026-10-09").json()["mission"]["complete"] is False
+
+
+def theory(client, studied_on, topic):
+    import uuid
+
+    body = {"id": str(uuid.uuid4()), "studied_on": studied_on, "duration_minutes": 30, "activity": "theory",
+            "topic_ids": [topic], "notes": ""}
+    assert client.post("/api/v1/sessions", json=body).status_code == 201
+
+
+def test_weekday_mission_takes_one_oldest_due_review(client):
+    theory(client, "2026-10-07", "C02.01")  # revisão em 08/10
+    theory(client, "2026-10-08", "C03.01")  # revisão em 09/10
+    oldest = client.get("/api/v1/reviews/due", params={"day": "2026-10-09"}).json()["items"][0]
+    assert oldest["due_on"] == "2026-10-08"
+    items = client.post("/api/v1/days/2026-10-09/mission", json={}).json()["items"]
+    reviews = [i for i in items if i["kind"] == "review"]
+    assert [(i["ref_id"], i["required"]) for i in reviews] == [(oldest["id"], True)]
+
+
+def test_weekend_mission_with_only_reviews_completes(client, clock):
+    theory(client, "2026-10-08", "C02.01")
+    theory(client, "2026-10-09", "C03.01")
+    clock.today = date(2026, 10, 10)
+    due = client.get("/api/v1/reviews/due", params={"day": "2026-10-10"}).json()["items"]
+    r = client.post("/api/v1/days/2026-10-10/mission", json={"review_ids": [d["id"] for d in due]})
+    assert r.status_code == 201, r.text
+    assert [i["kind"] for i in r.json()["items"]] == ["review", "review", "checkout"]
+    client.post(f"/api/v1/reviews/{due[0]['id']}/complete", json={})
+    client.post(f"/api/v1/reviews/{due[1]['id']}/dismiss", json={})
+    assert client.get("/api/v1/days/2026-10-10").json()["mission"]["complete"] is True
+
+
+def test_weekend_rejects_five_reviews_and_future_ones(client, clock):
+    import uuid
+
+    theory(client, "2026-10-09", "C04.01")  # revisões em 10/10, 16/10, 30/10
+    clock.today = date(2026, 10, 10)
+    future = [r for r in client.get("/api/v1/reviews", params={"from": "2026-10-01", "to": "2026-11-30"}).json()["items"]
+              if r["due_on"] == "2026-10-16"][0]
+    bad = client.post("/api/v1/days/2026-10-10/mission", json={"review_ids": [future["id"]]})
+    assert (bad.status_code, bad.json()["error"]["code"]) == (422, "invalid_review")
+    five = client.post("/api/v1/days/2026-10-10/mission", json={"review_ids": [str(uuid.uuid4()) for _ in range(5)]})
+    assert (five.status_code, five.json()["error"]["code"]) == (422, "too_many_reviews")
