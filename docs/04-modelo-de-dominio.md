@@ -30,7 +30,9 @@ IDs de registros são UUID gerados pelo cliente na criação; códigos editoriai
 | DayOff | date, reason | Dia útil neutro para sequência; único por data |
 | QuestionBatch | id, session_id?, topic_id, paper, practiced_on, total, correct, wrong, blank, double_marked, source_url?, source_label, answer_key_version?, simulation_id?, deleted_at? | Contagens válidas; nota derivada |
 | ErrorNote | id, topic_id, batch_id?, noted_on, reason, explanation, reference?, reviewed_on?, resolved_on? | Causas: content, reading, confusion, guessing, time |
-| ReviewTask | id, session_id, topic_id, offset_days, due_on, status, completed_on? | Único por sessão/tópico/intervalo |
+| ReviewTask | id, session_id, topic_id, offset_days, due_on, status, completed_on?, closed_by? | Único por sessão/tópico/intervalo; `closed_by` aponta a revisão cuja conclusão a fechou (sem XP) |
+| FlashcardBatch | session_id, model, studied, origin, focus, priorities | Uma geração vigente por sessão (R16) |
+| Flashcard | id, session_id, topic_id, subitem, category, front, back, status, last_rating?, rated_at? | `draft|approved`; só aprovados entram na revisão |
 | EssayPractice | id, practiced_on, kind, duration_minutes, declared_lines, prompt_reference, text?, rubric, manual_score?, score_source?, simulation_id?, deleted_at? | Tipo fixa limites; sem upload |
 | Simulation | id, exam_version_id, practiced_on, label, conditions | `conditions`: `standard|exam_day` (chefão etapa 3) |
 

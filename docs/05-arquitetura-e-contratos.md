@@ -105,9 +105,11 @@ Prefixo `/api/v1`, JSON snake_case, datas YYYY-MM-DD, instantes ISO UTC, IDs UUI
 | GET /occurrences/{id}/guidance | Orientação do bloco: roteiro vigente, tópico com subitens, materiais, tema/caso com espelho, `next_theme_id`, lembretes (de `docs/data/orientacoes.json`) | F1+ |
 | POST /sessions · PATCH /sessions/{id} · DELETE /sessions/{id} · GET /sessions?from=&to= | Sessões | F1 |
 | GET /flashcards/status · GET /flashcards/sessions?from=&to= · GET /flashcards?topic_id= | Geração ligada, sessões de teoria com contagem de cartões, baralho aprovado (R16) | Flashcards |
+| GET /reviews?from=&to= · GET /reviews/due?day= · GET /reviews/{id} | Fila (pendentes até `to`, inclusive atrasadas), vencidas para a missão livre, detalhe com cartões aprovados ordenados (R07) | F3 |
+| POST /reviews/{id}/complete · POST /reviews/{id}/dismiss · PUT /flashcards/{id}/rating | Concluir (fecha atrasadas do tópico; `game_delta`), dispensar, autoavaliação de cartão aprovado (422 `not_pending`, `not_approved`) | F3 |
 | GET/POST /sessions/{id}/flashcards · POST /sessions/{id}/flashcards/approve · PATCH/DELETE /flashcards/{id} | Gerar (503 `ai_disabled`, 502 `ai_failed`, 422 `not_theory`), rascunho, aprovar, editar, descartar (R16) | Flashcards |
 | GET /days/{date} | Estado do dia: missão (se houver), ocorrências, XP do dia | F1 |
-| POST /days/{date}/mission | Abrir o dia (idempotente por data) | F1 |
+| POST /days/{date}/mission | Abrir o dia (idempotente por data); no fim de semana, `occurrence_ids` (máx. 2) e `review_ids` (máx. 4, vencidas) | F1 |
 | PATCH /missions/{id}/items/{item_id} | Marcar/desmarcar “não se aplica” | F1 |
 | PUT /missions/{id}/checkout | Check-out do dia | F1 |
 | GET /game/summary | XP total, nível, título, sequência, recorde, congelamentos, D-n, sugestão de feriado | F1 |

@@ -47,9 +47,11 @@ Somar NFPD e calcular NFC apenas quando um simulado completo tem exatamente um t
 
 ## R07 — Revisões
 
-Ao salvar uma sessão elegível de teoria/questões, sugerir 1, 7 e 21 dias após `studied_on`; usuário pode aceitar ou dispensar. Revisões concluídas não geram outra cadeia automática. Intervalos são 1, 7 ou 21 dias; datas são posteriores ao estudo. Sugestões posteriores à prova ficam fora da fila, sem fingir que foram realizadas.
+A revisão é **por tópico**. Ao salvar uma sessão ativa de teoria, o app cria sozinho, para cada tópico, revisões em 1, 7 e 21 dias após `studied_on`, sem etapa de aceite. Datas na prova ou depois dela ficam fora da fila. Não se cria revisão a até 2 dias de outra pendente do mesmo tópico. Excluir a sessão dispensa as pendentes dela; trocar o tópico da sessão cria revisões para o novo e dispensa as pendentes do antigo; mudar a data da sessão não recalcula as revisões. Revisões concluídas não geram outra cadeia.
 
-Unicidade: `(session_id, offset_days, topic_id)`. Repetir criação não duplica. Uma revisão tem `pending|completed|dismissed`; atraso é derivado de data pendente, não estado persistido. Concluir registra `completed_on` e observação; estudar revisão pode gerar uma sessão separada, mas conclusão por si só não soma tempo.
+Unicidade: `(session_id, topic_id, offset_days)`. Estados `pending|completed|dismissed`; atraso é derivado (`pending` com data vencida). A revisão segue um roteiro de referência de 30 min — 5 de flashcards do tópico (R16), 20 de questões CEBRASPE e 5 de análise de erros sem consulta —, com questões e análise feitas fora do app. Na parte de flashcards, cada cartão aprovado recebe uma autoavaliação (`lembrei`, `parcial`, `palpite`, `nao_lembrei`); a última fica salva e ordena os cartões da próxima revisão do tópico, piores primeiro.
+
+Concluir registra `completed_on` e fecha junto as revisões **atrasadas** do mesmo tópico, que não pontuam. Concluir não soma tempo; o app oferece registrar uma sessão "Revisão" de 30 min, opcional. Na implantação, as sessões já registradas receberam só as revisões de hoje em diante.
 
 ## R08 — Cobertura e prioridades
 

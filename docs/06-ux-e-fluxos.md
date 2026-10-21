@@ -57,14 +57,14 @@ Barra de XP e anel da missão animam ao mudar (≤ 400 ms). Subida de nível abr
 | Edital | P1/P2/P3, disciplinas, tópicos, referência; declarar progresso | F1 |
 | Prática | Lotes e caderno de erros | F2 |
 | Metas | Metas da semana (planejado × realizado) | F2 |
-| Revisões | Vencidas/hoje/futuras; concluir ou dispensar | F3 |
+| Revisões | Atrasadas/hoje/próximas 14 dias; revisar cartões, concluir ou dispensar | F3 |
 | Discursivas | Tipos, limites, rubrica; registrar treino | F4 |
 | Jornada | Etapas, metas da etapa, chefões, marcos do concurso, rebalanceamento | F4 |
 | Progresso | Sequência (card + calendário mensal), XP acumulado, trilha de níveis | F1 (v2.1) · F5 (horas, cobertura, simulados) |
 | Conquistas | Grade bloqueadas/desbloqueadas | F5 |
 | Configurações | Metas, folgas, versão do edital, exportar/restaurar | F1 (básico) · F5 (portabilidade) |
 
-Desktop: navegação lateral com ícones `lucide` e barra roxa no item ativo. Celular: barra inferior com ícone e rótulo (Hoje, Ciclo, Edital, Progresso, Config.; “Mais” quando entrarem Prática e Revisões). Ciclo mobile em lista; não esmagar 15 colunas. Suportar ampliação de texto a 200%.
+Desktop: navegação lateral com ícones `lucide` e barra roxa no item ativo. Celular: barra inferior com ícone e rótulo (Hoje, Ciclo, Revisões, Edital, Mais); “Mais” abre Cartões e Progresso, e Config. é a engrenagem do topo. Ciclo mobile em lista; não esmagar 15 colunas. Suportar ampliação de texto a 200%.
 
 ## Fluxo A — Primeira utilização (09/10/2026)
 
@@ -104,7 +104,7 @@ Mensagem exemplo: “10 itens · 6 acertos · 4 erros · nota líquida 4/20 em P
 
 ## Fluxo D — Revisar (F3)
 
-Missão ou fila → tarefa → nota/erro de origem → estudar fora → sessão de revisão opcional → concluir. Concluir não cria minutos. Atrasada continua visível sem duplicação.
+Missão ou tela Revisões → revisão do tópico → roteiro de 30 min (flashcards no app; questões CEBRASPE e análise de erros fora) → cartões um a um: frente, "Mostrar verso", autoavaliação → "Concluir revisão" → registrar a sessão "Revisão" de 30 min (opcional). Concluir não cria minutos e fecha as atrasadas do mesmo tópico.
 
 ## Fluxo E — Discursiva (F4)
 

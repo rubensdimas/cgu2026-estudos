@@ -21,13 +21,13 @@ A missão de uma data civil é criada por ação explícita “Abrir o dia” (`
 | Ordem | Item | Origem | Obrigatório | Concluído quando |
 |---|---|---|---|---|
 | 1 | Blocos do dia (até 3) | **Todas** as ocorrências planejadas para a data, inclusive já concluídas (registrar antes de abrir o dia não pode sumir com o bloco); dispensadas entram como `not_applicable` | Sim | Ocorrência `completed` com data de conclusão ≤ data da missão |
-| 2 | Revisões vencidas (até 3) | `ReviewTask` pendentes com `due_on ≤ data`, mais antigas primeiro | Sim | Revisão `completed` |
+| 2 | Revisão vencida (até 1) | `ReviewTask` pendente com `due_on ≤ data`, a mais antiga | Sim | Revisão `completed` até a data da missão |
 | 3 | Meta de questões | Padrão 20 itens; tópico sugerido = tópico estudado no dia ou tópico com menor taxa de acerto e amostra ≥ 20 | Não (bônus) | Soma de `total` dos lotes da data ≥ meta |
 | 4 | Check-out do dia | Uma linha: “O que ficou difícil hoje?” | Não (bônus) | Texto salvo |
 
 Estados de item: `pending | done | not_applicable`. O usuário pode marcar qualquer item como **não se aplica hoje** (ex.: bloco intermediário indisponível), com motivo opcional, sem penalidade. Item de bloco cuja ocorrência foi remanejada para outra data vira `not_applicable` com motivo `rescheduled`; item de revisão dispensada vira `not_applicable` com motivo `dismissed`. Os estados `done` são derivados dos registros; `not_applicable` é a única marcação manual.
 
-Enquanto a fatia de revisões (F3) e a de questões (F2) não existirem, a missão contém apenas blocos e check-out.
+Enquanto a fatia de questões (F2) não existir, a missão contém blocos, revisão e check-out.
 
 ### Conclusão
 
@@ -39,7 +39,7 @@ A missão é uma foto tirada ao abrir o dia e não muda depois. Bloco que entra 
 
 ### Fim de semana: missão livre
 
-Sábado e domingo não têm ciclo. “Abrir o dia” num fim de semana cria uma **missão livre**: o usuário escolhe itens entre revisões pendentes e até 2 blocos pendentes da semana (que são remanejados para a data); meta de questões e check-out entram como opcionais. Estudo fora da missão é registrado como sessão avulsa. A conclusão segue a mesma regra e rende o XP normal, mas não é exigida pela sequência.
+Sábado e domingo não têm ciclo. “Abrir o dia” num fim de semana cria uma **missão livre**: o usuário escolhe até 4 revisões vencidas (as 4 mais antigas vêm marcadas) e até 2 blocos pendentes da semana; pode abrir só com revisões (que são remanejados para a data); meta de questões e check-out entram como opcionais. Estudo fora da missão é registrado como sessão avulsa. A conclusão segue a mesma regra e rende o XP normal, mas não é exigida pela sequência.
 
 ## 3. XP
 
@@ -53,7 +53,7 @@ Todo XP é atribuído à **data civil do evento** (`studied_on`, `practiced_on`,
 | Item opcional da missão concluído (questões, check-out) | +10 cada | — |
 | Item de questão em lote (`total`) | +1 por item | 200 por dia |
 | Erro anotado no caderno | +10 | 100 por dia |
-| Revisão concluída até `due_on` | +15 | — |
+| Revisão concluída até `due_on` | +15 | Atrasadas fechadas junto não pontuam |
 | Revisão concluída após `due_on` | +5 | — |
 | Discursiva com rubrica completa — complementar | +40 | — |
 | Discursiva com rubrica completa — situação-problema | +60 | — |

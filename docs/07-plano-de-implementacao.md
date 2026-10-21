@@ -139,10 +139,12 @@ Formatos: `XpEntry{date, source, ref_id, xp}`; `LevelInfo{level, title, xp_total
 
 **Arquivos:** `app/domain/reviews.py`, `app/reviews/*`, `tests/unit/test_review_schedule.py`, `tests/integration/test_reviews.py`, web `features/reviews/`.
 
-- [ ] Testes: estudo 12/10 → 13/10, 19/10, 02/11; estudo 01/12 → sem o de 21 dias (após 13/12); offsets negativos rejeitados; aceitar 2× não duplica; concluir não soma minutos nem cria nova cadeia; sessão excluída dispensa pendentes derivadas.
-- [ ] Implementar sugestões na resposta da sessão, aceite explícito, `pending|completed|dismissed`, atraso derivado.
-- [ ] Missão: itens `review` obrigatórios (até 3 vencidas, mais antigas) em missões novas.
-- [ ] XP: +15 no prazo, +5 atrasada. Tela Revisões. Commit.
+Substituída em 21/10 pela revisão por tópico com flashcards (R07, R16); plano em `docs/superpowers/plans/2026-10-21-reviews.md`.
+
+- [x] Revisões criadas automaticamente por sessão de teoria (1/7/21, sem aceite), janela de 2 dias contra duplicação, `pending|completed|dismissed`, atraso derivado.
+- [x] Concluir fecha atrasadas do tópico; XP +15 no prazo, +5 atrasada, uma vez só.
+- [x] Missão: dia útil com até 1 revisão obrigatória; fim de semana com até 4 escolhidas.
+- [x] Tela Revisões, revisão de cartões com autoavaliação e menu "Mais" no celular.
 
 ## F4 — Discursivas, simulados, etapas e rebalanceamento (alvo 22/10)
 
