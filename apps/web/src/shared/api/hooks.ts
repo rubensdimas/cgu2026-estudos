@@ -5,8 +5,8 @@ import type { CalendarDays, XpEntry } from '@/shared/game/adapters'
 import { useGameToast } from '../ui/GameToast'
 import { api, isConflict } from './client'
 import type {
-  DayOff, DayView, ExamVersion, GameConfig, Guidance, ListResponse, Mission, Occurrence, Plan, Session, SessionInput, Subject,
-  Summary, TopicProgressOut, WithDelta,
+  DayOff, DayView, ExamVersion, Flashcard, FlashcardSessionItem, FlashcardStatus, GameConfig, Guidance, ListResponse, Mission,
+  Occurrence, Plan, Session, SessionFlashcards, SessionInput, Subject, Summary, TopicProgressOut, WithDelta,
 } from './types'
 
 export const useSummary = () => useQuery({ queryKey: ['summary'], queryFn: () => api<Summary>('/game/summary') })
@@ -54,7 +54,7 @@ export const useGameConfig = () =>
 
 export const useDayOffs = () => useQuery({ queryKey: ['day-offs'], queryFn: () => api<ListResponse<DayOff>>('/day-offs') })
 
-const GAME_KEYS = ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance', 'subjects']
+const GAME_KEYS = ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance', 'subjects', 'flashcards']
 
 /** Mutação que mostra o efeito no jogo e atualiza HUD, dia e ciclo; em conflito, recarrega para obter a versão atual. */
 function useGameMutation<V, R extends Partial<WithDelta> | void>(fn: (v: V) => Promise<R>) {
@@ -116,3 +116,44 @@ export const usePutProgress = () => {
     onError: (e) => { if (isConflict(e)) qc.invalidateQueries({ queryKey: ['subjects'] }) },
   })
 }
+
+export const useFlashcardStatus = () =>
+  useQuery({ queryKey: ['flashcards', 'status'], queryFn: () => api<FlashcardStatus>('/flashcards/status') })
+
+export const useSessionFlashcards = (sessionId: string) =>
+  useQuery({
+    queryKey: ['flashcards', 'session', sessionId],
+    queryFn: () => api<SessionFlashcards>(`/sessions/${sessionId}/flashcards`),
+  })
+
+export const useFlashcardSessions = (from: string, to: string) =>
+  useQuery({
+    queryKey: ['flashcards', 'sessions', from, to],
+    queryFn: () => api<ListResponse<FlashcardSessionItem>>(`/flashcards/sessions?from=${from}&to=${to}`),
+  })
+
+export const useDeck = () =>
+  useQuery({ queryKey: ['flashcards', 'deck'], queryFn: () => api<ListResponse<Flashcard>>('/flashcards') })
+
+/** Mutação de flashcards: recarrega sessões, rascunhos e baralho (todas as chaves começam com 'flashcards'). */
+function useFlashcardMutation<V, R>(fn: (v: V) => Promise<R>) {
+  const qc = useQueryClient()
+  const refresh = () => qc.invalidateQueries({ queryKey: ['flashcards'] })
+  return useMutation({ mutationFn: fn, onSuccess: refresh, onError: (e) => { if (isConflict(e)) refresh() } })
+}
+
+export const useGenerateFlashcards = () =>
+  useFlashcardMutation((v: { sessionId: string; studied: string }) =>
+    api<SessionFlashcards>(`/sessions/${v.sessionId}/flashcards`, 'POST', { studied: v.studied }))
+
+export const useApproveFlashcards = () =>
+  useFlashcardMutation((sessionId: string) =>
+    api<SessionFlashcards>(`/sessions/${sessionId}/flashcards/approve`, 'POST', {}))
+
+export const usePatchFlashcard = () =>
+  useFlashcardMutation((v: { id: string; version: number; front?: string; back?: string; status?: 'approved' }) => {
+    const { id, ...body } = v
+    return api<Flashcard>(`/flashcards/${id}`, 'PATCH', body)
+  })
+
+export const useDeleteFlashcard = () => useFlashcardMutation((id: string) => api<void>(`/flashcards/${id}`, 'DELETE'))

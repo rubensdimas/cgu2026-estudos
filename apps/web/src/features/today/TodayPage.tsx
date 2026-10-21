@@ -9,6 +9,7 @@ import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, WINDOW_LABEL } from '../../shared/format'
 import { CARD, CARD_BODY, CARD_DESC, CARD_ROW, CARD_TITLE, CARD_TITLE_PRIMARY, ROW_PRIMARY_ACTION } from '../../shared/ui/card'
 import { QueryState } from '../../shared/ui/QueryState'
+import { FlashcardPanel } from '../flashcards/FlashcardPanel'
 import { GuidancePanel } from '../guidance/GuidancePanel'
 import { LateBlocks } from './LateBlocks'
 import { MissionRing } from './MissionRing'
@@ -117,6 +118,7 @@ export function TodaySessions({ day }: { day: string }) {
   const sessions = useSessions(day)
   const { data } = sessions
   const remove = useDeleteSession()
+  const [open, setOpen] = useState<string | null>(null)
   if (!data) return <QueryState title="Não foi possível carregar as sessões de hoje" query={sessions} />
   if (data.items.length === 0) return null
   return (
@@ -124,14 +126,23 @@ export function TodaySessions({ day }: { day: string }) {
       <h2 className={CARD_TITLE}>Sessões de hoje</h2>
       <ul className={`${CARD_BODY} divide-y divide-border`}>
         {data.items.map((s) => (
-          <li key={s.id} className="flex items-center gap-3 py-1 text-sm">
-            <span className="num">{s.duration_minutes} min</span>
-            <span className="min-w-0 flex-1 text-muted-foreground">{s.topic_ids.join(', ') || 'Discursiva'}</span>
-            <button aria-label={`Excluir sessão de ${s.duration_minutes} min`} className="touch-target -mr-2 px-2 py-1 text-destructive"
-              onClick={() => confirm('Excluir esta sessão? Os minutos, o XP e a conclusão do bloco serão recalculados.')
-                && remove.mutate(s.id)}>
-              Excluir
-            </button>
+          <li key={s.id} className="py-1 text-sm">
+            <div className="flex items-center gap-3">
+              <span className="num">{s.duration_minutes} min</span>
+              <span className="min-w-0 flex-1 text-muted-foreground">{s.topic_ids.join(', ') || 'Discursiva'}</span>
+              {s.activity === 'theory' && s.topic_ids.length > 0 && (
+                <button className="touch-target px-2 py-1 text-primary" aria-expanded={open === s.id}
+                  onClick={() => setOpen(open === s.id ? null : s.id)}>
+                  Flashcards
+                </button>
+              )}
+              <button aria-label={`Excluir sessão de ${s.duration_minutes} min`} className="touch-target -mr-2 px-2 py-1 text-destructive"
+                onClick={() => confirm('Excluir esta sessão? Os minutos, o XP e a conclusão do bloco serão recalculados.')
+                  && remove.mutate(s.id)}>
+                Excluir
+              </button>
+            </div>
+            {open === s.id && <div className="pb-3 pt-2"><FlashcardPanel session={s} /></div>}
           </li>
         ))}
       </ul>

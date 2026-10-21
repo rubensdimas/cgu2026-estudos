@@ -173,3 +173,33 @@ export interface Guidance {
   next_theme_id: string | null
   lembretes: string[]
 }
+
+export type FlashcardCategory =
+  | 'conceito' | 'distincao' | 'condicao' | 'causa_consequencia' | 'aplicacao' | 'erro_recorrente' | 'fundamentacao'
+
+export interface Flashcard {
+  id: string
+  version: number
+  session_id: string
+  topic_id: string
+  subitem: string
+  category: FlashcardCategory
+  front: string
+  back: string
+  status: 'draft' | 'approved'
+}
+
+export interface FlashcardBatch {
+  model: string
+  studied: string
+  origin: string
+  focus: string
+  priorities: string[]
+  created_at: string
+}
+
+export interface SessionFlashcards { batch: FlashcardBatch | null; cards: Flashcard[] }
+
+export interface FlashcardSessionItem { session: Session; drafts: number; approved: number; generated: boolean }
+
+export interface FlashcardStatus { enabled: boolean; model: string }
