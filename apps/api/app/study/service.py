@@ -10,6 +10,7 @@ from app.catalog.progress import promote_for_occurrence, promote_for_session
 from app.errors import ApiError
 from app.guidance.service import current_theme
 from app.models import Occurrence, SessionTopic, StudySession, Topic
+from app.reviews.service import create_for_session, dismiss_for_session
 
 Activity = Literal["theory", "questions", "review", "essay"]
 EssayKind = Literal["complementary", "technical_case"]
@@ -133,6 +134,7 @@ def create_session(db: Session, data: SessionIn, today: date) -> tuple[StudySess
         promote_for_occurrence(db, occurrence)
     else:
         promote_for_session(db, session)
+    create_for_session(db, session)
     return session, True
 
 
@@ -154,11 +156,14 @@ def update_session(db: Session, session_id: uuid.UUID, patch: SessionPatch, toda
             raise ApiError(422, "topic_required", "Informe ao menos um tópico.", {"topic_ids": "Obrigatório."})
         _check_topics(db, patch.topic_ids)
         added = set(patch.topic_ids) - set(session.topic_ids)
+        removed = set(session.topic_ids) - set(patch.topic_ids)
         session.topic_links = [SessionTopic(topic_id=t) for t in sorted(set(patch.topic_ids))]
     session.version += 1
     db.flush()
     if patch.topic_ids is not None:
         promote_for_session(db, session, added)
+        dismiss_for_session(db, session.id, removed)
+        create_for_session(db, session, added)
     return session
 
 
@@ -171,6 +176,7 @@ def delete_session(db: Session, session_id: uuid.UUID) -> None:
     session.deleted_at = datetime.now(timezone.utc)
     session.version += 1
     db.flush()
+    dismiss_for_session(db, session.id)
     if session.occurrence_id is not None:
         occurrence = db.get(Occurrence, session.occurrence_id)
         if occurrence.status == "completed" and active_minutes(db, occurrence.id) == 0:

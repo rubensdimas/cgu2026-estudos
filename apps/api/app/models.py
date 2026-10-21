@@ -225,9 +225,32 @@ class Flashcard(Versioned, Base):
     front: Mapped[str] = mapped_column(Text)
     back: Mapped[str] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(16), default="draft")
+    last_rating: Mapped[str | None] = mapped_column(String(16))
+    rated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     __table_args__ = (
         CheckConstraint("status in ('draft','approved')", name="ck_flashcard_status"),
+        CheckConstraint(
+            "last_rating is null or last_rating in ('nao_lembrei','palpite','parcial','lembrei')",
+            name="ck_flashcard_rating"),
         CheckConstraint(
             "category in ('conceito','distincao','condicao','causa_consequencia','aplicacao','erro_recorrente',"
             "'fundamentacao')", name="ck_flashcard_category"),
     )
+
+
+class ReviewTask(Versioned, Base):
+    __tablename__ = "review_tasks"
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    session_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("study_sessions.id"), index=True)
+    topic_id: Mapped[str] = mapped_column(ForeignKey("topics.id"), index=True)
+    offset_days: Mapped[int] = mapped_column(Integer)
+    due_on: Mapped[date] = mapped_column(Date, index=True)
+    status: Mapped[str] = mapped_column(String(16), default="pending")
+    completed_on: Mapped[date | None] = mapped_column(Date)
+    closed_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("review_tasks.id"))
+    __table_args__ = (
+        UniqueConstraint("session_id", "topic_id", "offset_days", name="uq_review_session_topic_offset"),
+        CheckConstraint("status in ('pending','completed','dismissed')", name="ck_review_status"),
+        CheckConstraint("offset_days > 0", name="ck_review_offset"),
+    )
+
