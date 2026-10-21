@@ -55,6 +55,13 @@ def test_promote_from_history_uses_earliest_qualifying_session(db):
     assert state(db, "C02.01") == ("first_pass", date(2026, 10, 5), 1)
 
 
+
+def test_promote_from_history_keeps_existing_first_pass_untouched(db):
+    db.add(TopicProgress(topic_id="C04.01", status="first_pass", declared_on=date(2026, 10, 1)))
+    loose_session(db, ["C04.01"])
+    promote_from_history(db)
+    assert state(db, "C04.01") == ("first_pass", date(2026, 10, 1), 1)
+
 def friday_block(client):
     return client.post("/api/v1/plans/current/weeks", json={"week_start": "2026-10-05"}).json()["items"][0]
 
