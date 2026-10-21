@@ -98,7 +98,7 @@ Prefixo `/api/v1`, JSON snake_case, datas YYYY-MM-DD, instantes ISO UTC, IDs UUI
 | GET /settings | Fuso, metas, preferências (leitura) | F1 |
 | PATCH /settings | Editar metas e preferências | F2 |
 | GET /exam-versions/current · GET /subjects (com tópicos e progresso) | Regras e catálogo | F1 |
-| PUT /topics/{id}/progress | Estado declarado | F1 |
+| PUT /topics/{id}/progress | Estado declarado; também promovido por sessões de teoria (R08) | F1 |
 | GET /plans/current | Plano e template vigente | F1 |
 | POST /plans/current/weeks | Gerar ocorrências da `week_start` (parcial se for a semana inicial) | F1 |
 | GET /occurrences?from=&to= · PATCH /occurrences/{id} | Agenda, remanejamento, conclusão, dispensa; `theme_id` troca o tema de S14/S15 (422 `unknown_theme`, `theme_locked` após sessão) | F1 |

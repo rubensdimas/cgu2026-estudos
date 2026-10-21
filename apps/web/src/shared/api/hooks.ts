@@ -54,7 +54,7 @@ export const useGameConfig = () =>
 
 export const useDayOffs = () => useQuery({ queryKey: ['day-offs'], queryFn: () => api<ListResponse<DayOff>>('/day-offs') })
 
-const GAME_KEYS = ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance']
+const GAME_KEYS = ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance', 'subjects']
 
 /** Mutação que mostra o efeito no jogo e atualiza HUD, dia e ciclo; em conflito, recarrega para obter a versão atual. */
 function useGameMutation<V, R extends Partial<WithDelta> | void>(fn: (v: V) => Promise<R>) {

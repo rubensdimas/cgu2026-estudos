@@ -14,6 +14,7 @@ from app.domain.cycle import (
     suggest_topic,
     week_index,
 )
+from app.catalog.progress import promote_for_occurrence
 from app.errors import ApiError
 from app.models import CycleTemplate, Occurrence, StudyPlan, StudySession
 
@@ -156,4 +157,6 @@ def patch_occurrence(db: Session, occ_id: uuid.UUID, patch: dict) -> Occurrence:
         occ.status = status
     occ.version += 1
     db.flush()
+    if status == "completed":
+        promote_for_occurrence(db, occ)
     return occ
