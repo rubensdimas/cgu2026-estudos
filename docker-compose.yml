@@ -22,6 +22,8 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://cgu:${POSTGRES_PASSWORD}@db:5432/cgu
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-127.0.0.1,localhost}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-6.1-sol}
     ports:
       - "127.0.0.1:${APP_PORT:-8082}:8000"
     depends_on:

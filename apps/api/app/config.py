@@ -7,6 +7,9 @@ DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql+psycopg://cgu:cgu@loca
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if h.strip()]
 STATIC_DIR = Path(os.environ.get("STATIC_DIR", API_DIR.parent / "web" / "dist"))
 DATA_DIR = Path(os.environ.get("DATA_DIR", API_DIR.parent.parent / "docs" / "data"))
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL") or "gpt-6.1-sol"
+OPENAI_TIMEOUT = 60
 
 
 def host_allowed(host: str | None) -> bool:

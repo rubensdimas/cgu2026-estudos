@@ -202,3 +202,32 @@ class DayOff(Base):
     __tablename__ = "day_offs"
     day: Mapped[date] = mapped_column(Date, primary_key=True)
     reason: Mapped[str] = mapped_column(Text)
+
+
+class FlashcardBatch(Base):
+    __tablename__ = "flashcard_batches"
+    session_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("study_sessions.id"), primary_key=True)
+    model: Mapped[str] = mapped_column(String(64))
+    studied: Mapped[str] = mapped_column(Text)
+    origin: Mapped[str] = mapped_column(Text)
+    focus: Mapped[str] = mapped_column(Text)
+    priorities: Mapped[list[str]] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class Flashcard(Versioned, Base):
+    __tablename__ = "flashcards"
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    session_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("study_sessions.id"), index=True)
+    topic_id: Mapped[str] = mapped_column(ForeignKey("topics.id"), index=True)
+    subitem: Mapped[str] = mapped_column(String(16))
+    category: Mapped[str] = mapped_column(String(24))
+    front: Mapped[str] = mapped_column(Text)
+    back: Mapped[str] = mapped_column(Text)
+    status: Mapped[str] = mapped_column(String(16), default="draft")
+    __table_args__ = (
+        CheckConstraint("status in ('draft','approved')", name="ck_flashcard_status"),
+        CheckConstraint(
+            "category in ('conceito','distincao','condicao','causa_consequencia','aplicacao','erro_recorrente',"
+            "'fundamentacao')", name="ck_flashcard_category"),
+    )
