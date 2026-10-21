@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field, model_validator
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.catalog.progress import promote_for_occurrence, promote_for_session
 from app.errors import ApiError
 from app.guidance.service import current_theme
 from app.models import Occurrence, SessionTopic, StudySession, Topic
@@ -129,6 +130,9 @@ def create_session(db: Session, data: SessionIn, today: date) -> tuple[StudySess
         occurrence.status = "completed"
         occurrence.version += 1
         db.flush()
+        promote_for_occurrence(db, occurrence)
+    else:
+        promote_for_session(db, session)
     return session, True
 
 
@@ -149,9 +153,12 @@ def update_session(db: Session, session_id: uuid.UUID, patch: SessionPatch, toda
         if session.activity != "essay" and not patch.topic_ids:
             raise ApiError(422, "topic_required", "Informe ao menos um tópico.", {"topic_ids": "Obrigatório."})
         _check_topics(db, patch.topic_ids)
+        added = set(patch.topic_ids) - set(session.topic_ids)
         session.topic_links = [SessionTopic(topic_id=t) for t in sorted(set(patch.topic_ids))]
     session.version += 1
     db.flush()
+    if patch.topic_ids is not None:
+        promote_for_session(db, session, added)
     return session
 
 
