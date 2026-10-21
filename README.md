@@ -75,6 +75,8 @@ python3 -m unittest discover -s tests/ops -p test_startup.py -v
 
 Esse teste sobe PostgreSQL descartável em memória, com projeto/rede exclusivos e senha fictícia, sem acessar os bancos ou volumes existentes. Reproduz a revisão `5c9e1f3a7b21` já aplicada e verifica o arranque normal da imagem, a saúde HTTP e o catálogo persistido. Os containers temporários são removidos ao terminar. `CGU_STARTUP_IMAGE` permite escolher outra imagem runtime local.
 
+Flashcards por IA (R16): defina `OPENAI_API_KEY` no `.env` (só o container `app` a recebe) e, opcionalmente, `OPENAI_MODEL` (padrão `gpt-6.1-sol`). Sem chave, o botão "Gerar flashcards" fica desligado. Depois de mudar o `.env`, rode `docker compose up -d app`.
+
 Backups: um `pg_dump` ao subir e a cada 24 h em `./backups` (ou `BACKUP_DIR`), mantendo 14 arquivos. Ensaiar a restauração sem tocar no banco principal: `scripts/restore-check.sh backups/<arquivo>.dump`.
 
 Celular: instalar o Tailscale no Mac e no celular (mesma conta), rodar `tailscale serve --bg 8082` (ou a porta escolhida em `APP_PORT`), acrescentar o nome `*.ts.net` mostrado por `tailscale serve status` em `ALLOWED_HOSTS` no `.env` e executar `docker compose up -d app`. Abrir o endereço no celular e usar “Adicionar à tela de início”. Nunca usar `tailscale funnel`: o app não tem login. O Mac precisa estar ligado para o celular acessar.

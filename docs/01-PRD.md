@@ -60,7 +60,7 @@ Login/multiusuário, ranking, rede social, tutor por IA, correção automática 
 
 ## 7. Evoluções possíveis
 
-Após duas semanas de uso: sessão cronometrada, registro de questões individuais, VPS com HTTPS e identidade, IA com corpus selecionado e referências (sempre como orientação, nunca nota oficial ou previsão).
+Após duas semanas de uso: sessão cronometrada, registro de questões individuais, VPS com HTTPS e identidade, IA com corpus selecionado e referências (sempre como orientação, nunca nota oficial ou previsão). Exceção já no MVP: geração de flashcards por IA a partir de sessões de teoria, restrita aos subitens do edital e sempre revisada pelo usuário antes de entrar no baralho (R16).
 
 ## 8. Indicadores de sucesso
 

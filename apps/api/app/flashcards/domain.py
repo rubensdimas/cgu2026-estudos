@@ -1,4 +1,4 @@
-"""Entrada e saída do gerador de flashcards (R13): só o que cabe nos subitens do edital do tópico."""
+"""Entrada e saída do gerador de flashcards (R16): só o que cabe nos subitens do edital do tópico."""
 
 import re
 from dataclasses import dataclass

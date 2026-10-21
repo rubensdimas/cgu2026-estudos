@@ -1,6 +1,6 @@
 # Gerador de Flashcards — CGU | CEBRASPE
 
-A instrução usada pelo app está em [`apps/api/app/flashcards/prompt.md`](../apps/api/app/flashcards/prompt.md) e é enviada como prompt de sistema à OpenAI quando você gera flashcards de uma sessão de teoria (regra R13).
+A instrução usada pelo app está em [`apps/api/app/flashcards/prompt.md`](../apps/api/app/flashcards/prompt.md) e é enviada como prompt de sistema à OpenAI quando você gera flashcards de uma sessão de teoria (regra R16).
 
 Em relação à versão original, escrita para um chat:
 

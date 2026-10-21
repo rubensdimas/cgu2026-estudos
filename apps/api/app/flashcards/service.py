@@ -1,4 +1,4 @@
-"""Flashcards de sessões de teoria (R13): geração como rascunho, aprovação e baralho por tópico."""
+"""Flashcards de sessões de teoria (R16): geração como rascunho, aprovação e baralho por tópico."""
 
 import uuid
 from datetime import date

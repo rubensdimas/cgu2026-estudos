@@ -86,3 +86,9 @@ XP, nível, sequência, congelamentos, conquistas, estado de metas e chefões s�
 ## R15 — Metas
 
 Metas semanais e de etapa são proposta pedagógica (R01): editáveis em `settings`, nunca alteram regras oficiais. Planejado, realizado e meta aparecem separados. Chefão é derrotado por conclusão (simulado completo, caderno limpo), nunca por nota. Sugestão de rebalanceamento exige aceite explícito e só afeta semanas não geradas.
+
+## R16 — Flashcards gerados por IA
+
+Só sessões ativas de teoria com tópico geram flashcards, por ação explícita ("Gerar flashcards"), inclusive sessões já registradas. O app envia à OpenAI a disciplina, o tópico, os subitens do edital do tópico, título e nota dos materiais sugeridos e o texto "O que estudei / errei" (pré-preenchido com a observação da sessão); o modelo não acessa os links. A instrução fica em `apps/api/app/flashcards/prompt.md`: banca CEBRASPE, terminologia do edital, de 5 a 10 cartões sem preencher quantidade, nada fora dos subitens e nada de dispositivo legal inventado.
+
+Cada cartão indica o subitem que cobre; o app descarta cartões sem subitem válido e corta acima de 10. Cartões entram como rascunho: o usuário aprova, edita ou descarta; só aprovados formam o baralho. Gerar de novo substitui apenas os rascunhos da sessão. Falha ou demora (60 s) não grava nada. Sem `OPENAI_API_KEY`, a geração fica desligada. Excluir a sessão mantém os cartões aprovados. Cartões são apoio de revisão, não avaliação de domínio.

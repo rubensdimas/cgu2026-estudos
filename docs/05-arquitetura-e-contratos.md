@@ -104,6 +104,8 @@ Prefixo `/api/v1`, JSON snake_case, datas YYYY-MM-DD, instantes ISO UTC, IDs UUI
 | GET /occurrences?from=&to= · PATCH /occurrences/{id} | Agenda, remanejamento, conclusão, dispensa; `theme_id` troca o tema de S14/S15 (422 `unknown_theme`, `theme_locked` após sessão) | F1 |
 | GET /occurrences/{id}/guidance | Orientação do bloco: roteiro vigente, tópico com subitens, materiais, tema/caso com espelho, `next_theme_id`, lembretes (de `docs/data/orientacoes.json`) | F1+ |
 | POST /sessions · PATCH /sessions/{id} · DELETE /sessions/{id} · GET /sessions?from=&to= | Sessões | F1 |
+| GET /flashcards/status · GET /flashcards/sessions?from=&to= · GET /flashcards?topic_id= | Geração ligada, sessões de teoria com contagem de cartões, baralho aprovado (R16) | Flashcards |
+| GET/POST /sessions/{id}/flashcards · POST /sessions/{id}/flashcards/approve · PATCH/DELETE /flashcards/{id} | Gerar (503 `ai_disabled`, 502 `ai_failed`, 422 `not_theory`), rascunho, aprovar, editar, descartar (R16) | Flashcards |
 | GET /days/{date} | Estado do dia: missão (se houver), ocorrências, XP do dia | F1 |
 | POST /days/{date}/mission | Abrir o dia (idempotente por data) | F1 |
 | PATCH /missions/{id}/items/{item_id} | Marcar/desmarcar “não se aplica” | F1 |
