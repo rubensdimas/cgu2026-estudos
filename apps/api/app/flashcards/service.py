@@ -1,7 +1,7 @@
 """Flashcards de sessões de teoria (R16): geração como rascunho, aprovação e baralho por tópico."""
 
 import uuid
-from datetime import date
+from datetime import date, datetime, timezone
 
 from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
@@ -17,7 +17,8 @@ _ORDER = (Flashcard.created_at, Flashcard.id)
 
 def card_out(c: Flashcard) -> dict:
     return {"id": str(c.id), "version": c.version, "session_id": str(c.session_id), "topic_id": c.topic_id,
-            "subitem": c.subitem, "category": c.category, "front": c.front, "back": c.back, "status": c.status}
+            "subitem": c.subitem, "category": c.category, "front": c.front, "back": c.back, "status": c.status,
+            "last_rating": c.last_rating}
 
 
 def _batch_out(b: FlashcardBatch | None) -> dict | None:
@@ -92,6 +93,15 @@ def patch_card(db: Session, card_id: uuid.UUID, version: int, changes: dict) -> 
         if changes.get(field) is not None:
             setattr(card, field, changes[field])
     card.version += 1
+    db.flush()
+    return card
+
+
+def rate_card(db: Session, card_id: uuid.UUID, rating: str) -> Flashcard:
+    card = _card(db, card_id)
+    if card.status != "approved":
+        raise ApiError(422, "not_approved", "Só cartões aprovados entram na revisão.")
+    card.last_rating, card.rated_at = rating, datetime.now(timezone.utc)
     db.flush()
     return card
 

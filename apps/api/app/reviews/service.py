@@ -4,11 +4,13 @@ import uuid
 from collections.abc import Iterable
 from datetime import date
 
-from sqlalchemy import select
+from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
-from app.domain.reviews import is_duplicate, suggest_due_dates
-from app.models import ReviewTask, StudySession
+from app.domain.reviews import card_sort_key, is_duplicate, suggest_due_dates
+from app.errors import ApiError
+from app.flashcards.service import card_out
+from app.models import Flashcard, ReviewTask, StudySession
 from app.planning.service import current_plan
 
 
@@ -46,3 +48,67 @@ def create_from_history(db: Session, today: date) -> None:
     ).order_by(StudySession.studied_on, StudySession.created_at))
     for session in list(sessions):
         create_for_session(db, session, not_before=today)
+
+
+def approved_cards(db: Session, topic_id: str) -> list[Flashcard]:
+    return list(db.scalars(select(Flashcard).where(Flashcard.topic_id == topic_id, Flashcard.status == "approved")))
+
+
+def review_out(r: ReviewTask, today: date, cards_count: int) -> dict:
+    return {"id": str(r.id), "version": r.version, "session_id": str(r.session_id), "topic_id": r.topic_id,
+            "offset_days": r.offset_days, "due_on": r.due_on, "status": r.status, "completed_on": r.completed_on,
+            "late": r.status == "pending" and r.due_on < today, "cards_count": cards_count}
+
+
+def _card_counts(db: Session) -> dict[str, int]:
+    return dict(db.execute(select(Flashcard.topic_id, func.count()).where(Flashcard.status == "approved")
+                           .group_by(Flashcard.topic_id)).all())
+
+
+def list_reviews(db: Session, start: date, end: date, today: date) -> list[dict]:
+    rows = db.scalars(select(ReviewTask).where(or_(
+        (ReviewTask.status == "pending") & (ReviewTask.due_on <= end),
+        (ReviewTask.status == "completed") & ReviewTask.completed_on.between(start, end),
+        (ReviewTask.status == "dismissed") & ReviewTask.due_on.between(start, end),
+    )).order_by(ReviewTask.due_on, ReviewTask.topic_id))
+    counts = _card_counts(db)
+    return [review_out(r, today, counts.get(r.topic_id, 0)) for r in rows]
+
+
+def _review(db: Session, review_id: uuid.UUID) -> ReviewTask:
+    review = db.get(ReviewTask, review_id)
+    if review is None:
+        raise ApiError(404, "not_found", "Revisão não encontrada.")
+    return review
+
+
+def review_detail(db: Session, review_id: uuid.UUID, today: date) -> dict:
+    review = _review(db, review_id)
+    cards = sorted(approved_cards(db, review.topic_id), key=lambda c: card_sort_key(c.last_rating, c.created_at))
+    return {**review_out(review, today, len(cards)), "cards": [card_out(c) for c in cards]}
+
+
+def complete(db: Session, review_id: uuid.UUID, today: date) -> ReviewTask:
+    review = _review(db, review_id)
+    if review.status != "pending":
+        raise ApiError(422, "not_pending", "Esta revisão já foi concluída ou dispensada.")
+    review.status, review.completed_on = "completed", today
+    review.version += 1
+    overdue = db.scalars(select(ReviewTask).where(
+        ReviewTask.topic_id == review.topic_id, ReviewTask.status == "pending", ReviewTask.due_on < today,
+        ReviewTask.id != review.id))
+    for other in overdue:  # atrasadas do tópico fecham junto, sem XP próprio (closed_by)
+        other.status, other.completed_on, other.closed_by = "completed", today, review.id
+        other.version += 1
+    db.flush()
+    return review
+
+
+def dismiss(db: Session, review_id: uuid.UUID) -> ReviewTask:
+    review = _review(db, review_id)
+    if review.status != "pending":
+        raise ApiError(422, "not_pending", "Esta revisão já foi concluída ou dispensada.")
+    review.status = "dismissed"
+    review.version += 1
+    db.flush()
+    return review

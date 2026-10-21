@@ -14,9 +14,12 @@ from app.domain import mission as mission_domain
 from app.domain.cycle import week_start_of
 from app.domain.streak import StreakState, streak_state
 from app.domain.weeks import is_week_complete, minutes_goal_for_week
-from app.domain.xp import BlockFact, GameFacts, LevelInfo, MissionFact, SessionFact, XpEntry, level_for_xp, xp_ledger
+from app.domain.reviews import review_xp
+from app.domain.xp import (
+    BlockFact, GameFacts, LevelInfo, MissionFact, ReviewFact, SessionFact, XpEntry, level_for_xp, xp_ledger,
+)
 from app.game import config as game_config
-from app.models import AppSettings, DailyMission, DayOff, MissionItem, Occurrence, StudySession
+from app.models import AppSettings, DailyMission, DayOff, MissionItem, Occurrence, ReviewTask, StudySession
 from app.planning.service import current_plan
 
 T = TypeVar("T")
@@ -99,6 +102,13 @@ def complete_weeks(db: Session, world: World) -> frozenset[date]:
     return frozenset(done)
 
 
+def review_facts(db: Session) -> tuple[ReviewFact, ...]:
+    """Só a revisão concluída explicitamente pontua; as atrasadas fechadas junto (`closed_by`) não."""
+    rows = db.execute(select(ReviewTask.id, ReviewTask.due_on, ReviewTask.completed_on).where(
+        ReviewTask.status == "completed", ReviewTask.closed_by.is_(None)))
+    return tuple(ReviewFact(str(rid), done, review_xp(due, done)) for rid, due, done in rows)
+
+
 def build_snapshot(db: Session, today: date) -> Snapshot:
     settings = db.get(AppSettings, 1)
     plan = current_plan(db)
@@ -116,6 +126,7 @@ def build_snapshot(db: Session, today: date) -> Snapshot:
         blocks=tuple(BlockFact(str(oid), d) for oid, d in world.completed_on.items()),
         missions=tuple(mission_facts),
         complete_week_starts=weeks,
+        reviews=review_facts(db),
     )
     ledger = xp_ledger(facts, game_config.xp_table(settings.streak_min_minutes))
     total = sum(e.xp for e in ledger)

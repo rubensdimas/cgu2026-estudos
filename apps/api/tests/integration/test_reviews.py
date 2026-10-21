@@ -3,7 +3,7 @@ from datetime import date
 
 from sqlalchemy import select
 
-from app.models import ReviewTask, SessionTopic, StudySession
+from app.models import Flashcard, ReviewTask, SessionTopic, StudySession
 from app.reviews.service import create_from_history
 
 D = date.fromisoformat
@@ -66,3 +66,59 @@ def test_history_skips_past_due_dates(db):
     db.flush()
     create_from_history(db, D("2026-10-20"))
     assert reviews(db) == [("C02.01", D("2026-10-30"), "pending")]
+
+
+def listed(client, start="2026-10-01", end="2026-11-30"):
+    return client.get("/api/v1/reviews", params={"from": start, "to": end}).json()["items"]
+
+
+def test_complete_closes_overdue_same_topic_and_scores_once(client, db, clock):
+    post_session(client, studied_on="2026-10-09")              # vence 10/10, 16/10, 30/10
+    clock.today = D("2026-10-20")
+    post_session(client, studied_on="2026-10-19")              # 20/10 (26/10 e 09/11 também)
+    items = listed(client)
+    today = next(r for r in items if r["due_on"] == "2026-10-20")
+    assert sum(r["late"] for r in items) == 2
+    r = client.post(f"/api/v1/reviews/{today['id']}/complete", json={})
+    assert r.status_code == 200, r.text
+    assert r.json()["game_delta"]["xp_gained"] == 15
+    states = {i["due_on"]: i["status"] for i in listed(client)}
+    assert states["2026-10-10"] == states["2026-10-16"] == states["2026-10-20"] == "completed"
+    assert states["2026-10-30"] == "pending"
+
+
+def test_complete_late_scores_five_and_only_once(client, clock):
+    post_session(client)
+    clock.today = D("2026-10-20")
+    first = listed(client)[0]
+    r = client.post(f"/api/v1/reviews/{first['id']}/complete", json={})
+    assert r.json()["game_delta"]["xp_gained"] == 5
+    again = client.post(f"/api/v1/reviews/{first['id']}/complete", json={})
+    assert (again.status_code, again.json()["error"]["code"]) == (422, "not_pending")
+
+
+def test_dismiss_and_list_buckets(client, clock):
+    post_session(client)
+    clock.today = D("2026-10-20")
+    items = listed(client, "2026-10-20", "2026-11-03")
+    assert [(i["due_on"], i["late"]) for i in items] == [("2026-10-10", True), ("2026-10-16", True), ("2026-10-30", False)]
+    client.post(f"/api/v1/reviews/{items[0]['id']}/dismiss", json={})
+    assert [i["status"] for i in listed(client, "2026-10-20", "2026-11-03")] == ["pending", "pending"]
+
+
+def test_review_detail_orders_cards_and_rates(client, db):
+    s = post_session(client)
+    cards = [Flashcard(session_id=uuid.UUID(s["id"]), topic_id="C02.01", subitem="1.1", category="conceito",
+                       front=f"F{i}", back="V", status="approved") for i in range(3)]
+    draft = Flashcard(session_id=uuid.UUID(s["id"]), topic_id="C02.01", subitem="1.1", category="conceito",
+                      front="rascunho", back="V", status="draft")
+    db.add_all([*cards, draft])
+    db.commit()
+    assert client.put(f"/api/v1/flashcards/{cards[0].id}/rating", json={"rating": "lembrei"}).status_code == 200
+    rated = client.put(f"/api/v1/flashcards/{cards[2].id}/rating", json={"rating": "nao_lembrei"}).json()
+    assert rated["last_rating"] == "nao_lembrei"
+    assert client.put(f"/api/v1/flashcards/{draft.id}/rating", json={"rating": "lembrei"}).status_code == 422
+    review = listed(client)[0]
+    assert review["cards_count"] == 3
+    detail = client.get(f"/api/v1/reviews/{review['id']}").json()
+    assert [c["front"] for c in detail["cards"]] == ["F2", "F1", "F0"]

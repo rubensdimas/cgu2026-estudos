@@ -78,3 +78,10 @@ def test_week_completion_rules():
     assert not is_week_complete(["completed", "skipped"], 100, 900)
     assert is_week_complete(["completed", "skipped"], 900, 900)
     assert not is_week_complete([], 0, 0)
+
+
+def test_review_xp_entries():
+    from app.domain.xp import ReviewFact
+
+    entries = xp_ledger(GameFacts(reviews=(ReviewFact("r1", FRI, 15), ReviewFact("r2", SAT, 5))), T)
+    assert [(e.source, e.ref_id, e.xp) for e in entries] == [("review_completed", "r1", 15), ("review_completed", "r2", 5)]

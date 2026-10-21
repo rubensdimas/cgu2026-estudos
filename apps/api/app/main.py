@@ -9,6 +9,7 @@ from app.game.mission_router import router as mission_router
 from app.game.router import router as game_router
 from app.guidance.router import router as guidance_router
 from app.planning.router import router as planning_router
+from app.reviews.router import router as reviews_router
 from app.study.router import router as study_router
 
 
@@ -38,7 +39,7 @@ def create_app() -> FastAPI:
         return {"status": "ok"}
 
     for router in (catalog_router, planning_router, study_router, game_router, mission_router, guidance_router,
-                   flashcards_router):
+                   flashcards_router, reviews_router):
         api.include_router(router)
     app.include_router(api)
     mount_spa(app)

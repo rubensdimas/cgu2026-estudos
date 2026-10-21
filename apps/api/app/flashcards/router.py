@@ -71,6 +71,17 @@ def patch_card(card_id: uuid.UUID, body: CardPatch, db: Session = Depends(get_db
     return service.card_out(card)
 
 
+class RatingIn(BaseModel):
+    rating: Literal["nao_lembrei", "palpite", "parcial", "lembrei"]
+
+
+@router.put("/flashcards/{card_id}/rating")
+def rate_card(card_id: uuid.UUID, body: RatingIn, db: Session = Depends(get_db)):
+    card = service.rate_card(db, card_id, body.rating)
+    db.commit()
+    return service.card_out(card)
+
+
 @router.delete("/flashcards/{card_id}", status_code=204)
 def delete_card(card_id: uuid.UUID, db: Session = Depends(get_db)):
     service.delete_card(db, card_id)

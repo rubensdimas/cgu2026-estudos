@@ -39,11 +39,19 @@ class MissionFact:
 
 
 @dataclass(frozen=True)
+class ReviewFact:
+    review_id: str
+    completed_on: date
+    xp: int
+
+
+@dataclass(frozen=True)
 class GameFacts:
     sessions: tuple[SessionFact, ...] = ()
     blocks: tuple[BlockFact, ...] = ()
     missions: tuple[MissionFact, ...] = ()
     complete_week_starts: frozenset[date] = field(default_factory=frozenset)
+    reviews: tuple[ReviewFact, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -104,6 +112,8 @@ def xp_ledger(facts: GameFacts, table: XpTable) -> list[XpEntry]:
             entries.append(
                 XpEntry(m.mission_date, "mission_optional", m.mission_id, m.optional_done * table.mission_optional_item)
             )
+    for r in facts.reviews:
+        entries.append(XpEntry(r.completed_on, "review_completed", r.review_id, r.xp))
     for ws in facts.complete_week_starts:
         entries.append(XpEntry(ws + timedelta(days=6), "week_complete", ws.isoformat(), table.week_complete))
     return sorted(entries, key=lambda e: (e.date, e.source, e.ref_id))
