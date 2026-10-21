@@ -47,3 +47,12 @@ def test_openai_generator_wraps_failures(client):
 def test_get_generator_is_none_without_key(monkeypatch):
     monkeypatch.setattr(config, "OPENAI_API_KEY", "")
     assert get_generator() is None
+
+
+def test_real_client_does_not_retry_past_the_time_limit(monkeypatch):
+    import openai
+
+    created = {}
+    monkeypatch.setattr(openai, "OpenAI", lambda **kw: created.update(kw) or FakeClient(output("1.1")))
+    OpenAiGenerator("key", "m")(CTX)
+    assert created["max_retries"] == 0

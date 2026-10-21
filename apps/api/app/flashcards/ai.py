@@ -25,7 +25,7 @@ class OpenAiGenerator:
         if client is None:
             from openai import OpenAI
 
-            client = OpenAI(api_key=api_key, max_retries=1)
+            client = OpenAI(api_key=api_key, max_retries=0)  # uma tentativa: o limite de 60 s é do pedido inteiro
         self.model, self._client = model, client
 
     def __call__(self, ctx: Context) -> Batch:
