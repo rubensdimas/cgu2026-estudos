@@ -6,7 +6,8 @@ import { useGameToast } from '../ui/GameToast'
 import { api, isConflict } from './client'
 import type {
   DayOff, DayView, ExamVersion, Flashcard, FlashcardSessionItem, FlashcardStatus, GameConfig, Guidance, ListResponse, Mission,
-  Occurrence, Plan, Session, SessionFlashcards, SessionInput, Subject, Summary, TopicProgressOut, WithDelta,
+  Occurrence, Plan, Rating, Review, ReviewDetail, Session, SessionFlashcards, SessionInput, Subject, Summary,
+  TopicProgressOut, WithDelta,
 } from './types'
 
 export const useSummary = () => useQuery({ queryKey: ['summary'], queryFn: () => api<Summary>('/game/summary') })
@@ -54,7 +55,7 @@ export const useGameConfig = () =>
 
 export const useDayOffs = () => useQuery({ queryKey: ['day-offs'], queryFn: () => api<ListResponse<DayOff>>('/day-offs') })
 
-const GAME_KEYS = ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance', 'subjects', 'flashcards']
+const GAME_KEYS = ['summary', 'day', 'occurrences', 'day-offs', 'sessions', 'calendar', 'xp', 'guidance', 'subjects', 'flashcards', 'reviews']
 
 /** Mutação que mostra o efeito no jogo e atualiza HUD, dia e ciclo; em conflito, recarrega para obter a versão atual. */
 function useGameMutation<V, R extends Partial<WithDelta> | void>(fn: (v: V) => Promise<R>) {
@@ -77,8 +78,9 @@ export const useCreateSession = () =>
 export const useDeleteSession = () => useGameMutation((id: string) => api<void>(`/sessions/${id}`, 'DELETE'))
 
 export const useOpenDay = () =>
-  useGameMutation((v: { day: string; occurrence_ids?: string[] }) =>
-    api<Mission & WithDelta>(`/days/${v.day}/mission`, 'POST', { occurrence_ids: v.occurrence_ids ?? [] }))
+  useGameMutation((v: { day: string; occurrence_ids?: string[]; review_ids?: string[] }) =>
+    api<Mission & WithDelta>(`/days/${v.day}/mission`, 'POST',
+      { occurrence_ids: v.occurrence_ids ?? [], review_ids: v.review_ids ?? [] }))
 
 export const useGenerateWeek = () =>
   useGameMutation((week_start: string) => api<WithDelta>('/plans/current/weeks', 'POST', { week_start }))
@@ -157,3 +159,27 @@ export const usePatchFlashcard = () =>
   })
 
 export const useDeleteFlashcard = () => useFlashcardMutation((id: string) => api<void>(`/flashcards/${id}`, 'DELETE'))
+
+export const useReviews = (from: string, to: string) =>
+  useQuery({
+    queryKey: ['reviews', 'list', from, to],
+    queryFn: () => api<ListResponse<Review>>(`/reviews?from=${from}&to=${to}`),
+  })
+
+export const useDueReviews = (day: string) =>
+  useQuery({ queryKey: ['reviews', 'due', day], queryFn: () => api<ListResponse<Review>>(`/reviews/due?day=${day}`) })
+
+export const useReview = (id: string) =>
+  useQuery({ queryKey: ['reviews', 'detail', id], queryFn: () => api<ReviewDetail>(`/reviews/${id}`) })
+
+export const useCompleteReview = () =>
+  useGameMutation((id: string) => api<Review & WithDelta>(`/reviews/${id}/complete`, 'POST', {}))
+
+export const useDismissReview = () =>
+  useGameMutation((id: string) => api<Review & WithDelta>(`/reviews/${id}/dismiss`, 'POST', {}))
+
+/** Avaliação não muda a ordem na tela aberta; a próxima revisão do tópico já vem reordenada. */
+export const useRateFlashcard = () =>
+  useMutation({
+    mutationFn: (v: { id: string; rating: Rating }) => api<Flashcard>(`/flashcards/${v.id}/rating`, 'PUT', { rating: v.rating }),
+  })

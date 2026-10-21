@@ -187,6 +187,7 @@ export interface Flashcard {
   front: string
   back: string
   status: 'draft' | 'approved'
+  last_rating?: Rating | null
 }
 
 export interface FlashcardBatch {
@@ -203,3 +204,20 @@ export interface SessionFlashcards { batch: FlashcardBatch | null; cards: Flashc
 export interface FlashcardSessionItem { session: Session; drafts: number; approved: number; generated: boolean }
 
 export interface FlashcardStatus { enabled: boolean; model: string }
+
+export type Rating = 'nao_lembrei' | 'palpite' | 'parcial' | 'lembrei'
+
+export interface Review {
+  id: string
+  version: number
+  session_id: string
+  topic_id: string
+  offset_days: number
+  due_on: string
+  status: 'pending' | 'completed' | 'dismissed'
+  completed_on: string | null
+  late: boolean
+  cards_count: number
+}
+
+export interface ReviewDetail extends Review { cards: Flashcard[] }

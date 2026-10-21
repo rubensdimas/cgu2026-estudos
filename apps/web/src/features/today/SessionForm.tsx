@@ -13,6 +13,8 @@ interface Props {
   subjects: SubjectsQuery
   onSaved: () => void
   onCancel: () => void
+  /** Sessão avulsa já preenchida (ex.: revisão concluída): atividade, tópico e minutos. */
+  preset?: { activity: Activity; topicId: string; minutes: number }
 }
 
 const ACTIVITY_LABEL: Record<Activity, string> = {
@@ -23,12 +25,12 @@ function defaultEssayKind(o: Occurrence | null): EssayKind {
   return o?.slot.selection_mode === 'technical_case' ? 'technical_case' : 'complementary'
 }
 
-export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: Props) {
+export function SessionForm({ occurrence, today, subjects, onSaved, onCancel, preset }: Props) {
   const [id] = useState(() => crypto.randomUUID())
-  const [activity, setActivity] = useState<Activity>(occurrence?.slot.activity ?? 'theory')
-  const [topicId, setTopicId] = useState(occurrence?.suggested_topic_id ?? '')
+  const [activity, setActivity] = useState<Activity>(occurrence?.slot.activity ?? preset?.activity ?? 'theory')
+  const [topicId, setTopicId] = useState(occurrence?.suggested_topic_id ?? preset?.topicId ?? '')
   const [essayKind, setEssayKind] = useState<EssayKind>(defaultEssayKind(occurrence))
-  const [minutes, setMinutes] = useState(String(occurrence?.slot.minutes ?? 60))
+  const [minutes, setMinutes] = useState(String(occurrence?.slot.minutes ?? preset?.minutes ?? 60))
   const [studiedOn, setStudiedOn] = useState(today)
   const [notes, setNotes] = useState('')
   const [complete, setComplete] = useState(occurrence !== null)
@@ -62,7 +64,7 @@ export function SessionForm({ occurrence, today, subjects, onSaved, onCancel }: 
   return (
     <form onSubmit={submit} className="space-y-3 rounded-lg border border-border bg-card p-4" aria-label="Registrar sessão">
       <h3 className="text-lg font-semibold">
-        {occurrence ? `${occurrence.slot.code} · ${occurrence.slot.title}` : 'Sessão avulsa'}
+        {occurrence ? `${occurrence.slot.code} · ${occurrence.slot.title}` : preset ? 'Registrar a sessão de revisão' : 'Sessão avulsa'}
       </h3>
       {!occurrence && (
         <label className="block text-sm">Atividade

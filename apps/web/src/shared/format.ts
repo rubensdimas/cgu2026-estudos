@@ -16,6 +16,7 @@ export const XP_SOURCE_LABEL: Record<string, string> = {
   mission_optional: 'item bônus',
   weekend_day: 'dia extra',
   week_complete: 'semana completa',
+  review_completed: 'revisão concluída',
 }
 
 export function addDays(iso: string, days: number): string {

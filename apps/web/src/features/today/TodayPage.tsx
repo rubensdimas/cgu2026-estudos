@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
-  useCheckout, useDay, useDeleteSession, useOccurrences, useOpenDay, usePutDayOff, useSessions, useSetItemNa, useSubjects,
-  useSummary,
+  useCheckout, useDay, useDeleteSession, useDueReviews, useOccurrences, useOpenDay, usePutDayOff, useReview, useSessions,
+  useSetItemNa, useSubjects, useSummary,
 } from '../../shared/api/hooks'
 import type { DayView, MissionItem, Occurrence } from '../../shared/api/types'
 import { addDays, formatDay, mondayOf, WINDOW_LABEL } from '../../shared/format'
@@ -11,6 +11,7 @@ import { CARD, CARD_BODY, CARD_DESC, CARD_ROW, CARD_TITLE, CARD_TITLE_PRIMARY, R
 import { QueryState } from '../../shared/ui/QueryState'
 import { FlashcardPanel } from '../flashcards/FlashcardPanel'
 import { GuidancePanel } from '../guidance/GuidancePanel'
+import { useTopicName } from '../reviews/topics'
 import { LateBlocks } from './LateBlocks'
 import { MissionRing } from './MissionRing'
 import { MoveTomorrowButton } from './MoveTomorrow'
@@ -64,26 +65,59 @@ export function TodayPage() {
 export function OpenDayCard({ view }: { view: DayView }) {
   const open = useOpenDay()
   const [chosen, setChosen] = useState<string[]>([])
+  const [reviews, setReviews] = useState<string[] | null>(null)
   if (!view.in_plan) return <p className="text-muted-foreground">Fora do período do plano.</p>
   const free = view.kind === 'free'
+  const reviewIds = reviews ?? []
   return (
     <section className={CARD}>
       <h2 className={CARD_TITLE_PRIMARY}>{free ? 'Fim de semana' : 'Missão de hoje'}</h2>
       <p className={CARD_DESC}>
         {free
-          ? 'Sem ciclo planejado. Escolha até 2 blocos pendentes da semana para uma missão livre; nada é cobrado.'
+          ? 'Sem ciclo planejado. Escolha revisões vencidas e até 2 blocos pendentes da semana; nada é cobrado.'
           : view.week_generated
             ? `${view.occurrences.length} blocos planejados para hoje.`
             : 'A semana ainda não foi gerada; abrir o dia também gera a semana.'}
       </p>
+      {free && <FreeReviewPicker day={view.date} chosen={reviews} onChange={setReviews} />}
       {free && <FreeBlockPicker day={view.date} chosen={chosen} onChange={setChosen} />}
-      <button onClick={() => open.mutate({ day: view.date, occurrence_ids: chosen })}
-        disabled={open.isPending || (free && chosen.length === 0)}
+      <button onClick={() => open.mutate({ day: view.date, occurrence_ids: chosen, review_ids: free ? reviewIds : [] })}
+        disabled={open.isPending || (free && chosen.length === 0 && reviewIds.length === 0)}
         className={`${ROW_PRIMARY_ACTION} ${CARD_BODY} disabled:opacity-50`}>
         {free ? 'Abrir missão livre' : 'Abrir o dia'}
       </button>
       {open.error && <p role="alert" className="mt-2 text-sm text-destructive">{open.error.message}</p>}
     </section>
+  )
+}
+
+const MAX_WEEKEND_REVIEWS = 4
+
+/** Revisões vencidas para a missão livre; as 4 mais antigas já vêm marcadas. */
+function FreeReviewPicker({ day, chosen, onChange }: {
+  day: string; chosen: string[] | null; onChange: (ids: string[]) => void
+}) {
+  const due = useDueReviews(day)
+  const topicName = useTopicName()
+  const items = due.data?.items
+  useEffect(() => {
+    if (items && chosen === null) onChange(items.slice(0, MAX_WEEKEND_REVIEWS).map((r) => r.id))
+  }, [items, chosen, onChange])
+  if (!items) return <div className={CARD_BODY}><QueryState title="Não foi possível carregar as revisões" query={due} /></div>
+  if (items.length === 0) return null
+  const picked = chosen ?? []
+  const toggle = (id: string) => onChange(picked.includes(id) ? picked.filter((c) => c !== id) : [...picked, id])
+  return (
+    <fieldset className={`${CARD_BODY} space-y-1`}>
+      <legend className="mb-1 text-sm font-semibold">Revisões vencidas (máx. {MAX_WEEKEND_REVIEWS})</legend>
+      {items.map((r) => (
+        <label key={r.id} className="touch-target flex items-center gap-3 text-sm">
+          <input type="checkbox" checked={picked.includes(r.id)} onChange={() => toggle(r.id)}
+            disabled={!picked.includes(r.id) && picked.length >= MAX_WEEKEND_REVIEWS} />
+          {formatDay(r.due_on)} · {topicName(r.topic_id)}
+        </label>
+      ))}
+    </fieldset>
   )
 }
 
@@ -180,6 +214,7 @@ export function MissionRow({ item, missionId, view, onRegister }: {
 }) {
   const setNa = useSetItemNa()
   if (item.kind === 'checkout') return <CheckoutRow missionId={missionId} item={item} note={view.mission!.checkout_note} />
+  if (item.kind === 'review') return <ReviewMissionRow item={item} missionId={missionId} />
   const occ = view.occurrences.find((o) => o.id === item.ref_id)
   return (
     <li className={CARD_ROW}>
@@ -206,6 +241,33 @@ export function MissionRow({ item, missionId, view, onRegister }: {
       )}
       {setNa.error && <p role="alert" className="mt-2 text-sm text-destructive">{setNa.error.message}</p>}
       {occ && <div className="mt-3 border-t border-border pt-1"><GuidancePanel occ={occ} /></div>}
+    </li>
+  )
+}
+
+function ReviewMissionRow({ item, missionId }: { item: MissionItem; missionId: string }) {
+  const review = useReview(item.ref_id!)
+  const topicName = useTopicName()
+  const setNa = useSetItemNa()
+  const data = review.data
+  return (
+    <li className={CARD_ROW}>
+      <p className="font-semibold leading-snug [overflow-wrap:anywhere]">
+        Revisão · {data ? topicName(data.topic_id) : '…'}
+      </p>
+      <p className="mt-1 text-xs text-muted-foreground">{STATE_LABEL[item.state]}{item.na_reason ? ` (${item.na_reason})` : ''}</p>
+      {item.state === 'pending' && (
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <Link to={`/revisoes/${item.ref_id}`} className={`${ROW_PRIMARY_ACTION} text-center`}>Revisar</Link>
+          <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: 'Não se aplica hoje' })}
+            disabled={setNa.isPending} className="touch-target rounded-md px-3 py-1 text-sm text-muted-foreground">Não se aplica hoje</button>
+        </div>
+      )}
+      {item.na_reason && item.na_reason !== 'dismissed' && (
+        <button onClick={() => setNa.mutate({ missionId, itemId: item.id, na_reason: null })}
+          disabled={setNa.isPending} className="touch-target -ml-3 mt-1 px-3 py-1 text-sm text-muted-foreground">Desfazer</button>
+      )}
+      {setNa.error && <p role="alert" className="mt-2 text-sm text-destructive">{setNa.error.message}</p>}
     </li>
   )
 }

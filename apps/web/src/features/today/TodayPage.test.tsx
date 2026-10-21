@@ -35,7 +35,28 @@ describe('OpenDayCard no fim de semana', () => {
     await user.click(open)
     await waitFor(() => expect(fetchMock.mock.calls.some(([, init]) => init?.method === 'POST')).toBe(true))
     const post = fetchMock.mock.calls.find(([, init]) => init?.method === 'POST')!
-    expect(JSON.parse(post[1]!.body as string)).toEqual({ occurrence_ids: ['b'] })
+    expect(JSON.parse(post[1]!.body as string)).toEqual({ occurrence_ids: ['b'], review_ids: [] })
+  })
+
+  it('pré-marca até 4 revisões vencidas e permite abrir só com elas', async () => {
+    const due = ['r1', 'r2', 'r3', 'r4', 'r5'].map((id, i) => ({
+      id, version: 1, session_id: 's', topic_id: `C0${i + 1}.01`, offset_days: 1, due_on: `2026-10-0${i + 1}`,
+      status: 'pending', completed_on: null, late: true, cards_count: 0,
+    }))
+    const fetchMock = stubFetch([
+      { match: '/occurrences?from=2026-10-05&to=2026-10-11', body: { items: [], total: 0 } },
+      { match: '/reviews/due?day=2026-10-10', body: { items: due, total: 5 } },
+      { match: '/subjects', body: { items: [], total: 0 } },
+      { method: 'POST', match: '/days/2026-10-10/mission', body: { id: 'm', items: [], game_delta: { xp_gained: 0, entries: [], level_up: null, mission_complete: [], streak: 0 } }, status: 201 },
+    ])
+    renderWithProviders(<OpenDayCard view={saturday} />)
+    const user = userEvent.setup()
+    expect(await screen.findByLabelText(/C05\.01/)).not.toBeChecked()
+    expect(screen.getByLabelText(/C01\.01/)).toBeChecked()
+    await user.click(screen.getByRole('button', { name: 'Abrir missão livre' }))
+    await waitFor(() => expect(fetchMock.mock.calls.some(([, init]) => init?.method === 'POST')).toBe(true))
+    const post = fetchMock.mock.calls.find(([, init]) => init?.method === 'POST')!
+    expect(JSON.parse(post[1]!.body as string)).toEqual({ occurrence_ids: [], review_ids: ['r1', 'r2', 'r3', 'r4'] })
   })
 })
 
@@ -79,7 +100,10 @@ describe('estados de falha em Hoje', () => {
   })
 
   it('não apresenta semana sem blocos quando a busca de blocos falha', async () => {
-    stubFetch([{ match: '/occurrences?', body: errorBody('Erro inesperado.'), status: 500 }])
+    stubFetch([
+      { match: '/occurrences?', body: errorBody('Erro inesperado.'), status: 500 },
+      { match: '/reviews/due', body: { items: [], total: 0 } },
+    ])
     renderWithProviders(<OpenDayCard view={saturday} />)
     expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar os blocos da semana')
     expect(screen.queryByText(/Nenhum bloco pendente/)).not.toBeInTheDocument()
