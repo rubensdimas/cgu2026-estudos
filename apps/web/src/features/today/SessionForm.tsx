@@ -22,7 +22,7 @@ const ACTIVITY_LABEL: Record<Activity, string> = {
 }
 
 function defaultEssayKind(o: Occurrence | null): EssayKind {
-  return o?.slot.selection_mode === 'technical_case' ? 'technical_case' : 'complementary'
+  return o?.essay_kind ?? 'complementary'
 }
 
 export function SessionForm({ occurrence, today, subjects, onSaved, onCancel, preset }: Props) {

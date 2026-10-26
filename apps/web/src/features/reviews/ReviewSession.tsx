@@ -12,11 +12,11 @@ import { CATEGORY_LABEL } from '../flashcards/FlashcardPanel'
 import { SessionForm } from '../today/SessionForm'
 import { useTopicName } from './topics'
 
-/** Roteiro de referência do bloco de revisão (30 min); o tempo real fica com o usuário. */
+/** Roteiro de referência da revisão (10 min; até 3 por dia); o tempo real fica com o usuário. */
 const STEPS = [
-  ['Flashcards', 5],
-  ['Questões CEBRASPE do tópico', 20],
-  ['Análise de erros sem consulta', 5],
+  ['Flashcards', 3],
+  ['5 questões CEBRASPE do tópico', 5],
+  ['Análise de erros sem consulta', 2],
 ] as const
 
 const RATING_BUTTONS: [Rating, string, string][] = [
@@ -48,7 +48,7 @@ export function ReviewSession({ reviewId }: { reviewId: string }) {
   if (registering && today) {
     return (
       <SessionForm occurrence={null} today={today} subjects={subjects} onSaved={back} onCancel={back}
-        preset={{ activity: 'review', topicId: data.topic_id, minutes: 30 }} />
+        preset={{ activity: 'review', topicId: data.topic_id, minutes: 10 }} />
     )
   }
 

@@ -9,7 +9,7 @@ import { CyclePage, OccurrenceRow } from './CyclePage'
 
 const occ: Occurrence = {
   id: 'occ-1', version: 3, week_start: '2026-10-12', planned_on: '2026-10-12', window: 'before', status: 'pending',
-  skip_reason: null, actual_minutes: 0, completed_on: null, suggested_topic_id: 'B01.01',
+  skip_reason: null, actual_minutes: 0, completed_on: null, suggested_topic_id: 'B01.01', essay_kind: null,
   slot: { code: 'S01', title: 'Estado e sociedade', purpose: 'basic', activity: 'theory', minutes: 60,
     selection_mode: 'alternate_subjects', candidate_topic_ids: ['B01.01'] },
 }

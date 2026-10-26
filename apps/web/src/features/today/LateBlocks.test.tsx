@@ -8,7 +8,7 @@ import { LateBlocks } from './LateBlocks'
 
 const occ = (id: string, title: string, status: OccurrenceStatus = 'pending'): Occurrence => ({
   id, version: 4, week_start: '2026-10-05', planned_on: '2026-10-09', window: 'after', status, skip_reason: null,
-  actual_minutes: 0, completed_on: null, suggested_topic_id: null,
+  actual_minutes: 0, completed_on: null, suggested_topic_id: null, essay_kind: null,
   slot: { code: 'S15', title, purpose: 'essay', activity: 'essay', minutes: 60, selection_mode: 'technical_case',
     candidate_topic_ids: [] },
 })

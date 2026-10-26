@@ -29,8 +29,8 @@ function ReviewQueue({ today }: { today: string }) {
     <div className="space-y-4 md:space-y-6">
       <h1 className="text-xl font-bold">Revisões</h1>
       <p className="text-sm text-muted-foreground">
-        Cada sessão de teoria agenda revisões do tópico para 1, 7 e 21 dias depois. Roteiro de 30 min: flashcards,
-        questões CEBRASPE e análise de erros.
+        Cada sessão de teoria agenda revisões do tópico para 1, 7 e 21 dias depois. Roteiro de 10 min: flashcards,
+        5 questões CEBRASPE e análise de erros. Até 3 revisões por dia.
       </p>
       {!data && <QueryState title="Não foi possível carregar as revisões" query={reviews} />}
       {data && pending.length === 0 && (

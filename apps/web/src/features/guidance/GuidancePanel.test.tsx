@@ -8,7 +8,7 @@ import { GuidancePanel } from './GuidancePanel'
 
 const occ: Occurrence = {
   id: 'o1', version: 5, week_start: '2026-10-05', planned_on: '2026-10-11', window: 'middle', status: 'pending',
-  skip_reason: null, actual_minutes: 0, completed_on: null, suggested_topic_id: null,
+  skip_reason: null, actual_minutes: 0, completed_on: null, suggested_topic_id: null, essay_kind: null,
   slot: { code: 'S14', title: 'Discursiva de complementares', purpose: 'essay', activity: 'essay', minutes: 60,
     selection_mode: 'complementary', candidate_topic_ids: [] },
 }

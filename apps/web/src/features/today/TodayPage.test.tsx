@@ -9,7 +9,7 @@ import { CheckoutRow, HolidayBanner, MissionRow, OpenDayCard, TodayPage, TodaySe
 
 const pending = (id: string, title: string, planned_on: string): Occurrence => ({
   id, version: 1, week_start: '2026-10-05', planned_on, window: 'before', status: 'pending', skip_reason: null,
-  actual_minutes: 0, completed_on: null, suggested_topic_id: null,
+  actual_minutes: 0, completed_on: null, suggested_topic_id: null, essay_kind: null,
   slot: { code: 'S13', title, purpose: 'complementary', activity: 'theory', minutes: 60,
     selection_mode: 'alternate_subjects', candidate_topic_ids: [] },
 })
@@ -122,6 +122,17 @@ describe('gravações com falha visível', () => {
     await user.click(screen.getByRole('button', { name: 'Salvar check-out' }))
     expect(await screen.findByRole('alert')).toHaveTextContent('Erro inesperado.')
     expect(screen.getByRole('textbox')).toHaveValue('juros compostos')
+  })
+
+  it('marca como bônus a revisão opcional da missão', async () => {
+    const item: MissionItem = { id: 'i2', position: 2, kind: 'review', ref_id: 'r2', required: false, target: null,
+      state: 'pending', na_reason: null }
+    const view: DayView = { date: '2026-10-27', kind: 'weekday', in_plan: true, week_generated: true, occurrences: [],
+      mission: { id: 'm1', date: '2026-10-27', kind: 'weekday', checkout_note: null, complete: false, items: [item] }, xp_today: 0 }
+    stubFetch([{ match: '/reviews/r2', body: { id: 'r2', version: 1, session_id: 's', topic_id: 'C02.01', offset_days: 7,
+      due_on: '2026-10-27', status: 'pending', completed_on: null, late: false, cards_count: 0, cards: [] } }])
+    renderWithProviders(<ul><MissionRow item={item} missionId="m1" view={view} onRegister={vi.fn()} /></ul>)
+    expect(await screen.findByText(/Revisão ·/)).toHaveTextContent('(bônus)')
   })
 
   it('mostra o erro quando marcar "não se aplica" falha', async () => {

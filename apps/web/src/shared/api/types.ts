@@ -61,6 +61,7 @@ export interface Occurrence {
   completed_on: string | null
   slot: Slot
   suggested_topic_id: string | null
+  essay_kind: EssayKind | null
 }
 
 export interface MissionItem {

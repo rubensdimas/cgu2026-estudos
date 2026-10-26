@@ -254,6 +254,7 @@ function ReviewMissionRow({ item, missionId }: { item: MissionItem; missionId: s
     <li className={CARD_ROW}>
       <p className="font-semibold leading-snug [overflow-wrap:anywhere]">
         Revisão · {data ? topicName(data.topic_id) : '…'}
+        {!item.required && <span className="text-xp"> (bônus)</span>}
       </p>
       <p className="mt-1 text-xs text-muted-foreground">{STATE_LABEL[item.state]}{item.na_reason ? ` (${item.na_reason})` : ''}</p>
       {item.state === 'pending' && (

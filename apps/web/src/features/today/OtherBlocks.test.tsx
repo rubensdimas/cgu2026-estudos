@@ -9,7 +9,7 @@ import { OtherBlocks } from './OtherBlocks'
 
 const occ = (id: string, title: string, status: OccurrenceStatus = 'pending'): Occurrence => ({
   id, version: 2, week_start: '2026-10-05', planned_on: '2026-10-10', window: 'middle', status, skip_reason: null,
-  actual_minutes: 0, completed_on: null, suggested_topic_id: null,
+  actual_minutes: 0, completed_on: null, suggested_topic_id: null, essay_kind: null,
   slot: { code: 'S14', title, purpose: 'essay', activity: 'essay', minutes: 60, selection_mode: 'complementary',
     candidate_topic_ids: [] },
 })

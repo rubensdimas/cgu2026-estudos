@@ -48,15 +48,22 @@ describe('ReviewSession', () => {
     expect(JSON.parse(rating[1]!.body as string)).toEqual({ rating: 'nao_lembrei' })
   })
 
-  it('concluir abre o registro da sessão de revisão com 30 min', async () => {
+  it('concluir abre o registro da sessão de revisão com 10 min', async () => {
     const fetchMock = stub(review([card('c1', 'Primeira')]))
     renderWithProviders(<ReviewSession reviewId="r1" />)
     const user = userEvent.setup()
     await user.click(await screen.findByRole('button', { name: 'Concluir revisão' }))
     await waitFor(() => expect(fetchMock.mock.calls.some(([u, i]) => String(u).includes('/complete') && i?.method === 'POST')).toBe(true))
-    expect(await screen.findByLabelText('Minutos')).toHaveValue(30)
+    expect(await screen.findByLabelText('Minutos')).toHaveValue(10)
     expect(screen.getByLabelText('Atividade')).toHaveValue('review')
     expect(screen.getByLabelText(/Tópico/)).toHaveValue('C02.01')
+  })
+
+  it('mostra o roteiro de 10 min', async () => {
+    stub(review([card('c1', 'Primeira')]))
+    renderWithProviders(<ReviewSession reviewId="r1" />)
+    expect(await screen.findByText('5 questões CEBRASPE do tópico')).toBeInTheDocument()
+    expect(screen.getAllByText(/^\d+ min$/).map((e) => e.textContent)).toEqual(['3 min', '5 min', '2 min'])
   })
 
   it('sem cartões aprovados mostra o convite e ainda permite concluir', async () => {

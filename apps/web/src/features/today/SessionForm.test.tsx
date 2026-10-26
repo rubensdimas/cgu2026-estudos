@@ -13,7 +13,7 @@ const subjects: Subject[] = [
 
 const occurrence: Occurrence = {
   id: 'occ-1', version: 1, week_start: '2026-10-05', planned_on: '2026-10-09', window: 'before', status: 'pending',
-  skip_reason: null, actual_minutes: 0, completed_on: null, suggested_topic_id: 'C02.01',
+  skip_reason: null, actual_minutes: 0, completed_on: null, suggested_topic_id: 'C02.01', essay_kind: null,
   slot: { code: 'S13', title: 'Complementares e revisão', purpose: 'complementary', activity: 'theory', minutes: 60,
     selection_mode: 'alternate_subjects', candidate_topic_ids: ['C02.01'] },
 }
@@ -106,5 +106,21 @@ describe('SessionForm', () => {
   it('não permite registrar enquanto os tópicos não carregaram', () => {
     renderForm(vi.fn(), { ...query, isPending: true, error: new Error('Erro inesperado.') })
     expect(screen.getByRole('button', { name: 'Registrar sessão' })).toBeDisabled()
+  })
+})
+
+describe('SessionForm em bloco de discursiva', () => {
+  it('usa o tipo de discursiva informado pelo bloco', () => {
+    const qc = new QueryClient()
+    const essay: Occurrence = { ...occurrence, essay_kind: 'technical_case', suggested_topic_id: null,
+      slot: { ...occurrence.slot, code: 'T05', activity: 'essay', purpose: 'essay', selection_mode: 'alternate_essay' } }
+    render(
+      <QueryClientProvider client={qc}>
+        <GameToastProvider>
+          <SessionForm occurrence={essay} today="2026-11-06" subjects={loaded} onSaved={vi.fn()} onCancel={vi.fn()} />
+        </GameToastProvider>
+      </QueryClientProvider>,
+    )
+    expect(screen.getByLabelText('Tipo de discursiva')).toHaveValue('technical_case')
   })
 })
