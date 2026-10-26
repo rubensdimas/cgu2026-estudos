@@ -46,6 +46,7 @@ def _plan_day_guard(db: Session, day: date, today: date) -> None:
 
 
 MAX_WEEKEND_REVIEWS = 4
+MAX_WEEKDAY_REVIEWS = 3  # 3 × 10 min; só a primeira é obrigatória, as demais são bônus
 
 
 def due_reviews(db: Session, day: date) -> list[ReviewTask]:
@@ -74,8 +75,10 @@ def open_day(db: Session, day: date, today: date, chosen: list[uuid.UUID],
     if kind == "weekday":
         ensure_week(db, week_start_of(day))
         occs = list(db.scalars(select(Occurrence).where(Occurrence.planned_on == day)))
-        reviews = due_reviews(db, day)[:1]
+        reviews = due_reviews(db, day)[:MAX_WEEKDAY_REVIEWS]
+        required_reviews = 1
     else:
+        required_reviews = None
         reviews = _chosen_reviews(db, day, list(review_ids))
         if len(chosen) > 2:
             raise ApiError(422, "too_many_blocks", "Escolha no máximo 2 blocos na missão livre.")
@@ -95,7 +98,8 @@ def open_day(db: Session, day: date, today: date, chosen: list[uuid.UUID],
                     ref_id=uuid.UUID(i.ref_id) if i.ref_id else None,
                     target=i.target, required=i.required, na_reason=i.na_reason)
         for i in mission_domain.build_mission(
-            day, refs, question_goal, [mission_domain.ReviewRef(str(r.id), r.due_on) for r in reviews])
+            day, refs, question_goal, [mission_domain.ReviewRef(str(r.id), r.due_on) for r in reviews],
+            required_reviews)
     ]
     db.add(mission)
     db.flush()

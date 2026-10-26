@@ -122,14 +122,17 @@ def theory(client, studied_on, topic):
     assert client.post("/api/v1/sessions", json=body).status_code == 201
 
 
-def test_weekday_mission_takes_one_oldest_due_review(client):
-    theory(client, "2026-10-07", "C02.01")  # revisão em 08/10
-    theory(client, "2026-10-08", "C03.01")  # revisão em 09/10
-    oldest = client.get("/api/v1/reviews/due", params={"day": "2026-10-09"}).json()["items"][0]
-    assert oldest["due_on"] == "2026-10-08"
-    items = client.post("/api/v1/days/2026-10-09/mission", json={}).json()["items"]
+def test_weekday_mission_takes_three_due_reviews_first_required(client, clock):
+    clock.today = date(2026, 10, 12)
+    for day, topic in [("2026-10-07", "C02.01"), ("2026-10-08", "C03.01"), ("2026-10-09", "C04.01"),
+                       ("2026-10-10", "C05.01")]:
+        theory(client, day, topic)  # revisões D+1 de 08/10 a 11/10
+    due = client.get("/api/v1/reviews/due", params={"day": "2026-10-12"}).json()["items"]
+    assert [d["due_on"] for d in due] == ["2026-10-08", "2026-10-09", "2026-10-10", "2026-10-11"]
+    items = client.post("/api/v1/days/2026-10-12/mission", json={}).json()["items"]
     reviews = [i for i in items if i["kind"] == "review"]
-    assert [(i["ref_id"], i["required"]) for i in reviews] == [(oldest["id"], True)]
+    assert [(i["ref_id"], i["required"]) for i in reviews] == [
+        (due[0]["id"], True), (due[1]["id"], False), (due[2]["id"], False)]
 
 
 def test_weekend_mission_with_only_reviews_completes(client, clock):

@@ -53,12 +53,14 @@ def mission_kind(day: date) -> str:
 
 
 def build_mission(day: date, occurrences: list[OccRef], question_goal: int = 0,
-                  reviews: list[ReviewRef] = ()) -> list[MissionItemInput]:
+                  reviews: list[ReviewRef] = (), required_reviews: int | None = None) -> list[MissionItemInput]:
+    """`required_reviews`: quantas revisões (as primeiras) são obrigatórias; None = todas."""
     items: list[MissionItemInput] = []
     for occ in sorted(occurrences, key=lambda o: WINDOW_ORDER[o.window]):
         items.append(MissionItemInput(len(items), "block", True, ref_id=occ.id))
-    for review in reviews:
-        items.append(MissionItemInput(len(items), "review", True, ref_id=review.id))
+    for n, review in enumerate(reviews):
+        required = required_reviews is None or n < required_reviews
+        items.append(MissionItemInput(len(items), "review", required, ref_id=review.id))
     if question_goal > 0:
         items.append(MissionItemInput(len(items), "questions", False, target=question_goal))
     items.append(MissionItemInput(len(items), "checkout", False))

@@ -5,6 +5,7 @@ from app.domain.mission import (
     ItemState,
     MissionItemInput,
     OccRef,
+    ReviewRef,
     build_mission,
     is_complete,
     item_state,
@@ -98,3 +99,11 @@ def test_review_item_states():
     assert state("completed", date(2026, 10, 12)) == ItemState("pending")
     assert state("dismissed") == ItemState("not_applicable", "dismissed")
     assert state("pending") == ItemState("pending")
+
+
+def test_only_first_review_required_when_capped():
+    reviews = [ReviewRef(i, FRI) for i in "xyz"]
+    items = build_mission(FRI, [], 0, reviews, required_reviews=1)
+    assert [(i.kind, i.required) for i in items if i.kind == "review"] == [
+        ("review", True), ("review", False), ("review", False)]
+    assert all(i.required for i in build_mission(FRI, [], 0, reviews) if i.kind == "review")
