@@ -35,7 +35,7 @@
         "C04",
         "C05"
       ],
-      "title": "Conhecimentos complementares (P2)",
+      "title": "Complementares (P2)",
       "selection_mode": "next_topic_rotation"
     },
     {
@@ -65,7 +65,7 @@
         "B03",
         "B04"
       ],
-      "title": "Conhecimentos básicos (P1)",
+      "title": "Básicos (P1)",
       "selection_mode": "next_topic_rotation"
     },
     {
@@ -76,7 +76,7 @@
       "purpose": "essay",
       "activity": "essay",
       "candidate_topic_ids": [],
-      "title": "Discursiva da semana",
+      "title": "Discursiva",
       "selection_mode": "alternate_essay"
     }
   ]

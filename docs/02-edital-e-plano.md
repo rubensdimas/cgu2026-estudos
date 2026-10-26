@@ -56,9 +56,9 @@ O ciclo de 3 blocos diários não se sustentou na rotina. Desde 26/10 cada dia �
 | Dia | Bloco de 60 min | Rodízio por semana (desde 26/10) |
 |---|---|---|
 | Segunda | Específica | E01 → E03 |
-| Terça | Conhecimentos complementares (P2) | C01 → C02 → C03 → C04 → C05 |
+| Terça | Complementares (P2) | C01 → C02 → C03 → C04 → C05 |
 | Quarta | Específica | E02 → E04 |
-| Quinta | Conhecimentos básicos (P1) | B01 → B02 → B03 → B04 |
+| Quinta | Básicos (P1) | B01 → B02 → B03 → B04 |
 | Sexta | Discursiva | complementar → situação-problema |
 
 O app sugere o primeiro tópico da disciplina da semana ainda sem primeira passagem declarada antes do dia do bloco; disciplina esgotada passa à seguinte da lista. O usuário confirma o tópico efetivamente estudado. Na virada, o comando `python -m app.replan` dispensou os blocos pendentes de 21–25/10 e recriou as revisões dos tópicos já estudados nos fins de semana (31/10–01/11, 07–08/11 e 21–22/11).
