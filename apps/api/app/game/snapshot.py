@@ -11,7 +11,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.domain import mission as mission_domain
-from app.domain.cycle import week_start_of
+from app.domain.cycle import CycleError, select_template, week_start_of
 from app.domain.streak import StreakState, streak_state
 from app.domain.weeks import is_week_complete, minutes_goal_for_week
 from app.domain.reviews import review_xp
@@ -20,7 +20,7 @@ from app.domain.xp import (
 )
 from app.game import config as game_config
 from app.models import AppSettings, DailyMission, DayOff, MissionItem, Occurrence, ReviewTask, StudySession
-from app.planning.service import current_plan
+from app.planning.service import current_plan, templates, to_input
 
 T = TypeVar("T")
 
@@ -98,11 +98,20 @@ def complete_weeks(db: Session, world: World) -> frozenset[date]:
     for day in world.minutes_by_date:
         if plan.starts_on <= day <= plan.ends_on:
             by_week.setdefault(week_start_of(day), [])
+    template_inputs = [(to_input(t), t.weekly_minutes) for t in templates(db, plan)]
+
+    def weekly_minutes(ws: date) -> int:
+        """Meta do template vigente na semana: mudar o ciclo não reescreve semanas passadas."""
+        try:
+            chosen = select_template([t for t, _ in template_inputs], ws)
+        except CycleError:
+            return settings.weekly_goals["minutes"]
+        return next(m for t, m in template_inputs if t.effective_from == chosen.effective_from)
+
     done = set()
     for ws, occs in by_week.items():
         minutes = sum(world.minutes_by_date.get(ws + timedelta(days=i), 0) for i in range(7))
-        goal = minutes_goal_for_week(ws, plan.starts_on, sum(o.slot.minutes for o in occs),
-                                     settings.weekly_goals["minutes"])
+        goal = minutes_goal_for_week(ws, plan.starts_on, sum(o.slot.minutes for o in occs), weekly_minutes(ws))
         if is_week_complete([o.status for o in occs], minutes, goal):
             done.add(ws)
     return frozenset(done)

@@ -110,3 +110,17 @@ def test_calendar_treats_pre_plan_days_and_weekend_study_as_neutral(client, cloc
     cal = client.get("/api/v1/game/calendar", params={"from": "2026-10-05", "to": "2026-10-12"}).json()
     assert cal["active_days"] == ["2026-10-09"]
     assert cal["neutral_days"] == ["2026-10-05", "2026-10-06", "2026-10-07", "2026-10-08", "2026-10-10", "2026-10-11"]
+
+
+def test_week_minutes_goal_follows_the_template(client, db, clock):
+    from app.game.snapshot import complete_weeks, load_world
+
+    clock.today = date(2026, 10, 30)
+    for i in range(3):
+        study(client, date(2026, 10, 12) + timedelta(days=i), 180)  # 540 < 900 do ciclo inicial
+    for i in range(5):
+        study(client, date(2026, 10, 26) + timedelta(days=i), 60)  # 300 = meta do ciclo de 26/10
+    db.expire_all()
+    weeks = complete_weeks(db, load_world(db))
+    assert date(2026, 10, 12) not in weeks
+    assert date(2026, 10, 26) in weeks
