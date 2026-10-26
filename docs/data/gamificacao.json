@@ -4,20 +4,19 @@
   "is_proposed": true,
   "settings_defaults": {
     "timezone": "America/Sao_Paulo",
-    "daily_question_goal": 20,
+    "daily_question_goal": 10,
     "streak_min_minutes": 30,
     "max_freezes": 2,
     "weekly_goals": {
-      "minutes": 900,
-      "blocks": 15,
+      "minutes": 300,
+      "blocks": 5,
       "questions": {
-        "P1": 40,
-        "P2": 40,
-        "P3": 90
+        "P1": 15,
+        "P2": 15,
+        "P3": 30
       },
       "essays": {
-        "complementary": 1,
-        "technical_case": 1
+        "per_week": 1
       },
       "missions": 5
     }
@@ -106,12 +105,12 @@
       "ends_on": "2026-11-22",
       "goals": [
         {
-          "kind": "coverage_ratio",
-          "target": 0.7
+          "kind": "topics_first_pass_in_stage",
+          "target": 16
         },
         {
           "kind": "question_items",
-          "target": 600
+          "target": 200
         },
         {
           "kind": "essays_total",
@@ -130,8 +129,8 @@
       "ends_on": "2026-12-06",
       "goals": [
         {
-          "kind": "coverage_ratio",
-          "target": 0.9
+          "kind": "topics_first_pass_in_stage",
+          "target": 8
         },
         {
           "kind": "overdue_reviews_at_end",
@@ -190,7 +189,7 @@
   "rebalance": {
     "max_blocks_moved": 2,
     "block_minutes": 60,
-    "specific_min_minutes": 300,
+    "specific_min_minutes": 120,
     "paper_to_purpose": {
       "P1": "basic",
       "P2": "complementary",

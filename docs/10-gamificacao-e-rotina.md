@@ -20,9 +20,9 @@ A missão de uma data civil é criada por ação explícita “Abrir o dia” (`
 
 | Ordem | Item | Origem | Obrigatório | Concluído quando |
 |---|---|---|---|---|
-| 1 | Blocos do dia (até 3) | **Todas** as ocorrências planejadas para a data, inclusive já concluídas (registrar antes de abrir o dia não pode sumir com o bloco); dispensadas entram como `not_applicable` | Sim | Ocorrência `completed` com data de conclusão ≤ data da missão |
-| 2 | Revisão vencida (até 1) | `ReviewTask` pendente com `due_on ≤ data`, a mais antiga | Sim | Revisão `completed` até a data da missão |
-| 3 | Meta de questões | Padrão 20 itens; tópico sugerido = tópico estudado no dia ou tópico com menor taxa de acerto e amostra ≥ 20 | Não (bônus) | Soma de `total` dos lotes da data ≥ meta |
+| 1 | Blocos do dia (1 desde 26/10; até 3 antes) | **Todas** as ocorrências planejadas para a data, inclusive já concluídas (registrar antes de abrir o dia não pode sumir com o bloco); dispensadas entram como `not_applicable` | Sim | Ocorrência `completed` com data de conclusão ≤ data da missão |
+| 2 | Revisões vencidas (até 3) | `ReviewTask` pendentes com `due_on ≤ data`, as mais antigas primeiro | A 1ª sim; as demais são bônus | Revisão `completed` até a data da missão |
+| 3 | Meta de questões | Padrão 10 itens; tópico sugerido = tópico estudado no dia ou tópico com menor taxa de acerto e amostra ≥ 20 | Não (bônus) | Soma de `total` dos lotes da data ≥ meta |
 | 4 | Check-out do dia | Uma linha: “O que ficou difícil hoje?” | Não (bônus) | Texto salvo |
 
 Estados de item: `pending | done | not_applicable`. O usuário pode marcar qualquer item como **não se aplica hoje** (ex.: bloco intermediário indisponível), com motivo opcional, sem penalidade. Item de bloco cuja ocorrência foi remanejada para outra data vira `not_applicable` com motivo `rescheduled`; item de revisão dispensada vira `not_applicable` com motivo `dismissed`. Os estados `done` são derivados dos registros; `not_applicable` é a única marcação manual.
@@ -99,11 +99,13 @@ Padrões (editáveis em Configurações, sem alterar regras oficiais):
 
 | Meta | Padrão |
 |---|---|
-| Minutos reais | 900 |
-| Blocos concluídos | 15 |
-| Itens de questões P1 / P2 / P3 | 40 / 40 / 90 |
-| Discursivas com rubrica | 1 complementar + 1 situação-problema |
+| Minutos reais | 300 |
+| Blocos concluídos | 5 |
+| Itens de questões P1 / P2 / P3 | 15 / 15 / 30 |
+| Discursivas com rubrica | 1 (tipo alternado por semana) |
 | Missões completas | 5 |
+
+Padrões vigentes desde 26/10 (1 tópico por dia). Para “semana completa”, a meta de minutos é a do template vigente na semana (900 até 25/10, 300 desde 26/10), para que mudar o ciclo não reescreva semanas passadas.
 
 Cada meta mostra planejado × realizado e nunca preenche ausência de dados com zero de conhecimento (R09). Blocos contam na semana da ocorrência (`week_start`), mesmo se remanejados; minutos, questões e discursivas contam na semana da data efetiva do registro.
 
@@ -118,9 +120,11 @@ As etapas de [02-edital-e-plano.md](02-edital-e-plano.md) §4 viram fases do jog
 | Etapa | Período | Metas da etapa | Chefão |
 |---|---|---|---|
 | 1. Diagnóstico | 09/10–25/10 | 13 disciplinas com ≥ 1 sessão; ≥ 1 discursiva de cada tipo; 200 itens de questões | Simulado diagnóstico completo (40/40/90) |
-| 2. Aprofundamento | 26/10–22/11 | ≥ 70% dos tópicos em `first_pass` ou `reviewed`; 600 itens; 4 discursivas | Segundo simulado completo + 1 discursiva de cada tipo vinculada |
-| 3. Consolidação | 23/11–06/12 | ≥ 90% de cobertura declarada; 0 revisões atrasadas ao fim; 2 respostas discursivas completas cronometradas | Simulado completo em condições de prova (5 h objetivas + 3 h 30 discursivas, mesmo dia) |
+| 2. Aprofundamento | 26/10–22/11 | +16 tópicos em primeira passagem na etapa; 200 itens; 4 discursivas | Segundo simulado completo + 1 discursiva de cada tipo vinculada |
+| 3. Consolidação | 23/11–06/12 | +8 tópicos em primeira passagem na etapa; 0 revisões atrasadas ao fim; 2 respostas discursivas completas cronometradas | Simulado completo em condições de prova (5 h objetivas + 3 h 30 discursivas, mesmo dia) |
 | 4. Revisão final | 07/12–12/12 | Todos os erros do caderno revisados ou resolvidos; revisões vencidas zeradas | “Caderno limpo”: 0 erros abertos sem revisão e 0 revisões atrasadas em 11/12 |
+
+Com 4 tópicos novos por semana, as metas de cobertura das etapas 2 e 3 contam tópicos novos na etapa, não percentual do edital. Os simulados dos chefões ficam para o fim de semana.
 
 12/12 é descanso/logística e 13/12 é a prova: a contagem regressiva termina aí.
 
@@ -134,7 +138,7 @@ Ao derrotar o chefão da etapa 1, o app calcula uma **sugestão** de rebalanceam
 
 1. Aproveitamento relativo por prova: `score / máximo` (P1/40, P2/40, P3/180).
 2. Folga sobre o mínimo: `(score − mínimo) / máximo`.
-3. A finalidade com maior folga cede **1 bloco de 60 min** para a finalidade com menor folga (mapa: P1→`basic`, P2→`complementary`, P3→`specific`). No máximo 2 blocos por rebalanceamento; `specific` nunca fica abaixo de 300 min; `essay` não participa.
+3. A finalidade com maior folga cede **1 bloco de 60 min** para a finalidade com menor folga (mapa: P1→`basic`, P2→`complementary`, P3→`specific`). No máximo 2 blocos por rebalanceamento; `specific` nunca fica abaixo de 120 min (2 blocos); `essay` não participa.
 4. O usuário aceita, ajusta ou recusa. Aceitar cria uma nova versão do template que vale **só para semanas ainda não geradas** (R02).
 
 A sugestão é uma heurística de produto, não uma recomendação estatística. A mesma tela pode ser usada manualmente em qualquer momento.

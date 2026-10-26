@@ -49,6 +49,22 @@ Português não aparece como disciplina autônoma no programa do PDF. Escrita e 
 
 ## 3. Ciclo-base
 
+### A partir de 26/10/2026: 1 tópico por dia
+
+O ciclo de 3 blocos diários não se sustentou na rotina. Desde 26/10 cada dia útil tem **1 bloco de 60 min** e até 30 min de revisões (3 × 10 min, [03](03-regras-de-negocio.md) R07). Template em [`ciclo-2026-10-26.json`](data/ciclo-2026-10-26.json), 300 min por semana.
+
+| Dia | Bloco de 60 min | Rodízio por semana (desde 26/10) |
+|---|---|---|
+| Segunda | Específica | E01 → E03 |
+| Terça | Conhecimentos complementares (P2) | C01 → C02 → C03 → C04 → C05 |
+| Quarta | Específica | E02 → E04 |
+| Quinta | Conhecimentos básicos (P1) | B01 → B02 → B03 → B04 |
+| Sexta | Discursiva | complementar → situação-problema |
+
+O app sugere o primeiro tópico da disciplina da semana ainda sem primeira passagem declarada antes do dia do bloco; disciplina esgotada passa à seguinte da lista. O usuário confirma o tópico efetivamente estudado. Na virada, o comando `python -m app.replan` dispensou os blocos pendentes de 21–25/10 e recriou as revisões dos tópicos já estudados nos fins de semana (31/10–01/11, 07–08/11 e 21–22/11).
+
+### Até 25/10/2026: 3 blocos por dia
+
 | Dia | Antes — 60 min | Intermediário — 60 min | Depois — 60 min |
 |---|---|---|---|
 | Segunda | B01/B02 | Questões E01 | E01 |
@@ -74,7 +90,7 @@ Alternâncias propostas: nos blocos com duas disciplinas, semanas ímpares usam 
 
 Metas de cada etapa e regras dos chefões: [10-gamificacao-e-rotina.md](10-gamificacao-e-rotina.md) §6.
 
-Semana parcial de 180 min + nove semanas de 900 min: até 138 horas planejadas antes de faltas e escolhas sobre feriados. O sistema não supõe estudo em feriado nem retira dias automaticamente: o usuário confirma a agenda. 12/12 reservado inicialmente para descanso/logística.
+Planejamento: semana parcial de 180 min, duas semanas de 900 min (12–25/10) e, a partir de 26/10, semanas de 300 min, antes de faltas e escolhas sobre feriados. O sistema não supõe estudo em feriado nem retira dias automaticamente: o usuário confirma a agenda. 12/12 reservado inicialmente para descanso/logística.
 
 ## 5. Prioridades de diagnóstico
 

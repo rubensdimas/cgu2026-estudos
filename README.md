@@ -22,6 +22,7 @@ Estado atual: especificação v2.0 pronta; plano executável de F0+F1 em [docs/s
 | [docs/10-gamificacao-e-rotina.md](docs/10-gamificacao-e-rotina.md) | Missão, XP, nível, sequência, metas, chefões, conquistas |
 | [docs/data/catalogo-edital.json](docs/data/catalogo-edital.json) | 13 disciplinas, 68 tópicos macro |
 | [docs/data/ciclo-inicial.json](docs/data/ciclo-inicial.json) | Regras da prova e 15 blocos; início 09/10 |
+| [docs/data/ciclo-2026-10-26.json](docs/data/ciclo-2026-10-26.json) | Ciclo de 1 bloco por dia útil, a partir de 26/10 |
 | [docs/data/gamificacao.json](docs/data/gamificacao.json) | Metas, tabela de XP, níveis, etapas, marcos, conquistas |
 | [docs/edital.pdf](docs/edital.pdf) | Edital CGU nº 1, de 08/10/2026 (fonte oficial usada) |
 
@@ -76,6 +77,8 @@ python3 -m unittest discover -s tests/ops -p test_startup.py -v
 Esse teste sobe PostgreSQL descartável em memória, com projeto/rede exclusivos e senha fictícia, sem acessar os bancos ou volumes existentes. Reproduz a revisão `5c9e1f3a7b21` já aplicada e verifica o arranque normal da imagem, a saúde HTTP e o catálogo persistido. Os containers temporários são removidos ao terminar. `CGU_STARTUP_IMAGE` permite escolher outra imagem runtime local.
 
 Flashcards por IA (R16): defina `OPENAI_API_KEY` no `.env` (só o container `app` a recebe) e, opcionalmente, `OPENAI_MODEL` (padrão `gpt-6.1-sol`). Sem chave, o botão "Gerar flashcards" fica desligado. Depois de mudar o `.env`, rode `docker compose up -d app`.
+
+Replanejamento de 26/10 (1 tópico por dia): depois de um backup e com o app novo no ar (o seed carrega o template de 26/10), rode uma única vez `docker compose exec app python -m app.replan`. O comando pode ser repetido sem efeito extra: dispensa os blocos pendentes de 21–25/10, recria as revisões dos tópicos já estudados nos fins de semana, ajusta as metas em Configurações e gera a semana de 26/10. Ele recusa a execução se essa semana já tiver sido gerada com o ciclo antigo.
 
 Backups: um `pg_dump` ao subir e a cada 24 h em `./backups` (ou `BACKUP_DIR`), mantendo 14 arquivos. Ensaiar a restauração sem tocar no banco principal: `scripts/restore-check.sh backups/<arquivo>.dump`.
 

@@ -80,7 +80,7 @@ apps/web/
     shared/{api,components,ui,format}/
 docs/
   01…10-*.md · edital.pdf
-  data/{catalogo-edital,ciclo-inicial,gamificacao}.json
+  data/{catalogo-edital,ciclo-inicial,ciclo-2026-10-26,gamificacao}.json
 backups/                    # ignorado pelo Git
 ```
 
