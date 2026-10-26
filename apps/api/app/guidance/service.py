@@ -3,17 +3,16 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.domain.cycle import suggest_topic, week_index
+from app.domain.cycle import week_index
 from app.domain.guidance import ThemeRef, next_theme, pick_variant, resolve_themes
 from app.errors import ApiError
 from app.guidance import content
 from app.models import CycleSlot, Occurrence, Topic
-from app.planning.service import current_plan, session_stats
+from app.planning.service import current_plan, occurrence_essay_kind, session_stats, suggested_topic
 
 
-def essay_kind(occ: Occurrence) -> str | None:
-    """complementary | technical_case para S14/S15; None para os demais."""
-    return occ.slot.selection_mode if occ.slot.activity == "essay" else None
+def essay_kind(db: Session, occ: Occurrence) -> str | None:
+    return occurrence_essay_kind(db, occ)
 
 
 def _theme_ids(kind: str) -> list[str]:
@@ -23,9 +22,8 @@ def _theme_ids(kind: str) -> list[str]:
 def _theme_state(db: Session, kind: str) -> tuple[dict[str, str | None], set[str], set[str]]:
     """(tema por ocorrência, temas feitos, ocorrências com sessão)."""
     plan = current_plan(db)
-    occs = list(db.scalars(
-        select(Occurrence).join(CycleSlot).where(CycleSlot.activity == "essay", CycleSlot.selection_mode == kind)
-    ))
+    occs = [o for o in db.scalars(select(Occurrence).join(CycleSlot).where(CycleSlot.activity == "essay"))
+            if occurrence_essay_kind(db, o) == kind]
     stats = session_stats(db, [o.id for o in occs])
     with_session = {str(o.id) for o in occs if stats.get(o.id, (0, None))[0] > 0}
     refs = [ThemeRef(str(o.id), week_index(o.week_start, plan.starts_on), o.theme_id, str(o.id) in with_session)
@@ -36,7 +34,7 @@ def _theme_state(db: Session, kind: str) -> tuple[dict[str, str | None], set[str
 
 
 def current_theme(db: Session, occ: Occurrence) -> str | None:
-    kind = essay_kind(occ)
+    kind = essay_kind(db, occ)
     if kind is None:
         return None
     resolved, _, _ = _theme_state(db, kind)
@@ -44,7 +42,7 @@ def current_theme(db: Session, occ: Occurrence) -> str | None:
 
 
 def set_theme(db: Session, occ: Occurrence, theme_id: str) -> None:
-    kind = essay_kind(occ)
+    kind = essay_kind(db, occ)
     if kind is None or theme_id not in _theme_ids(kind):
         raise ApiError(422, "unknown_theme", "Tema inexistente para este bloco.", {"theme_id": "Inexistente."})
     _, _, with_session = _theme_state(db, kind)
@@ -58,7 +56,7 @@ def guidance_out(db: Session, occ: Occurrence) -> dict:
     slot = occ.slot
     idx = week_index(occ.week_start, current_plan(db).starts_on)
     variants = data["roteiros_por_bloco"].get(slot.code) or data["roteiros_por_atividade"][slot.activity]
-    topic_id = suggest_topic(slot.selection_mode, slot.candidate_topic_ids, idx)
+    topic_id = suggested_topic(db, occ)
     topic = db.get(Topic, topic_id) if topic_id else None
     out = {
         "roteiro": pick_variant(variants, occ.planned_on),
@@ -70,7 +68,7 @@ def guidance_out(db: Session, occ: Occurrence) -> dict:
         "next_theme_id": None,
         "lembretes": [],
     }
-    kind = essay_kind(occ)
+    kind = essay_kind(db, occ)
     if kind is None:
         return out
     resolved, done, with_session = _theme_state(db, kind)

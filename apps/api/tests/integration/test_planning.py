@@ -76,3 +76,35 @@ def test_concurrent_week_generation_returns_existing_week(client, monkeypatch):
     r = client.post("/api/v1/plans/current/weeks", json={"week_start": "2026-10-12"})
     assert r.status_code == 200
     assert sorted(i["id"] for i in r.json()["items"]) == sorted(i["id"] for i in first)
+
+
+def set_progress(db, topic_id, declared_on):
+    from app.models import TopicProgress
+
+    db.add(TopicProgress(topic_id=topic_id, status="first_pass", declared_on=date.fromisoformat(declared_on)))
+    db.commit()
+
+
+def week(client, week_start):
+    r = client.post("/api/v1/plans/current/weeks", json={"week_start": week_start})
+    assert r.status_code in (200, 201), r.text
+    return r.json()["items"]
+
+
+def test_one_block_per_day_from_october_26(client):
+    items = week(client, "2026-10-26")
+    assert [(i["slot"]["code"], i["planned_on"]) for i in items] == [
+        ("T01", "2026-10-26"), ("T02", "2026-10-27"), ("T03", "2026-10-28"), ("T04", "2026-10-29"),
+        ("T05", "2026-10-30")]
+    assert [i["suggested_topic_id"] for i in items] == ["E01.01", "C01.01", "E02.01", "B01.01", None]
+    assert len(week(client, "2026-10-19")) == 15
+
+
+def test_rotation_skips_topics_studied_before_the_block(client, db):
+    set_progress(db, "E02.01", "2026-10-20")
+    set_progress(db, "E01.01", "2026-10-26")
+    items = {i["slot"]["code"]: i for i in week(client, "2026-10-26")}
+    assert items["T03"]["suggested_topic_id"] == "E02.02"
+    assert items["T01"]["suggested_topic_id"] == "E01.01"
+    nxt = {i["slot"]["code"]: i for i in week(client, "2026-11-02")}
+    assert (nxt["T01"]["suggested_topic_id"], nxt["T02"]["suggested_topic_id"]) == ("E03.01", "C02.01")

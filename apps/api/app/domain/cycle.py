@@ -1,5 +1,6 @@
 """Geração de semanas do ciclo (R02). Funções puras, sem banco."""
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import date, timedelta
 
@@ -81,3 +82,29 @@ def suggest_topic(selection_mode: str, candidates: list[str], index: int) -> str
         group = delivery if index % 2 == 1 else interfaces
         return (group or candidates)[0]
     return candidates[0]
+
+
+def weeks_since(week_start: date, effective_from: date) -> int:
+    """Semanas desde o início do template; base dos rodízios do ciclo de 1 bloco por dia."""
+    return (week_start - effective_from).days // 7
+
+
+def next_topic(subjects: list[str], weeks: int, topics_by_subject: Mapping[str, list[str]],
+               done: set[str]) -> str | None:
+    """Primeiro tópico não estudado da disciplina da semana; disciplina esgotada passa à seguinte."""
+    if not subjects:
+        return None
+    start = weeks % len(subjects)
+    for i in range(len(subjects)):
+        for topic_id in topics_by_subject.get(subjects[(start + i) % len(subjects)], []):
+            if topic_id not in done:
+                return topic_id
+    return None
+
+
+def essay_kind_for(selection_mode: str, weeks: int) -> str | None:
+    if selection_mode in ("complementary", "technical_case"):
+        return selection_mode
+    if selection_mode == "alternate_essay":
+        return "complementary" if weeks % 2 == 0 else "technical_case"
+    return None

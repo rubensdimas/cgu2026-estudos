@@ -14,12 +14,56 @@ from app.models import AppSettings, CycleSlot, CycleTemplate, ExamVersion, Study
 NAMESPACE = uuid.UUID("6b0d6c8e-2f1a-4c55-9c3e-0c6f5b0a2026")
 
 
+# Versões do ciclo posteriores ao inicial (R02: cada uma rege só as semanas a partir de effective_from).
+TEMPLATE_UPDATES = ("ciclo-2026-10-26.json",)
+
+
 def stable_id(*parts: str) -> uuid.UUID:
     return uuid.uuid5(NAMESPACE, "/".join(parts))
 
 
 def load(name: str) -> dict:
     return json.loads((config.DATA_DIR / name).read_text(encoding="utf-8"))
+
+
+def ensure_template(db: Session, plan: StudyPlan, doc: dict) -> None:
+    effective_from = date.fromisoformat(doc["template"]["effective_from"])
+    template = db.scalar(
+        select(CycleTemplate).where(
+            CycleTemplate.study_plan_id == plan.id, CycleTemplate.effective_from == effective_from
+        )
+    )
+    if template is None:
+        template_id = stable_id("template", str(plan.id), effective_from.isoformat())
+        template = CycleTemplate(
+            id=template_id,
+            study_plan_id=plan.id,
+            effective_from=effective_from,
+            weekly_minutes=doc["weekly_minutes"],
+            origin=doc["template"]["origin"],
+        )
+        template.slots = [
+            CycleSlot(
+                id=stable_id("slot", str(template_id), s["code"]),
+                code=s["code"],
+                weekday=s["weekday"],
+                window=s["window"],
+                minutes=s["minutes"],
+                purpose=s["purpose"],
+                activity=s["activity"],
+                title=s["title"],
+                selection_mode=s["selection_mode"],
+                candidate_topic_ids=s["candidate_topic_ids"],
+                position=i,
+            )
+            for i, s in enumerate(doc["slots"])
+        ]
+        db.add(template)
+    else:
+        # Títulos são texto do plano, não dado pessoal: o JSON é a fonte.
+        titles = {s["code"]: s["title"] for s in doc["slots"]}
+        for slot in template.slots:
+            slot.title = titles.get(slot.code, slot.title)
 
 
 def seed(db: Session) -> None:
@@ -66,43 +110,8 @@ def seed(db: Session) -> None:
         db.add(plan)
         db.flush()
 
-    effective_from = date.fromisoformat(cycle["template"]["effective_from"])
-    template = db.scalar(
-        select(CycleTemplate).where(
-            CycleTemplate.study_plan_id == plan.id, CycleTemplate.effective_from == effective_from
-        )
-    )
-    if template is None:
-        template_id = stable_id("template", str(plan.id), effective_from.isoformat())
-        template = CycleTemplate(
-            id=template_id,
-            study_plan_id=plan.id,
-            effective_from=effective_from,
-            weekly_minutes=cycle["weekly_minutes"],
-            origin=cycle["template"]["origin"],
-        )
-        template.slots = [
-            CycleSlot(
-                id=stable_id("slot", str(template_id), s["code"]),
-                code=s["code"],
-                weekday=s["weekday"],
-                window=s["window"],
-                minutes=s["minutes"],
-                purpose=s["purpose"],
-                activity=s["activity"],
-                title=s["title"],
-                selection_mode=s["selection_mode"],
-                candidate_topic_ids=s["candidate_topic_ids"],
-                position=i,
-            )
-            for i, s in enumerate(cycle["slots"])
-        ]
-        db.add(template)
-    else:
-        # Títulos são texto do plano, não dado pessoal: o JSON é a fonte.
-        titles = {s["code"]: s["title"] for s in cycle["slots"]}
-        for slot in template.slots:
-            slot.title = titles.get(slot.code, slot.title)
+    for doc in [cycle, *(load(name) for name in TEMPLATE_UPDATES)]:
+        ensure_template(db, plan, doc)
 
     if db.get(AppSettings, 1) is None:
         d = game["settings_defaults"]

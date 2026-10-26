@@ -16,7 +16,7 @@ def counts(db):
 
 
 def test_seed_is_idempotent(db):
-    expected = {"subjects": 13, "topics": 68, "plans": 1, "templates": 1, "slots": 15, "minutes": 900}
+    expected = {"subjects": 13, "topics": 68, "plans": 1, "templates": 2, "slots": 20, "minutes": 1200}
     assert counts(db) == expected
     seed(db)
     assert counts(db) == expected

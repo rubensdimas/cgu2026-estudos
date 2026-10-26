@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "note": "1 bloco de 60 min por dia útil a partir de 26/10/2026; nas rotações, candidate_topic_ids lista disciplinas e o app sugere o primeiro tópico ainda não estudado.",
+  "template": {
+    "effective_from": "2026-10-26",
+    "origin": "manual"
+  },
+  "weekly_minutes": 300,
+  "slots": [
+    {
+      "code": "T01",
+      "weekday": 1,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "specific",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "E01",
+        "E03"
+      ],
+      "title": "Específica (E01/E03)",
+      "selection_mode": "next_topic_rotation"
+    },
+    {
+      "code": "T02",
+      "weekday": 2,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "complementary",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05"
+      ],
+      "title": "Conhecimentos complementares (P2)",
+      "selection_mode": "next_topic_rotation"
+    },
+    {
+      "code": "T03",
+      "weekday": 3,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "specific",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "E02",
+        "E04"
+      ],
+      "title": "Específica (E02/E04)",
+      "selection_mode": "next_topic_rotation"
+    },
+    {
+      "code": "T04",
+      "weekday": 4,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "basic",
+      "activity": "theory",
+      "candidate_topic_ids": [
+        "B01",
+        "B02",
+        "B03",
+        "B04"
+      ],
+      "title": "Conhecimentos básicos (P1)",
+      "selection_mode": "next_topic_rotation"
+    },
+    {
+      "code": "T05",
+      "weekday": 5,
+      "window": "before",
+      "minutes": 60,
+      "purpose": "essay",
+      "activity": "essay",
+      "candidate_topic_ids": [],
+      "title": "Discursiva da semana",
+      "selection_mode": "alternate_essay"
+    }
+  ]
+}

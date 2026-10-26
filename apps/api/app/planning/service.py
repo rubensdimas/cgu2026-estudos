@@ -1,5 +1,6 @@
 import uuid
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import date
 
 from sqlalchemy import func, select
@@ -8,15 +9,18 @@ from sqlalchemy.orm import Session
 from app.domain.cycle import (
     CycleError,
     SlotInput,
+    essay_kind_for,
     TemplateInput,
     generate_week,
+    next_topic,
     select_template,
     suggest_topic,
     week_index,
+    weeks_since,
 )
 from app.catalog.progress import promote_for_occurrence
 from app.errors import ApiError
-from app.models import CycleTemplate, Occurrence, StudyPlan, StudySession
+from app.models import CycleTemplate, Occurrence, StudyPlan, StudySession, Topic, TopicProgress
 
 
 def current_plan(db: Session) -> StudyPlan:
@@ -85,7 +89,43 @@ def session_stats(db: Session, occurrence_ids: list[uuid.UUID]) -> dict[uuid.UUI
     return stats
 
 
-def occurrence_out(occ: Occurrence, stats: dict, plan: StudyPlan) -> dict:
+@dataclass(frozen=True)
+class TopicContext:
+    topics_by_subject: dict[str, list[str]]
+    studied_on: dict[str, date]  # primeira passagem ou revisado, com a data declarada
+
+
+def topic_context(db: Session) -> TopicContext:
+    by_subject: dict[str, list[str]] = defaultdict(list)
+    for topic in db.scalars(select(Topic).order_by(Topic.subject_id, Topic.position)):
+        by_subject[topic.subject_id].append(topic.id)
+    studied = dict(db.execute(select(TopicProgress.topic_id, TopicProgress.declared_on)
+                              .where(TopicProgress.status.in_(("first_pass", "reviewed")))).all())
+    return TopicContext(dict(by_subject), studied)
+
+
+def suggested_topic(db: Session, occ: Occurrence, ctx: TopicContext | None = None) -> str | None:
+    slot = occ.slot
+    if slot.selection_mode != "next_topic_rotation":
+        return suggest_topic(slot.selection_mode, slot.candidate_topic_ids,
+                             week_index(occ.week_start, current_plan(db).starts_on))
+    ctx = ctx or topic_context(db)
+    # Só conta o que foi estudado antes do bloco: estudar o tópico hoje não troca a sugestão de hoje.
+    done = {t for t, d in ctx.studied_on.items() if d < occ.planned_on}
+    effective_from = db.get(CycleTemplate, slot.cycle_template_id).effective_from
+    return next_topic(slot.candidate_topic_ids, weeks_since(occ.week_start, effective_from),
+                      ctx.topics_by_subject, done)
+
+
+def occurrence_essay_kind(db: Session, occ: Occurrence) -> str | None:
+    """complementary | technical_case nos blocos de discursiva; None nos demais."""
+    if occ.slot.activity != "essay":
+        return None
+    effective_from = db.get(CycleTemplate, occ.slot.cycle_template_id).effective_from
+    return essay_kind_for(occ.slot.selection_mode, weeks_since(occ.week_start, effective_from))
+
+
+def occurrence_out(db: Session, occ: Occurrence, stats: dict, ctx: TopicContext) -> dict:
     minutes, last_day = stats.get(occ.id, (0, None))
     slot = occ.slot
     return {
@@ -107,16 +147,15 @@ def occurrence_out(occ: Occurrence, stats: dict, plan: StudyPlan) -> dict:
             "selection_mode": slot.selection_mode,
             "candidate_topic_ids": slot.candidate_topic_ids,
         },
-        "suggested_topic_id": suggest_topic(
-            slot.selection_mode, slot.candidate_topic_ids, week_index(occ.week_start, plan.starts_on)
-        ),
+        "suggested_topic_id": suggested_topic(db, occ, ctx),
+        "essay_kind": occurrence_essay_kind(db, occ),
     }
 
 
 def occurrences_out(db: Session, occurrences: list[Occurrence]) -> list[dict]:
-    plan = current_plan(db)
     stats = session_stats(db, [o.id for o in occurrences])
-    return [occurrence_out(o, stats, plan) for o in occurrences]
+    ctx = topic_context(db)
+    return [occurrence_out(db, o, stats, ctx) for o in occurrences]
 
 
 def list_occurrences(db: Session, start: date, end: date) -> list[Occurrence]:

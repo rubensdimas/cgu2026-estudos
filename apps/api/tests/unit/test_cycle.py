@@ -6,6 +6,9 @@ import pytest
 
 from app import config
 from app.domain.cycle import (
+    essay_kind_for,
+    next_topic,
+    weeks_since,
     CycleError,
     SlotInput,
     TemplateInput,
@@ -84,3 +87,27 @@ def test_week_helpers_and_topic_suggestion():
     assert suggest_topic("alternate_delivery_and_interfaces_ai", s12, 2) == "E01.04"
     assert suggest_topic("choose_topic", ["E01.02", "E01.03"], 5) == "E01.02"
     assert suggest_topic("technical_case", [], 1) is None
+
+
+def test_weeks_since_template_start():
+    assert weeks_since(date(2026, 10, 26), date(2026, 10, 26)) == 0
+    assert weeks_since(date(2026, 11, 9), date(2026, 10, 26)) == 2
+
+
+def test_next_topic_rotation_starts_at_week_subject():
+    topics = {"E01": ["E01.01", "E01.02"], "E03": ["E03.01", "E03.02"]}
+    assert next_topic(["E01", "E03"], 0, topics, set()) == "E01.01"
+    assert next_topic(["E01", "E03"], 1, topics, {"E03.01"}) == "E03.02"
+
+
+def test_next_topic_skips_exhausted_subject():
+    topics = {"E01": ["E01.01"], "E03": ["E03.01"]}
+    assert next_topic(["E01", "E03"], 0, topics, {"E01.01"}) == "E03.01"
+    assert next_topic(["E01", "E03"], 0, topics, {"E01.01", "E03.01"}) is None
+
+
+def test_alternate_essay_by_week():
+    assert essay_kind_for("alternate_essay", 0) == "complementary"
+    assert essay_kind_for("alternate_essay", 1) == "technical_case"
+    assert essay_kind_for("technical_case", 4) == "technical_case"
+    assert essay_kind_for("choose_topic", 0) is None

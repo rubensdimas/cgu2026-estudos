@@ -103,3 +103,11 @@ def test_guidance_does_not_write_and_404(client, temas):
     again = client.get("/api/v1/occurrences", params={"from": "2026-10-09", "to": "2026-10-09"}).json()["items"]
     assert next(o for o in again if o["id"] == s14["id"])["version"] == s14["version"]
     assert client.get(f"/api/v1/occurrences/{uuid.uuid4()}/guidance").status_code == 404
+
+
+def test_friday_essay_alternates_from_october_26(client, temas):
+    first, second = week(client, "2026-10-26")["T05"], week(client, "2026-11-02")["T05"]
+    assert (first["essay_kind"], second["essay_kind"]) == ("complementary", "technical_case")
+    assert guidance(client, first).json()["tema"]["id"] == "D1"
+    assert guidance(client, second).json()["tema"]["id"] == "C1"
+    assert week(client, "2026-10-26")["T01"]["essay_kind"] is None
