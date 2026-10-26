@@ -122,3 +122,9 @@ def test_review_detail_orders_cards_and_rates(client, db):
     assert review["cards_count"] == 3
     detail = client.get(f"/api/v1/reviews/{review['id']}").json()
     assert [c["front"] for c in detail["cards"]] == ["F2", "F1", "F0"]
+
+
+def test_session_with_four_topics_spreads_reviews(client, db):
+    post_session(client, topic_ids=("C01.01", "C02.01", "C03.01", "C04.01"))
+    first = sorted(d for _, d, _ in reviews(db) if d < D("2026-10-14"))
+    assert first == [D("2026-10-10")] * 3 + [D("2026-10-11")]

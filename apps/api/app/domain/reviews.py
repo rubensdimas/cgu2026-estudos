@@ -1,10 +1,11 @@
 """Revisões por tópico (R07): datas, duplicação, XP e ordem dos cartões. Funções puras."""
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from datetime import date, datetime, timedelta
 
 OFFSETS = (1, 7, 21)
 DEDUP_DAYS = 2
+DAILY_CAP = 3  # 3 × 10 min cabem nos 30 min diários de revisão
 XP_ON_TIME = 15
 XP_LATE = 5
 RATINGS = ("nao_lembrei", "palpite", "parcial", "lembrei")
@@ -21,6 +22,24 @@ def suggest_due_dates(studied_on: date, exam_on: date, offsets: Iterable[int] = 
 
 def is_duplicate(due_on: date, pending_due_dates: Iterable[date]) -> bool:
     return any(abs((due_on - p).days) <= DEDUP_DAYS for p in pending_due_dates)
+
+
+def place_due(due_on: date, load: Mapping[date, int], exam_on: date, cap: int = DAILY_CAP) -> date | None:
+    """Dia cheio empurra a revisão até 2 dias; depois, para o próximo sábado ou domingo com vaga."""
+    def free(d: date) -> bool:
+        return load.get(d, 0) < cap
+
+    for d in (due_on + timedelta(days=i) for i in range(3)):
+        if d >= exam_on:
+            return None
+        if free(d):
+            return d
+    d = due_on + timedelta(days=3)
+    while d < exam_on:
+        if d.weekday() >= 5 and free(d):
+            return d
+        d += timedelta(days=1)
+    return None
 
 
 def review_xp(due_on: date, completed_on: date) -> int:
